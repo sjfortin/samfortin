@@ -5,7 +5,7 @@ export default function Contact() {
     return (
         <>
             <Header />
-            <div className="bg-white dark:bg-gray-900">
+            <div>
                 <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
                     <div className="mx-auto max-w-2xl lg:mx-0">
                         <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">

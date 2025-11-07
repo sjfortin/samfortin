@@ -56,7 +56,7 @@ export default function Blog() {
   return (
     <>
       <Header />
-      <div className="bg-white dark:bg-gray-900">
+      <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
@@ -76,7 +76,7 @@ export default function Blog() {
                   </time>
                   <a
                     href={post.category.href}
-                    className="relative z-10 rounded-full bg-gray-100 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                    className="relative z-10 rounded-full px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     {post.category.title}
                   </a>

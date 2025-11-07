@@ -3,13 +3,15 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Dialog, DialogPanel } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 const navigation = [
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
   { name: 'Contact', href: '/contact' },
+  { name: 'Blog', href: '/blog' },
 ]
 
 export default function Header() {
@@ -48,14 +50,12 @@ export default function Header() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/blog" className="text-base/7 font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            Blog <span aria-hidden="true"><ArrowRightIcon aria-hidden="true" className="size-4" /></span>
-          </Link>
+          <ThemeSwitcher />
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-gray-100/10">
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-100/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Sam Fortin</span>
@@ -89,13 +89,8 @@ export default function Header() {
                   </Link>
                 ))}
               </div>
-              <div className="py-6">
-                <Link
-                  href="/blog"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                >
-                  Blog
-                </Link>
+              <div className="py-6 flex justify-center">
+                <ThemeSwitcher />
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ export default function About() {
   return (
     <>
       <Header />
-      <div className="bg-white dark:bg-gray-900">
+      <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
             <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
@@ -38,7 +38,7 @@ export default function About() {
               {['React', 'Next.js', 'TypeScript', 'Node.js', 'TailwindCSS', 'Python'].map((skill) => (
                 <div
                   key={skill}
-                  className="rounded-lg bg-gray-50 px-4 py-3 text-center text-sm font-semibold text-gray-900 dark:bg-gray-800 dark:text-white"
+                  className="rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-900 dark:text-white"
                 >
                   {skill}
                 </div>
