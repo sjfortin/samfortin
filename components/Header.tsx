@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'About', href: '/about' },
@@ -19,7 +20,14 @@ export default function Header() {
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="font-semibold text-base/7">Sam Fortin</span>
+            <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
+            <Image
+              alt=""
+              src="/logo.svg"
+              width={100}
+              height={24}
+              className="h-8 w-auto dark:hidden"
+            />
           </Link>
         </div>
         <div className="flex lg:hidden">
@@ -51,15 +59,12 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Sam Fortin</span>
-              <img
+              <Image
                 alt=""
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                src="/logo.svg"
+                width={100}
+                height={24}
                 className="h-8 w-auto dark:hidden"
-              />
-              <img
-                alt=""
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                className="hidden h-8 w-auto dark:block"
               />
             </Link>
             <button
