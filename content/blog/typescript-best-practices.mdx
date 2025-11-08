@@ -1,0 +1,118 @@
+---
+title: "TypeScript Best Practices in 2024"
+date: "2024-03-10"
+description: "Discover the latest TypeScript patterns and practices that will help you write more maintainable and type-safe code."
+category: "TypeScript"
+author: "Sam Fortin"
+---
+
+# TypeScript Best Practices in 2024
+
+TypeScript has become the de facto standard for building robust JavaScript applications. Let's explore some best practices that will help you write better TypeScript code.
+
+## Use Strict Mode
+
+Always enable strict mode in your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true
+  }
+}
+```
+
+This catches many common errors at compile time rather than runtime.
+
+## Prefer Type Inference
+
+Let TypeScript infer types when possible:
+
+```typescript
+// Good
+const user = { name: "John", age: 30 }
+
+// Unnecessary
+const user: { name: string; age: number } = { name: "John", age: 30 }
+```
+
+## Use Union Types Over Enums
+
+Union types are more flexible and tree-shakeable:
+
+```typescript
+// Prefer this
+type Status = "pending" | "approved" | "rejected"
+
+// Over this
+enum Status {
+  Pending = "pending",
+  Approved = "approved",
+  Rejected = "rejected"
+}
+```
+
+## Leverage Type Guards
+
+Type guards help TypeScript narrow types:
+
+```typescript
+function isString(value: unknown): value is string {
+  return typeof value === "string"
+}
+
+function processValue(value: string | number) {
+  if (isString(value)) {
+    // TypeScript knows value is string here
+    console.log(value.toUpperCase())
+  }
+}
+```
+
+## Use `unknown` Instead of `any`
+
+The `unknown` type is safer than `any`:
+
+```typescript
+// Avoid
+function process(data: any) {
+  return data.value // No type checking
+}
+
+// Better
+function process(data: unknown) {
+  if (typeof data === "object" && data !== null && "value" in data) {
+    return data.value
+  }
+}
+```
+
+## Utility Types Are Your Friend
+
+TypeScript provides powerful utility types:
+
+- `Partial<T>`: Make all properties optional
+- `Required<T>`: Make all properties required
+- `Pick<T, K>`: Select specific properties
+- `Omit<T, K>`: Exclude specific properties
+- `Record<K, T>`: Create an object type with specific keys
+
+```typescript
+interface User {
+  id: string
+  name: string
+  email: string
+  age: number
+}
+
+type UserPreview = Pick<User, "id" | "name">
+type UserUpdate = Partial<Omit<User, "id">>
+```
+
+## Conclusion
+
+These practices will help you write more maintainable and type-safe TypeScript code. Remember, the goal is to leverage TypeScript's type system to catch errors early and improve developer experience.
+
+Happy coding!
