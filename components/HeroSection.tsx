@@ -6,7 +6,7 @@ export default function HeroSection() {
       <div className="relative isolate">
         <svg
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-100 [mask-image:radial-gradient(80vw_80vw_at_center,white,transparent)]"
+          className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-100 dark:stroke-gray-900 [mask-image:radial-gradient(80vw_80vw_at_center,white,transparent)]"
         >
           <defs>
             <pattern
@@ -20,12 +20,6 @@ export default function HeroSection() {
               <path d="M.5 200V.5H200" fill="none" />
             </pattern>
           </defs>
-          <svg x="50%" y={-1} className="overflow-visible fill-white">
-            <path
-              d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z"
-              strokeWidth={0}
-            />
-          </svg>
           <rect fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" width="100%" height="100%" strokeWidth={0} />
         </svg>
         <div className="overflow-hidden">
@@ -49,7 +43,7 @@ export default function HeroSection() {
                       src="/moebius.jpg"
                       width={528}
                       height={528}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                   </div>
@@ -62,7 +56,7 @@ export default function HeroSection() {
                       src="/moebius-2.jpg"
                       width={528}
                       height={528}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                   </div>
@@ -70,10 +64,10 @@ export default function HeroSection() {
                     <Image
                       preload={true}
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-collab.jpg"
                       width={528}
                       height={528}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                   </div>
@@ -82,20 +76,20 @@ export default function HeroSection() {
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-iceland.jpg"
                       width={528}
                       height={528}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                   </div>
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-3.jpg"
                       width={528}
                       height={528}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg dark:bg-gray-700/5"
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
                     />
                     <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                   </div>
