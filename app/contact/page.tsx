@@ -17,20 +17,20 @@ export default function Contact() {
                         <div className="mt-6 space-y-4">
                             <p className="text-base/7 text-gray-600 dark:text-gray-300">
                                 <span className="font-semibold">Email:</span>{' '}
-                                <a href="mailto:hello@example.com" className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
-                                    hello@example.com
+                                <a href="mailto:sam.j.fortin@gmail.com" className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                    sam.j.fortin@gmail.com
                                 </a>
                             </p>
                             <p className="text-base/7 text-gray-600 dark:text-gray-300">
-                                <span className="font-semibold">Twitter:</span>{' '}
-                                <a href="https://twitter.com" className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
-                                    @yourhandle
+                                <span className="font-semibold">X:</span>{' '}
+                                <a href="https://x.com/sjfortin" className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                    @sjfortin
                                 </a>
                             </p>
                             <p className="text-base/7 text-gray-600 dark:text-gray-300">
                                 <span className="font-semibold">GitHub:</span>{' '}
                                 <a href="https://github.com" className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
-                                    github.com/yourusername
+                                    github.com/sjfortin
                                 </a>
                             </p>
                         </div>

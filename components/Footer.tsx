@@ -1,3 +1,6 @@
+import Link from 'next/link'
+import Image from "next/image"
+
 const navigation = {
   main: [
     { name: 'About', href: '/about' },
@@ -69,7 +72,7 @@ const navigation = {
   ],
 }
 
-export default function Example() {
+export default function Footer() {
   return (
     <footer>
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
@@ -99,6 +102,25 @@ export default function Example() {
         <p className="mt-10 text-center text-sm/6 text-gray-600 dark:text-gray-400">
           &copy; {new Date().getFullYear()} Sam Fortin.
         </p>
+        <div className="flex justify-center lg:flex-1 text-center mt-5 opacity-50">
+          <Link href="/">
+            <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
+            <Image
+              alt=""
+              src="/logo.svg"
+              width={100}
+              height={24}
+              className="h-8 w-auto dark:hidden hover:opacity-80"
+            />
+            <Image
+              alt=""
+              src="/logo-white.svg"
+              width={100}
+              height={24}
+              className="h-8 w-auto hidden dark:block hover:opacity-80"
+            />
+          </Link>
+        </div>
       </div>
     </footer>
   )
