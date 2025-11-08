@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { getAllPostSlugs, getPostBySlug } from '@/lib/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -55,6 +56,19 @@ export default async function BlogPost({
       <Header />
       <div className="min-h-screen">
         <article className="mx-auto max-w-3xl px-6 py-24 sm:py-32 lg:px-8">
+          {/* Cover Image */}
+          {post.coverImage && (
+            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
+
           {/* Post Header */}
           <header className="mb-8">
             <div className="flex items-center gap-x-4 text-xs mb-4">

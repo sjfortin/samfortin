@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getAllPosts } from '@/lib/blog';
@@ -27,6 +28,16 @@ export default function Blog() {
             ) : (
               posts.map((post) => (
                 <article key={post.slug} className="flex max-w-xl flex-col items-start">
+                  {post.coverImage && (
+                    <div className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+                      <Image
+                        src={post.coverImage}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                   <div className="flex items-center gap-x-4 text-xs">
                     <time dateTime={post.date} className="text-gray-500 dark:text-gray-400">
                       {new Date(post.date).toLocaleDateString('en-US', {
