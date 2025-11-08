@@ -28,11 +28,18 @@ export default function Header() {
               src="/logo.svg"
               width={100}
               height={24}
-              className="h-8 w-auto dark:hidden"
+              className="h-8 w-auto dark:hidden hover:opacity-80"
+            />
+            <Image
+              alt=""
+              src="/logo-white.svg"
+              width={100}
+              height={24}
+              className="h-8 w-auto hidden dark:block hover:opacity-80"
             />
           </Link>
         </div>
-        <div className="flex lg:hidden">
+        <div className={`flex lg:hidden ${mobileMenuOpen ? 'hidden' : ''}`}>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
@@ -55,7 +62,7 @@ export default function Header() {
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-100/10">
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white dark:bg-black p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:sm:ring-gray-100/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Sam Fortin</span>
@@ -65,6 +72,13 @@ export default function Header() {
                 width={100}
                 height={24}
                 className="h-8 w-auto dark:hidden"
+              />
+              <Image
+                alt=""
+                src="/logo-white.svg"
+                width={100}
+                height={24}
+                className="h-8 w-auto hidden dark:block"
               />
             </Link>
             <button

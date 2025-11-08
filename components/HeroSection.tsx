@@ -64,7 +64,7 @@ export default function HeroSection() {
                     <Image
                       preload={true}
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-collab.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -76,7 +76,7 @@ export default function HeroSection() {
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-iceland.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -86,7 +86,7 @@ export default function HeroSection() {
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius.jpg"
+                      src="/moebius-3.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
