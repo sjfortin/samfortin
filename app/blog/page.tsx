@@ -1,58 +1,10 @@
+import Link from 'next/link';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const posts = [
-  {
-    id: 1,
-    title: 'Getting Started with Next.js 14',
-    href: '#',
-    description:
-      'Learn how to build modern web applications with Next.js 14, exploring the new App Router, Server Components, and more.',
-    date: 'Mar 16, 2024',
-    datetime: '2024-03-16',
-    category: { title: 'Web Development', href: '#' },
-    author: {
-      name: 'Sam Fortin',
-      role: 'Developer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-  },
-  {
-    id: 2,
-    title: 'TypeScript Best Practices in 2024',
-    href: '#',
-    description:
-      'Discover the latest TypeScript patterns and practices that will help you write more maintainable and type-safe code.',
-    date: 'Mar 10, 2024',
-    datetime: '2024-03-10',
-    category: { title: 'TypeScript', href: '#' },
-    author: {
-      name: 'Sam Fortin',
-      role: 'Developer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-  },
-  {
-    id: 3,
-    title: 'Building Accessible Web Applications',
-    href: '#',
-    description:
-      'A comprehensive guide to making your web applications accessible to everyone, including keyboard navigation and screen reader support.',
-    date: 'Feb 28, 2024',
-    datetime: '2024-02-28',
-    category: { title: 'Accessibility', href: '#' },
-    author: {
-      name: 'Sam Fortin',
-      role: 'Developer',
-      imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-  },
-];
+import { getAllPosts } from '@/lib/blog';
 
 export default function Blog() {
+  const posts = getAllPosts();
   return (
     <>
       <Header />
@@ -68,44 +20,52 @@ export default function Blog() {
           </div>
 
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {posts.map((post) => (
-              <article key={post.id} className="flex max-w-xl flex-col items-start">
-                <div className="flex items-center gap-x-4 text-xs">
-                  <time dateTime={post.datetime} className="text-gray-500 dark:text-gray-400">
-                    {post.date}
-                  </time>
-                  <a
-                    href={post.category.href}
-                    className="relative z-10 rounded-full px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700"
-                  >
-                    {post.category.title}
-                  </a>
-                </div>
-                <div className="group relative">
-                  <h3 className="mt-3 text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
-                    <a href={post.href}>
-                      <span className="absolute inset-0" />
-                      {post.title}
-                    </a>
-                  </h3>
-                  <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600 dark:text-gray-400">
-                    {post.description}
-                  </p>
-                </div>
-                <div className="relative mt-8 flex items-center gap-x-4">
-                  <img alt="" src={post.author.imageUrl} className="size-10 rounded-full bg-gray-100 dark:bg-gray-800" />
-                  <div className="text-sm/6">
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                      <a href="#">
-                        <span className="absolute inset-0" />
-                        {post.author.name}
-                      </a>
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-400">{post.author.role}</p>
+            {posts.length === 0 ? (
+              <p className="text-gray-600 dark:text-gray-400">
+                No blog posts yet. Create your first post in the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">content/blog</code> directory!
+              </p>
+            ) : (
+              posts.map((post) => (
+                <article key={post.slug} className="flex max-w-xl flex-col items-start">
+                  <div className="flex items-center gap-x-4 text-xs">
+                    <time dateTime={post.date} className="text-gray-500 dark:text-gray-400">
+                      {new Date(post.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </time>
+                    <span className="relative z-10 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1.5 font-medium text-gray-600 dark:text-gray-300">
+                      {post.category}
+                    </span>
                   </div>
-                </div>
-              </article>
-            ))}
+                  <div className="group relative">
+                    <h3 className="mt-3 text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
+                      <Link href={`/blog/${post.slug}`}>
+                        <span className="absolute inset-0" />
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600 dark:text-gray-400">
+                      {post.description}
+                    </p>
+                  </div>
+                  <div className="relative mt-8 flex items-center gap-x-4">
+                    <div className="size-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                      <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                        {post.author.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="text-sm/6">
+                      <p className="font-semibold text-gray-900 dark:text-white">
+                        {post.author}
+                      </p>
+                      <p className="text-gray-600 dark:text-gray-400">Developer</p>
+                    </div>
+                  </div>
+                </article>
+              ))
+            )}
           </div>
         </div>
       </div>

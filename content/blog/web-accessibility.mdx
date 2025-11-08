@@ -1,0 +1,163 @@
+---
+title: "Building Accessible Web Applications"
+date: "2024-02-28"
+description: "A comprehensive guide to making your web applications accessible to everyone, including keyboard navigation and screen reader support."
+category: "Accessibility"
+author: "Sam Fortin"
+---
+
+# Building Accessible Web Applications
+
+Web accessibility ensures that everyone, regardless of their abilities, can use your application. Let's explore how to build accessible web experiences.
+
+## Why Accessibility Matters
+
+Accessibility isn't just about compliance—it's about:
+
+- **Inclusivity**: Making your app usable by everyone
+- **Better UX**: Accessible apps are often easier for everyone to use
+- **SEO Benefits**: Many accessibility practices improve search rankings
+- **Legal Requirements**: Many jurisdictions require accessible websites
+
+## Semantic HTML
+
+Use the right HTML elements for the job:
+
+```html
+<!-- Good -->
+<button onClick={handleClick}>Submit</button>
+
+<!-- Bad -->
+<div onClick={handleClick}>Submit</div>
+```
+
+Semantic HTML provides meaning to assistive technologies and improves keyboard navigation.
+
+## ARIA Attributes
+
+ARIA (Accessible Rich Internet Applications) attributes enhance accessibility:
+
+```tsx
+<button
+  aria-label="Close dialog"
+  aria-expanded={isOpen}
+  onClick={handleClose}
+>
+  <XIcon />
+</button>
+```
+
+Common ARIA attributes:
+
+- `aria-label`: Provides a label when text isn't visible
+- `aria-describedby`: References additional description
+- `aria-hidden`: Hides decorative elements from screen readers
+- `aria-live`: Announces dynamic content changes
+
+## Keyboard Navigation
+
+Ensure all interactive elements are keyboard accessible:
+
+1. **Tab Order**: Use proper HTML structure
+2. **Focus Indicators**: Always show focus states
+3. **Keyboard Shortcuts**: Support common patterns (Escape to close, etc.)
+
+```css
+/* Always show focus indicators */
+button:focus-visible {
+  outline: 2px solid blue;
+  outline-offset: 2px;
+}
+```
+
+## Color Contrast
+
+Maintain sufficient color contrast ratios:
+
+- **Normal text**: 4.5:1 minimum
+- **Large text**: 3:1 minimum
+- **UI components**: 3:1 minimum
+
+Use tools like [WebAIM's Contrast Checker](https://webaim.org/resources/contrastchecker/) to verify your colors.
+
+## Form Accessibility
+
+Make forms accessible with proper labels and error handling:
+
+```tsx
+<div>
+  <label htmlFor="email">Email Address</label>
+  <input
+    id="email"
+    type="email"
+    aria-required="true"
+    aria-invalid={hasError}
+    aria-describedby={hasError ? "email-error" : undefined}
+  />
+  {hasError && (
+    <span id="email-error" role="alert">
+      Please enter a valid email address
+    </span>
+  )}
+</div>
+```
+
+## Testing for Accessibility
+
+Use these tools to test your application:
+
+1. **Automated Tools**:
+   - axe DevTools
+   - Lighthouse
+   - WAVE
+
+2. **Manual Testing**:
+   - Keyboard navigation
+   - Screen reader testing (NVDA, JAWS, VoiceOver)
+   - Zoom to 200%
+
+3. **User Testing**:
+   - Include users with disabilities in your testing process
+
+## Common Patterns
+
+### Skip Links
+
+Allow keyboard users to skip repetitive content:
+
+```tsx
+<a href="#main-content" className="skip-link">
+  Skip to main content
+</a>
+```
+
+### Focus Management
+
+Manage focus when content changes:
+
+```tsx
+function Modal({ isOpen, onClose }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus()
+    }
+  }, [isOpen])
+
+  return (
+    <dialog open={isOpen}>
+      <button ref={closeButtonRef} onClick={onClose}>
+        Close
+      </button>
+      {/* Modal content */}
+    </dialog>
+  )
+}
+```
+
+## Conclusion
+
+Building accessible applications is an ongoing process, not a one-time task. By following these practices and continuously testing with real users, you can create applications that work for everyone.
+
+Remember: **Accessibility is not a feature—it's a fundamental requirement.**

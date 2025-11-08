@@ -1,0 +1,79 @@
+---
+title: "Getting Started with Next.js 14"
+date: "2024-03-16"
+description: "Learn how to build modern web applications with Next.js 14, exploring the new App Router, Server Components, and more."
+category: "Web Development"
+author: "Sam Fortin"
+---
+
+# Getting Started with Next.js 14
+
+Next.js 14 introduces powerful new features that make building web applications faster and more enjoyable. In this post, we'll explore the key concepts and get you up and running.
+
+## What's New in Next.js 14?
+
+Next.js 14 brings several exciting improvements:
+
+- **Turbopack**: A new Rust-based bundler that's significantly faster
+- **Server Actions**: Simplified data mutations without API routes
+- **Partial Prerendering**: Combine static and dynamic rendering
+- **Improved Performance**: Better caching and optimization strategies
+
+## Setting Up Your First Project
+
+Getting started is easy. First, create a new Next.js application:
+
+```bash
+npx create-next-app@latest my-app
+cd my-app
+npm run dev
+```
+
+This will scaffold a new project with all the modern defaults configured.
+
+## Understanding the App Router
+
+The App Router is built on React Server Components and introduces a new way to structure your application:
+
+- **app/** directory for your application routes
+- **layout.tsx** for shared UI across routes
+- **page.tsx** for unique page content
+- **loading.tsx** for loading states
+
+## Server Components vs Client Components
+
+By default, all components in the App Router are Server Components. This means:
+
+1. They run on the server
+2. They can directly access backend resources
+3. They don't add to the client JavaScript bundle
+
+Use Client Components when you need:
+
+- Interactive features (onClick, useState, etc.)
+- Browser APIs
+- Custom hooks
+
+Simply add `'use client'` at the top of your file to make it a Client Component.
+
+## Data Fetching
+
+Next.js 14 makes data fetching simple with async/await in Server Components:
+
+```tsx
+async function getData() {
+  const res = await fetch('https://api.example.com/data')
+  return res.json()
+}
+
+export default async function Page() {
+  const data = await getData()
+  return <div>{data.title}</div>
+}
+```
+
+## Conclusion
+
+Next.js 14 represents a significant step forward in web development. The combination of Server Components, improved performance, and developer experience makes it an excellent choice for your next project.
+
+Ready to dive deeper? Check out the [official Next.js documentation](https://nextjs.org/docs) for more details.
