@@ -26,9 +26,21 @@ export default function HeroSection() {
           <div className="mx-auto max-w-7xl px-6 pb-32 pt-32 sm:pt-48 lg:px-8 lg:pt-32">
             <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
               <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
-                <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
-                  Sam Fortin, Full Stack Software Engineer
+
+                <Image
+                  preload={true}
+                  alt=""
+                  src="/images/moebius-sam.png"
+                  width={140}
+                  height={140}
+                  className="aspect-[1/1] bg-gray-900/5 object-cover shadow-lg rounded-full mb-4"
+                />
+                <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
+                  Sam Fortin
                 </h1>
+                <h2 className="text-pretty text-3xl font-semibold tracking-tight text-gray-500 sm:text-3xl dark:text-white">
+                  Full Stack Software Engineer
+                </h2>
                 <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
                   I'm a full stack developer with an eye for design. I'm passionate about creating
                   beautiful and functional websites that provide a great user experience.
@@ -40,7 +52,7 @@ export default function HeroSection() {
                     <Image
                       preload={true}
                       alt=""
-                      src="/moebius.jpg"
+                      src="/images/hero/moebius.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -53,7 +65,7 @@ export default function HeroSection() {
                     <Image
                       preload={true}
                       alt=""
-                      src="/moebius-2.jpg"
+                      src="/images/hero/moebius-2.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -64,7 +76,7 @@ export default function HeroSection() {
                     <Image
                       preload={true}
                       alt=""
-                      src="/moebius-collab.jpg"
+                      src="/images/hero/moebius-collab.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -76,7 +88,7 @@ export default function HeroSection() {
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius-iceland.jpg"
+                      src="/images/hero/moebius-iceland.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"
@@ -86,7 +98,7 @@ export default function HeroSection() {
                   <div className="relative">
                     <Image
                       alt=""
-                      src="/moebius-3.jpg"
+                      src="/images/hero/moebius-3.jpg"
                       width={528}
                       height={528}
                       className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg"

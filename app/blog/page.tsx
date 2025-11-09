@@ -11,8 +11,8 @@ export default function Blog() {
       <Header />
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0">
-            <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
+          <div className="mx-auto lg:mx-0">
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
               Blog
             </h1>
             <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
@@ -20,7 +20,7 @@ export default function Blog() {
             </p>
           </div>
 
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {posts.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-400">
                 No blog posts yet. Create your first post in the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">content/blog</code> directory!
@@ -30,12 +30,14 @@ export default function Blog() {
                 <article key={post.slug} className="flex max-w-xl flex-col items-start">
                   {post.coverImage && (
                     <div className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-                      <Image
-                        src={post.coverImage}
-                        alt={post.title}
-                        fill
-                        className="object-cover"
-                      />
+                      <Link href={`/blog/${post.slug}`}>
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </Link>
                     </div>
                   )}
                   <div className="flex items-center gap-x-4 text-xs">
@@ -63,15 +65,18 @@ export default function Blog() {
                   </div>
                   <div className="relative mt-8 flex items-center gap-x-4">
                     <div className="size-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                      <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                        {post.author.charAt(0).toUpperCase()}
-                      </span>
+                      <Image
+                        src="/images/moebius-sam.png"
+                        alt="Moebius"
+                        width={40}
+                        height={40}
+                        className="rounded-full"
+                      />
                     </div>
                     <div className="text-sm/6">
                       <p className="font-semibold text-gray-900 dark:text-white">
                         {post.author}
                       </p>
-                      <p className="text-gray-600 dark:text-gray-400">Developer</p>
                     </div>
                   </div>
                 </article>

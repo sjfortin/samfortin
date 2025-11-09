@@ -8,7 +8,7 @@ export default function About() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
-            <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
               About Me
             </h1>
             <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
@@ -28,22 +28,6 @@ export default function About() {
               Over the years, I've worked on various projects spanning web development, mobile applications, 
               and everything in between. I believe in writing clean, maintainable code and sharing what I learn along the way.
             </p>
-          </div>
-
-          <div className="mx-auto mt-16 lg:mx-0">
-            <h2 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Skills & Technologies
-            </h2>
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {['React', 'Next.js', 'TypeScript', 'Node.js', 'TailwindCSS', 'Python'].map((skill) => (
-                <div
-                  key={skill}
-                  className="rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-900 dark:text-white"
-                >
-                  {skill}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
