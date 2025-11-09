@@ -12,6 +12,8 @@ export interface BlogPost {
   category: string;
   author: string;
   content: string;
+  draft?: boolean;
+  coverImage?: string;
 }
 
 export function getAllPosts(): BlogPost[] {
@@ -47,8 +49,11 @@ export function getAllPosts(): BlogPost[] {
         category: data.category || 'Uncategorized',
         author: data.author || 'Sam Fortin',
         content,
+        draft: data.draft || false,
+        coverImage: data.coverImage || undefined,
       };
-    });
+    })
+    .filter((post) => !post.draft); // Exclude draft posts
 
   // Sort posts by date
   return allPostsData.sort((a, b) => {

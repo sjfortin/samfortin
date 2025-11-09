@@ -35,6 +35,8 @@ samfortin/
 
 - ✅ Write blog posts in Markdown/MDX
 - ✅ Frontmatter support for metadata (title, date, description, category, author)
+- ✅ Draft posts - hide posts from listing while working on them
+- ✅ Cover images - add visual appeal to your posts
 - ✅ Automatic blog index generation
 - ✅ Dynamic routing for individual posts
 - ✅ Syntax highlighting for code blocks
@@ -60,6 +62,8 @@ date: "2024-11-08"
 description: "This is what my post is about"
 category: "Tutorial"
 author: "Sam Fortin"
+draft: false
+coverImage: "/images/blog/my-cover.jpg"
 ---
 
 # My Awesome Post
@@ -77,6 +81,39 @@ You can even use React components!
 ```
 
 3. The post will automatically appear at `/blog/my-new-post`
+
+## 📝 Draft Posts
+
+Work on posts without publishing them:
+
+```mdx
+---
+title: "Work in Progress"
+draft: true
+---
+```
+
+- Posts with `draft: true` won't appear in the blog listing
+- Still accessible via direct URL for previewing
+- Remove or set to `false` when ready to publish
+
+## 🖼️ Cover Images
+
+Add cover images to your posts:
+
+1. Place images in `public/images/blog/`
+2. Reference in frontmatter:
+
+```mdx
+---
+title: "My Post"
+coverImage: "/images/blog/my-image.jpg"
+---
+```
+
+- Images appear at the top of posts and as thumbnails in listings
+- Recommended size: 1200x630px (16:9 aspect ratio)
+- Supports JPG, PNG, WebP, SVG
 
 ## 🎨 Customizing Styles
 

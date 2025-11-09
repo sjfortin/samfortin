@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import { getAllPostSlugs, getPostBySlug } from '@/lib/blog';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
@@ -55,6 +58,23 @@ export default async function BlogPost({
       <Header />
       <div className="min-h-screen">
         <article className="mx-auto max-w-3xl px-6 py-24 sm:py-32 lg:px-8">
+          <Link href="/blog" className="flex items-center gap-x-2 mb-8 text-gray-500 dark:text-gray-400 text-xs hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+            <ArrowLeftIcon className="w-4 h-4" />
+            Back to blog
+          </Link>
+          {/* Cover Image */}
+          {post.coverImage && (
+            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
+
           {/* Post Header */}
           <header className="mb-8">
             <div className="flex items-center gap-x-4 text-xs mb-4">
@@ -72,7 +92,7 @@ export default async function BlogPost({
                 {post.category}
               </span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
               {post.title}
             </h1>
             {post.description && (
@@ -80,16 +100,26 @@ export default async function BlogPost({
                 {post.description}
               </p>
             )}
-            <div className="mt-4 flex items-center gap-x-4">
-              <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                {post.author}
-              </span>
-            </div>
           </header>
 
           {/* MDX Content */}
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <MDXContent />
+          </div>
+          <div className="mt-16">
+            {/* author */}
+            <div className="flex items-center gap-x-4 text-xl mb-4">
+              <Image
+                src="/images/moebius-sam.png"
+                alt="Moebius"
+                width={80}
+                height={80}
+                className="rounded-full"
+              />
+              <span className="text-gray-500 dark:text-gray-400">
+                {post.author}
+              </span>
+            </div>
           </div>
         </article>
       </div>

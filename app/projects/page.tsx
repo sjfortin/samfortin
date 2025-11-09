@@ -4,28 +4,42 @@ import Footer from "@/components/Footer";
 const projects = [
   {
     id: 1,
-    name: 'Project Alpha',
+    name: 'Estee Lauder Companies',
     description: 'A modern web application built with Next.js and TypeScript, featuring real-time collaboration and beautiful UI.',
     technologies: ['Next.js', 'TypeScript', 'TailwindCSS'],
     link: '#',
   },
   {
     id: 2,
-    name: 'Project Beta',
+    name: 'TC Farm',
     description: 'An innovative mobile-first solution that helps users manage their daily tasks with AI-powered suggestions.',
     technologies: ['React Native', 'Node.js', 'MongoDB'],
     link: '#',
   },
   {
     id: 3,
-    name: 'Project Gamma',
+    name: 'Fast Signs',
     description: 'Open-source library for building accessible and performant UI components with minimal configuration.',
     technologies: ['React', 'TypeScript', 'Storybook'],
     link: '#',
   },
   {
     id: 4,
-    name: 'Project Delta',
+    name: 'Darn Tough',
+    description: 'Full-stack e-commerce platform with advanced analytics and seamless payment integration.',
+    technologies: ['Next.js', 'PostgreSQL', 'Stripe'],
+    link: '#',
+  },
+  {
+    id: 5,
+    name: 'GED.com',
+    description: 'Full-stack e-commerce platform with advanced analytics and seamless payment integration.',
+    technologies: ['Next.js', 'PostgreSQL', 'Stripe'],
+    link: '#',
+  },
+  {
+    id: 6,
+    name: '2DSemiConductors',
     description: 'Full-stack e-commerce platform with advanced analytics and seamless payment integration.',
     technologies: ['Next.js', 'PostgreSQL', 'Stripe'],
     link: '#',
@@ -39,11 +53,11 @@ export default function Projects() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <h1 className="text-5xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
               Projects
             </h1>
             <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
-              A collection of my work, experiments, and open-source contributions.
+              A sample of some the professional projects I have worked on.
             </p>
           </div>
 
@@ -64,19 +78,19 @@ export default function Projects() {
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                        className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-900 dark:text-gray-300"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
                 </div>
-                <a
+                {/* <a
                   href={project.link}
-                  className="mt-6 text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+                  className="mt-6 text-sm font-semibold text-gray-600 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
                 >
                   View project <span aria-hidden="true">→</span>
-                </a>
+                </a> */}
               </article>
             ))}
           </div>

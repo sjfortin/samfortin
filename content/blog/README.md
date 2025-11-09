@@ -17,6 +17,8 @@ date: "2024-03-16"
 description: "A brief description of your post"
 category: "Category Name"
 author: "Your Name"
+draft: false
+coverImage: "/images/blog/my-post-cover.jpg"
 ---
 
 # Your Post Title
@@ -40,6 +42,8 @@ More content with **bold** and *italic* text.
 - **description** (required): A brief summary for the blog index
 - **category** (required): Category tag for the post
 - **author** (optional): Author name (defaults to "Sam Fortin")
+- **draft** (optional): Set to `true` to hide the post from the blog listing (defaults to `false`)
+- **coverImage** (optional): Path to a cover image for the post (e.g., `/images/blog/cover.jpg`)
 
 ## Supported Markdown Features
 
@@ -64,6 +68,45 @@ import { MyComponent } from '@/components/MyComponent'
 
 <MyComponent prop="value" />
 ```
+
+## Draft Posts
+
+To work on a post without publishing it to the blog listing, set `draft: true` in the frontmatter:
+
+```mdx
+---
+title: "Work in Progress"
+date: "2024-11-08"
+description: "This post is not ready yet"
+category: "Tutorial"
+draft: true
+---
+```
+
+Draft posts:
+- ✅ Won't appear in the blog index at `/blog`
+- ✅ Can still be accessed directly via URL if you know the slug
+- ✅ Perfect for previewing posts before publishing
+- ✅ Set to `false` or remove the field when ready to publish
+
+## Cover Images
+
+Add visual appeal to your posts with cover images:
+
+```mdx
+---
+title: "My Visual Post"
+coverImage: "/images/blog/my-cover.jpg"
+---
+```
+
+Cover images:
+- Appear at the top of the blog post page
+- Show as thumbnails in the blog listing
+- Should be placed in the `public/images/blog/` directory
+- Use relative paths starting with `/images/blog/`
+- Recommended size: 1200x630px (16:9 aspect ratio)
+- Supported formats: JPG, PNG, WebP, SVG
 
 ## File Naming
 

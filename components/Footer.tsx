@@ -102,7 +102,7 @@ export default function Footer() {
         <p className="mt-10 text-center text-sm/6 text-gray-600 dark:text-gray-400">
           &copy; {new Date().getFullYear()} Sam Fortin.
         </p>
-        <div className="flex justify-center lg:flex-1 text-center mt-5 opacity-50">
+        <div className="flex justify-center lg:flex-1 text-center mt-5">
           <Link href="/">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
             <Image
