@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   return (
@@ -45,18 +47,22 @@ export default function Home() {
                   <h2 className="text-pretty text-3xl font-semibold tracking-tight text-gray-500 sm:text-3xl dark:text-white">
                     Full Stack Software Engineer
                   </h2>
-                  <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
+                  <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8 lg:max-w-none dark:text-gray-400">
                     I'm a full stack developer with an eye for design. I'm passionate about creating
                     beautiful and functional websites that provide a great user experience.
                   </p>
+                  <p className="hidden lg:block mt-4">
+                    <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4 transition-transform duration-2000 group-hover:translate-x-100" /></Link>
+                  </p>
                 </div>
-                <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+                {/* Desktop */}
+                <div className="hidden lg:flex mt-14 justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                   <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
                     <div className="relative">
                       <Image
                         preload={true}
                         alt=""
-                        src="/images/home/moebius-home-1.png"
+                        src="/images/home/moebius-home-4.png"
                         width={528}
                         height={528}
                         className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
@@ -69,7 +75,7 @@ export default function Home() {
                       <Image
                         preload={true}
                         alt=""
-                        src="/images/home/moebius-home-2.png"
+                        src="/images/home/moebius-home-5.png"
                         width={528}
                         height={528}
                         className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
@@ -92,7 +98,7 @@ export default function Home() {
                     <div className="relative">
                       <Image
                         alt=""
-                        src="/images/home/moebius-home-4.png"
+                        src="/images/home/moebius-home-6.png"
                         width={528}
                         height={528}
                         className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
@@ -102,13 +108,22 @@ export default function Home() {
                     <div className="relative">
                       <Image
                         alt=""
-                        src="/images/home/moebius-home-5.png"
+                        src="/images/home/moebius-home-2.png"
                         width={528}
                         height={528}
                         className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
                       />
                       <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
                     </div>
+                  </div>
+                </div>
+                {/* Mobile */}
+                <div className="lg:hidden mt-8">
+                  <video autoPlay loop muted className="w-full">
+                    <source src="/videos/moebius-home.mp4" type="video/mp4" />
+                  </video>
+                  <div className="mt-4">
+                    <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4" /></Link>
                   </div>
                 </div>
               </div>
