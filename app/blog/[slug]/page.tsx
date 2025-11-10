@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import AnimatedBlogImage from '@/components/AnimatedBlogImage';
 
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
@@ -65,12 +66,10 @@ export default async function BlogPost({
           {/* Cover Image */}
           {post.coverImage && (
             <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                fill
-                className="object-cover"
-                priority
+              <AnimatedBlogImage
+                coverImage={post.coverImage}
+                slug={slug}
+                title={post.title}
               />
             </div>
           )}
