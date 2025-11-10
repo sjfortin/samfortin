@@ -119,8 +119,12 @@ export default function Home() {
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  <video autoPlay loop muted className="w-full">
-                    <source src="/videos/moebius-home.mp4" type="video/mp4" />
+                  <video autoPlay muted className="w-full">
+                    {Math.random() < 0.5 ? (
+                      <source src="/videos/moebius-home.mp4" type="video/mp4" />
+                    ) : (
+                      <source src="/videos/moebius-home-2.mp4" type="video/mp4" />
+                    )}
                   </video>
                   <div className="mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4" /></Link>
