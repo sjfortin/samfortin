@@ -3,6 +3,8 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import AnimatedHomeImage from "@/components/AnimatedHomeImage";
+import AnimatedHomeVideo from "@/components/AnimatedHomeVideo";
 
 export default function Home() {
   return (
@@ -33,13 +35,17 @@ export default function Home() {
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
 
-                  <Image
-                    preload={true}
-                    alt=""
+
+                  <AnimatedHomeImage
                     src="/images/moebius-sam.png"
+                    preload={true}
+                    delay={0.1}
                     width={140}
                     height={140}
                     className="aspect-[1/1] bg-gray-900/5 object-cover shadow-lg rounded-full mb-4"
+                    initialY={0}
+                    animateY={0}
+                    duration={1.6}
                   />
                   <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
                     Sam Fortin
@@ -58,74 +64,43 @@ export default function Home() {
                 {/* Desktop */}
                 <div className="hidden lg:flex mt-14 justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
                   <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-none xl:pt-80">
-                    <div className="relative">
-                      <Image
-                        preload={true}
-                        alt=""
-                        src="/images/home/moebius-home-4.png"
-                        width={528}
-                        height={528}
-                        className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
-                    </div>
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-4.png"
+                      preload={true}
+                      delay={0.1}
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
+                    />
                   </div>
                   <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
-                    <div className="relative">
-                      <Image
-                        preload={true}
-                        alt=""
-                        src="/images/home/moebius-home-5.png"
-                        width={528}
-                        height={528}
-                        className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
-                    </div>
-                    <div className="relative">
-                      <Image
-                        preload={true}
-                        alt=""
-                        src="/images/home/moebius-home-3.png"
-                        width={528}
-                        height={528}
-                        className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
-                    </div>
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-5.png"
+                      preload={true}
+                      delay={0.2}
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
+                    />
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-3.png"
+                      preload={true}
+                      delay={0.3}
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
+                    />
                   </div>
                   <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src="/images/home/moebius-home-6.png"
-                        width={528}
-                        height={528}
-                        className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
-                    </div>
-                    <div className="relative">
-                      <Image
-                        alt=""
-                        src="/images/home/moebius-home-2.png"
-                        width={528}
-                        height={528}
-                        className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
-                      />
-                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" />
-                    </div>
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-6.png"
+                      delay={0.4}
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
+                    />
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-2.png"
+                      delay={0.5}
+                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-xl"
+                    />
                   </div>
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  <video autoPlay muted className="w-full">
-                    {Math.random() < 0.5 ? (
-                      <source src="/videos/moebius-home.mp4" type="video/mp4" />
-                    ) : (
-                      <source src="/videos/moebius-home-2.mp4" type="video/mp4" />
-                    )}
-                  </video>
+                  <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
                   <div className="mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4" /></Link>
                   </div>
