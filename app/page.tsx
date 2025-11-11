@@ -54,8 +54,7 @@ export default function Home() {
                     Full Stack Software Engineer
                   </h2>
                   <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8 lg:max-w-none dark:text-gray-400">
-                    I'm a full stack developer with an eye for design. I'm passionate about creating
-                    beautiful and functional websites that provide a great user experience.
+                    I've spent the last 8+ years building web apps that don't just work—they feel good to use. React, Next.js, TypeScript, and a healthy obsession with clean code, a11y and performance.
                   </p>
                   <p className="hidden lg:block mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4 transition-transform duration-2000 group-hover:translate-x-100" /></Link>

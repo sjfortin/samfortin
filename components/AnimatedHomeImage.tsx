@@ -47,7 +47,6 @@ export default function AnimatedHomeImage({
                 height={height}
                 className={className}
             />
-            {/* <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-gray-900/10 dark:ring-white/10" /> */}
         </motion.div>
     );
 }
