@@ -39,13 +39,12 @@ export default function Home() {
                   <AnimatedHomeImage
                     src="/images/moebius-sam.png"
                     preload={true}
-                    delay={0.1}
                     width={140}
                     height={140}
                     className="aspect-[1/1] bg-gray-900/5 object-cover shadow-lg rounded-full mb-4"
                     initialY={0}
                     animateY={0}
-                    duration={1.6}
+                    duration={0.6}
                   />
                   <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
                     Sam Fortin

@@ -35,7 +35,7 @@ export default function About() {
               About Me
             </h1>
             <p className="mt-8 text-gray-900 dark:text-white sm:text-xl/8">
-              Hey there! I'm a Software Engineer who's been building web apps for 8+ years. I love working with React, Next.js, and TypeScript, and I've also spent plenty of time on the backend with Node.js and PHP. I'm all about writing clean code, making things fast, creating great looking websites, and ensuring everything is secure and accessible.
+              I'm a Software Engineer who has been building on the web for 8+ years. I love working with React, Next.js, and TypeScript. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
             </p>
           </div>
 
