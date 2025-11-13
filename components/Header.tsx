@@ -6,12 +6,19 @@ import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 
 const navigation = [
   { name: 'Home', href: '/' },
-  // { name: 'About', href: '/about' },
+  { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
-  // { name: 'Contact', href: '/contact' },
+  { name: 'Contact', href: '/contact' },
   { name: 'Blog', href: '/blog' },
 ]
 
@@ -57,8 +64,23 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
           <ThemeSwitcher />
+          <SignedOut>
+            <SignInButton>
+              <button className="cursor-pointer">
+                Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton>
+              <button className="cursor-pointer">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -103,6 +125,21 @@ export default function Header() {
                     {item.name}
                   </Link>
                 ))}
+                <SignedOut>
+                  <SignInButton>
+                    <button className="cursor-pointer block">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <button className="cursor-pointer block">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
               </div>
               <div className="py-6 flex justify-center">
                 <ThemeSwitcher />
