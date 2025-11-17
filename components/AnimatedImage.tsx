@@ -4,13 +4,13 @@ import { motion } from "motion/react";
 import Link from 'next/link';
 import Image from 'next/image';
 
-interface AnimatedBlogImageProps {
+interface AnimatedImageProps {
   coverImage: string;
-  slug: string;
+  slug?: string;
   title: string;
 }
 
-export default function AnimatedBlogImage({ coverImage, slug, title }: AnimatedBlogImageProps) {
+export default function AnimatedImage({ coverImage, slug, title }: AnimatedImageProps) {
   return (
     <motion.div
       className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg"
@@ -18,14 +18,23 @@ export default function AnimatedBlogImage({ coverImage, slug, title }: AnimatedB
       animate={{ opacity: 1 }}
       transition={{ delay: 0.1, duration: 0.25 }}
     >
-      <Link href={`/blog/${slug}`}>
+      {slug ? (
+        <Link href={`/blog/${slug}`}>
+          <Image
+            src={coverImage}
+            alt={title}
+            fill
+            className="object-cover"
+          />
+        </Link>
+      ) : (
         <Image
           src={coverImage}
           alt={title}
           fill
           className="object-cover"
         />
-      </Link>
+      )}
     </motion.div>
   );
 }

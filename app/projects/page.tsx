@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import AnimatedImage from "@/components/AnimatedImage";
 
 interface Project {
   name: string;
@@ -77,50 +77,44 @@ export default function Projects() {
             </p>
           </div>
 
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {projects.map((project) => (
               <article
                 key={project.name}
-                className="flex flex-col items-start rounded-2xl border border-gray-200 p-8 dark:border-gray-800"
+                className="flex max-w-xl flex-col items-start"
               >
-                <div className="flex-1">
-                  {project.image && (
-                    <Image
-                      src={project.image}
-                      alt={project.name}
-                      width={500}
-                      height={500}
-                      className="mb-4 rounded-lg object-cover"
-                    />
-                  )}
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {project.name}
+                {project.image && (
+                  <AnimatedImage
+                    coverImage={project.image}
+                    title={project.name}
+                  />
+                )}
+                <div className="group relative">
+                  <h3 className="mt-3 text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
+                    <a href={project.link}>
+                      <span className="absolute inset-0" />
+                      {project.name}
+                    </a>
                   </h3>
-                  <p className="mt-4 text-base/7 text-gray-600 dark:text-gray-300">
+                  <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600 dark:text-gray-400">
                     {project.description}
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-900 dark:text-gray-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-                <a
-                  href={project.link}
-                  className="mt-6 text-sm font-semibold text-gray-600 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
-                >
-                  View project <span aria-hidden="true">→</span>
-                </a>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </article>
             ))}
           </div>
         </div>
-      </div>
+      </div >
       <Footer />
     </>
   );

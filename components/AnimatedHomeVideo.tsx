@@ -4,12 +4,12 @@ import { motion } from "motion/react";
 
 interface AnimatedHomeVideoProps {
     src: string;
-    type?: string;
+    poster?: string;
 }
 
 export default function AnimatedHomeVideo({
     src,
-    type = "video/mp4"
+    poster = ""
 }: AnimatedHomeVideoProps) {
     return (
         <motion.video
@@ -17,15 +17,15 @@ export default function AnimatedHomeVideo({
             loop
             muted
             playsInline
-            className="w-full"
+            className="w-full h-full object-cover rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
                 duration: 1.6,
                 ease: "easeOut"
             }}
-        >
-            <source src={src} type={type} />
-        </motion.video>
+            poster={poster}
+            src={src}
+        />
     );
 }
