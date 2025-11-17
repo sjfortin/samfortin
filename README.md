@@ -35,7 +35,6 @@ samfortin/
 │   ├── blog/                 # Blog index and dynamic routes
 │   │   ├── page.tsx          # Blog listing page
 │   │   └── [slug]/           # Individual blog posts
-│   ├── contact/              # Contact page
 │   └── lib/                  # App-level utilities
 ├── components/
 │   ├── Header.tsx            # Navigation with mobile menu
@@ -79,7 +78,6 @@ samfortin/
 - **Home** - Animated hero section with Moebius-inspired imagery
 - **About** - Work experience and professional background
 - **Blog** - MDX-powered blog with cover images
-- **Contact** - Contact information and social links
 - **Projects** - Portfolio projects (route configured)
 
 ## 🛠️ Getting Started
@@ -188,8 +186,3 @@ Vercel provides automatic deployments from Git with zero configuration for Next.
 
 This is a personal website. Feel free to use as inspiration, but please don't copy directly.
 
-## 📧 Contact
-
-- **Email**: sam.j.fortin@gmail.com
-- **X/Twitter**: [@sjfortin](https://x.com/sjfortin)
-- **GitHub**: [sjfortin](https://github.com/sjfortin)
