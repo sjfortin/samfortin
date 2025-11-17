@@ -8,12 +8,13 @@ interface AnimatedImageProps {
   coverImage: string;
   slug?: string;
   title: string;
+  imageClassName?: string;
 }
 
-export default function AnimatedImage({ coverImage, slug, title }: AnimatedImageProps) {
+export default function AnimatedImage({ coverImage, slug, title, imageClassName = "object-cover" }: AnimatedImageProps) {
   return (
     <motion.div
-      className="relative w-full aspect-video mb-4 overflow-hidden rounded-lg"
+      className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-100"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.1, duration: 0.25 }}
@@ -24,7 +25,7 @@ export default function AnimatedImage({ coverImage, slug, title }: AnimatedImage
             src={coverImage}
             alt={title}
             fill
-            className="object-cover"
+            className={imageClassName}
           />
         </Link>
       ) : (
@@ -32,7 +33,7 @@ export default function AnimatedImage({ coverImage, slug, title }: AnimatedImage
           src={coverImage}
           alt={title}
           fill
-          className="object-cover"
+          className={imageClassName}
         />
       )}
     </motion.div>
