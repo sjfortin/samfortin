@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getAllPosts } from '@/lib/blog';
-import AnimatedBlogImage from '@/components/AnimatedBlogImage';
+import AnimatedImage from '@/components/AnimatedImage';
 
 export default function Blog() {
   const posts = getAllPosts();
@@ -30,7 +30,7 @@ export default function Blog() {
               posts.map((post) => (
                 <article key={post.slug} className="flex max-w-xl flex-col items-start">
                   {post.coverImage && (
-                    <AnimatedBlogImage 
+                    <AnimatedImage 
                       coverImage={post.coverImage}
                       slug={post.slug}
                       title={post.title}
