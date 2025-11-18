@@ -45,13 +45,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
         <nav aria-label="Footer" className="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm/6">
           {navigation.main.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="mt-16 flex justify-center gap-x-10">
