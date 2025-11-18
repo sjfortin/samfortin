@@ -49,11 +49,11 @@ export default function Home() {
                   <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
                     Sam Fortin
                   </h1>
-                  <h2 className="text-pretty text-3xl font-semibold tracking-tight text-gray-500 sm:text-3xl dark:text-white">
+                  <h2 className="text-pretty text-xl font-semibold tracking-tight text-gray-500 sm:text-3xl dark:text-white">
                     Full Stack Software Engineer
                   </h2>
                   <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8 lg:max-w-none dark:text-gray-400">
-                    I've spent the last 8+ years building web apps that don't just work—they feel good to use. React, Next.js, TypeScript, and a healthy obsession with clean code, a11y and performance.
+                    I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
                   </p>
                   <p className="hidden lg:block mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">The inspiration of Moebius <ArrowRightIcon className="w-4 h-4 transition-transform duration-2000 group-hover:translate-x-100" /></Link>

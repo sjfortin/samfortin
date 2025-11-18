@@ -17,11 +17,11 @@ export default function Blog() {
               Blog
             </h1>
             <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
-              Thoughts, tutorials, and insights on web development, design, and technology.
+              Thoughts, tutorials, and insights on web dev, design, tech and more.
             </p>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {posts.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-400">
                 No blog posts yet. Create your first post in the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">content/blog</code> directory!
@@ -30,13 +30,13 @@ export default function Blog() {
               posts.map((post) => (
                 <article key={post.slug} className="flex max-w-xl flex-col items-start">
                   {post.coverImage && (
-                    <AnimatedImage 
+                    <AnimatedImage
                       coverImage={post.coverImage}
                       slug={post.slug}
                       title={post.title}
                     />
                   )}
-                  <div className="flex items-center gap-x-4 text-xs">
+                  <div className="mt-4 flex flex-row items-center gap-y-2 gap-x-4 text-xs">
                     <time dateTime={post.date} className="text-gray-500 dark:text-gray-400">
                       {new Date(post.date).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -44,7 +44,7 @@ export default function Blog() {
                         day: 'numeric',
                       })}
                     </time>
-                    <span className="relative z-10 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1.5 font-medium text-gray-600 dark:text-gray-300">
+                    <span className="relative z-10 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1 text-xs text-gray-600 dark:text-gray-300 max-w-fit">
                       {post.category}
                     </span>
                   </div>
@@ -55,11 +55,11 @@ export default function Blog() {
                         {post.title}
                       </Link>
                     </h3>
-                    <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600 dark:text-gray-400">
+                    <p className="my-4 text-sm/6 text-gray-600 dark:text-gray-300">
                       {post.description}
                     </p>
                   </div>
-                  <div className="relative mt-8 flex items-center gap-x-4">
+                  <div className="relative flex items-center gap-x-4">
                     <div className="size-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                       <Image
                         src="/images/moebius-sam.png"

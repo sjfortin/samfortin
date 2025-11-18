@@ -24,6 +24,11 @@ export default function About() {
       title: "Web Developer",
       date: "November 2017 — November 2018",
     },
+    {
+      company: "metroConnections",
+      title: "Technology Solutions Designer",
+      date: "November 2013 — November 2017",
+    },
   ]
   return (
     <>
@@ -35,7 +40,7 @@ export default function About() {
               About Me
             </h1>
             <p className="mt-8 text-gray-900 dark:text-white sm:text-xl/8">
-              I'm a Software Engineer who has been building on the web for 8+ years. I love working with React, Next.js, and TypeScript. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
+              I'm a Software Engineer who has been building on the web for 8+ years. I love working with JavaScript, TypeScript and React. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
             </p>
           </div>
 

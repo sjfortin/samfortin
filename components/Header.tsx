@@ -67,15 +67,10 @@ export default function Header() {
           <ThemeSwitcher />
           <SignedOut>
             <SignInButton>
-              <button className="cursor-pointer">
+              <button className="cursor-pointer text-sm px-2 py-0.5 rounded border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white">
                 Sign In
               </button>
             </SignInButton>
-            <SignUpButton>
-              <button className="cursor-pointer">
-                Sign Up
-              </button>
-            </SignUpButton>
           </SignedOut>
           <SignedIn>
             <UserButton />
@@ -125,16 +120,13 @@ export default function Header() {
                   </Link>
                 ))}
                 <SignedOut>
-                  <SignInButton>
-                    <button className="cursor-pointer block">
-                      Sign In
-                    </button>
-                  </SignInButton>
-                  <SignUpButton>
-                    <button className="cursor-pointer block">
-                      Sign Up
-                    </button>
-                  </SignUpButton>
+                  <div className="flex flex-row gap-2 w-full">
+                    <SignInButton>
+                      <button className="cursor-pointer block bg-gray-100 text-gray-900 px-2 py-1 rounded w-full">
+                        Sign In
+                      </button>
+                    </SignInButton>
+                  </div>
                 </SignedOut>
                 <SignedIn>
                   <UserButton />
