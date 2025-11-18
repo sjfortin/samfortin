@@ -27,7 +27,7 @@ export default function About() {
     {
       company: "metroConnections",
       title: "Technology Solutions Designer",
-      date: "November 2013 — November 2017",
+      date: "August 2013 — July 2017",
     },
   ]
   return (
