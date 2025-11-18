@@ -36,6 +36,7 @@ export default function Header() {
               width={100}
               height={24}
               className="h-8 w-auto dark:hidden hover:opacity-80"
+              priority
             />
             <Image
               alt=""
@@ -43,6 +44,7 @@ export default function Header() {
               width={100}
               height={24}
               className="h-8 w-auto hidden dark:block hover:opacity-80"
+              priority
             />
           </Link>
         </div>
@@ -89,6 +91,7 @@ export default function Header() {
                 width={100}
                 height={24}
                 className="h-8 w-auto dark:hidden"
+                priority
               />
               <Image
                 alt=""
@@ -96,6 +99,7 @@ export default function Header() {
                 width={100}
                 height={24}
                 className="h-8 w-auto hidden dark:block"
+                priority
               />
             </Link>
             <button

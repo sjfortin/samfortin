@@ -8,7 +8,7 @@ interface Project {
   name: string;
   description: string;
   technologies: string[];
-  link: string;
+  links: { name: string; url: string }[];
   image?: string;
 }
 
@@ -17,84 +17,110 @@ const projects: Project[] = [
     name: 'Estee Lauder Companies',
     description: 'Launced a React/Typescript microfrontend application for Estee Lauder Companies that launched on brands such as Clinique and MAC Cosmetics.',
     technologies: ['React', 'TypeScript', 'Mobx', 'Elixir', 'Perl'],
-    link: 'https://www.elcompanies.com/en/our-brands',
+    links: [
+      { name: 'Estee Lauder Companies', url: 'https://www.elcompanies.com/en/our-brands' },
+      { name: 'Clinique', url: 'https://www.clinique.com/smartrewards' },
+      { name: 'MAC Cosmetics', url: 'https://www.maccosmetics.com/mac-lover' },
+    ],
     image: '/images/experience/estee.png',
   },
   {
     name: 'TC Farm',
     description: 'Custom React/Next.js application built with BigCommerce as the ecommerce platform to power the ordering, payment, and delivery process.',
     technologies: ['React', 'Next.js', 'BigCommerce', 'AWS DynamoDB', 'Stripe', 'AWS Amplify', 'Tanstack Query', 'Tailwind CSS', 'Zustand'],
-    link: 'https://tc.farm/',
+    links: [
+      { name: 'TC Farm', url: 'https://tc.farm/' },
+    ],
     image: '/images/experience/tcfarm.png',
   },
   {
     name: 'Darn Tough Socks',
     description: 'Shopify re-theme and development. PIM integration.',
     technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML'],
-    link: 'https://darntough.com/',
+    links: [
+      { name: 'Darn Tough Socks', url: 'https://darntough.com/' },
+    ],
     image: '/images/experience/darntough.png',
   },
   {
     name: 'GED.com',
     description: 'Wordpress multi-site development.',
     technologies: ['Wordpress', 'JavaScript', 'CSS', 'HTML'],
-    link: 'https://2dsemiconductors.com/',
+    links: [
+      { name: 'GED.com', url: 'https://ged.com/' },
+    ],
     image: '/images/experience/ged.svg',
   },
   {
     name: '2DSemiConductors',
     description: 'Periodic table of elements React product search widget for 2DSemiConductors.',
     technologies: ['React', 'Laravel', 'BigCommerce'],
-    link: 'https://2dsemiconductors.com/',
+    links: [
+      { name: '2DSemiConductors', url: 'https://2dsemiconductors.com/' },
+    ],
     image: '/images/experience/2dsemi.png',
   },
   {
     name: 'WindowParts.com',
     description: 'Ecommerce platform migration from Volusion to Shopify with full ecommerce site build. Built an ETL pipeline to migrate data from Volusion to Shopify in Node.js.',
     technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Node.js'],
-    link: 'https://windowparts.com/',
+    links: [
+      { name: 'WindowParts.com', url: 'https://windowparts.com/' },
+    ],
     image: '/images/experience/windowparts.png',
   },
   {
     name: 'Irish Titan',
     description: 'Marketing website for Irish Titan built with React and Gatsby.',
     technologies: ['React', 'Gatsby', 'Stripe', 'AWS Amplify'],
-    link: 'https://irishtitan.com/',
+    links: [
+      { name: 'Irish Titan', url: 'https://irishtitan.com/' },
+    ],
     image: '/images/experience/irishtitan.png',
   },
   {
     name: 'Tradehome Shoes',
     description: 'Ecommerce website for Tradehome Shoes built with Shopify.',
     technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid'],
-    link: 'https://tradehome.com/',
+    links: [
+      { name: 'Tradehome Shoes', url: 'https://tradehome.com/' },
+    ],
     image: '/images/experience/tradehome.png',
   },
   {
     name: 'Nordicware',
     description: 'Headless ecommerce website for Nordicware built with BigCommerce and Wordpress.',
     technologies: ['BigCommerce', 'Wordpress', 'JavaScript', 'CSS', 'HTML', 'PHP'],
-    link: 'https://nordicware.com/',
+    links: [
+      { name: 'Nordicware', url: 'https://nordicware.com/' },
+    ],
     image: '/images/experience/nordicware.png',
   },
   {
     name: 'LaCrosse Technology',
     description: 'Ecommerce website for LaCrosse Technology built with Shopify. Custom integration with LaCrosse Technology mobile app product registration.',
     technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Laravel'],
-    link: 'https://lacrossetechnology.com/',
+    links: [
+      { name: 'LaCrosse Technology', url: 'https://lacrossetechnology.com/' },
+    ],
     image: '/images/experience/lacrosse.png',
   },
   {
     name: 'Optum',
     description: 'Software feature development work with the Optum User Experience Design Studio (UXDS).',
     technologies: ['JavaScript', 'AEM', 'Sass and SCSS'],
-    link: 'https://optum.com/',
+    links: [
+      { name: 'Optum', url: 'https://optum.com/' },
+    ],
     image: '/images/experience/optum.svg',
   },
   {
     name: 'OneOme',
     description: 'Pharmacogenomics software development for OneOme.',
     technologies: ['Grav CMS', 'JavaScript', 'CSS', 'HTML', 'Python', 'Flask', 'Braintree Payments'],
-    link: 'https://oneome.com/',
+    links: [
+      { name: 'OneOme', url: 'https://oneome.com/' },
+    ],
     image: '/images/experience/oneome.png',
   },
 ];
@@ -145,13 +171,17 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-                {project.link && (
-                  <div className="flex items-center mt-4 w-full">
-                    <Link target="_blank" rel="noopener noreferrer" href={project.link} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
-                      <ExternalLinkIcon className="h-4 w-4" />
-                      {project.name}
-                    </Link>
-                  </div>
+                {project.links.length > 0 && (
+                  <>
+                    <div className="flex flex-col gap-1 mt-4 w-full">
+                      {project.links.map((link) => (
+                        <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
+                          <ExternalLinkIcon className="h-4 w-4" />
+                          {link.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 )}
               </article>
             ))}

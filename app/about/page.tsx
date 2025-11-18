@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import AnimatedAboutImage from "@/components/AnimatedAboutImage";
 
 export default function About() {
 
@@ -72,7 +72,7 @@ export default function About() {
                 </div>
               </div>
               <div className="w-full md:w-1/3 order-1 md:order-2 mt-4 md:mt-0">
-                <Image
+                <AnimatedAboutImage
                   src="/images/sam.jpg"
                   alt="Sam Fortin"
                   width={800}
