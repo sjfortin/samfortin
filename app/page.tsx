@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
@@ -14,7 +13,7 @@ export default function Home() {
         <div className="relative isolate">
           <svg
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-100 dark:stroke-gray-900 [mask-image:radial-gradient(80vw_80vw_at_center,white,transparent)]"
+            className="absolute inset-x-0 top-0 -z-10 h-[32rem] lg:h-[64rem] w-full stroke-gray-100 dark:stroke-gray-900 [mask-image:radial-gradient(80vw_80vw_at_center,white,transparent)]"
           >
             <defs>
               <pattern
