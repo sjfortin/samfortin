@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedAboutImage from "@/components/AnimatedAboutImage";
+import FlyingAirplane from "@/components/FlyingAirplane";
 
 export default function About() {
 
@@ -40,6 +41,7 @@ export default function About() {
   return (
     <>
       <Header />
+      <FlyingAirplane />
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
