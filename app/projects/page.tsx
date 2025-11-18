@@ -10,6 +10,7 @@ interface Project {
   technologies: string[];
   links: { name: string; url: string }[];
   image?: string;
+  video?: string;
 }
 
 const projects: Project[] = [
@@ -68,6 +69,13 @@ const projects: Project[] = [
       { name: 'WindowParts.com', url: 'https://windowparts.com/' },
     ],
     image: '/images/experience/windowparts.png',
+  },
+  {
+    name: 'Random Whiteboarding Video',
+    description: 'Random Whiteboarding Video.',
+    technologies: [],
+    links: [],
+    video: '/videos/whiteboarding.mp4',
   },
   {
     name: 'Irish Titan',
@@ -146,43 +154,59 @@ export default function Projects() {
                 key={project.name}
                 className="flex max-w-xl flex-col items-start"
               >
-                {project.image && (
-                  <AnimatedImage
-                    coverImage={project.image}
-                    title={project.name}
-                    imageClassName="object-contain p-4"
-                  />
+                {project.video && (
+                  <div className="rounded-lg overflow-hidden aspect-ratio-9/16">
+                    <video
+                      src={project.video}
+                      className="object-contain"
+                      autoPlay
+                      muted
+                      loop
+                      preload="true"
+                    />
+                  </div>
                 )}
-                <div className="group relative my-4">
-                  <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
-                    {project.name}
-                  </h3>
-                  <p className="text-sm/6 text-gray-600 dark:text-gray-300 mt-2">
-                    {project.description}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {project.links.length > 0 && (
+
+                {!project.video && (
                   <>
-                    <div className="flex flex-col gap-1 mt-4 w-full">
-                      {project.links.map((link) => (
-                        <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
-                          <ExternalLinkIcon className="h-4 w-4" />
-                          {link.name}
-                        </Link>
+                    {project.image && (
+                      <AnimatedImage
+                        coverImage={project.image}
+                        title={project.name}
+                        imageClassName="object-contain p-4"
+                      />
+                    )}
+                    <div className="group relative my-4">
+                      <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
+                        {project.name}
+                      </h3>
+                      <p className="text-sm/6 text-gray-600 dark:text-gray-300 mt-2">
+                        {project.description}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                        >
+                          {tech}
+                        </span>
                       ))}
                     </div>
+                    {project.links.length > 0 && (
+                      <div className="flex flex-col gap-1 mt-4 w-full">
+                        {project.links.map((link) => (
+                          <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
+                            <ExternalLinkIcon className="h-4 w-4" />
+                            {link.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </>
                 )}
+
               </article>
             ))}
           </div>
