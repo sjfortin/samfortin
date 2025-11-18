@@ -11,7 +11,7 @@ const navigation = {
   social: [
     {
       name: 'GitHub',
-      href: 'https://github.com/samfortin',
+      href: 'https://github.com/sjfortin',
       icon: (props: React.SVGProps<SVGSVGElement>) => (
         <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
           <path
