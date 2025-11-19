@@ -70,6 +70,8 @@ export async function POST(request: Request) {
 
     // Search for tracks and get their URIs
     const trackUris: string[] = [];
+    const notFoundTracks: Track[] = [];
+    
     for (const track of tracks) {
       const searchQuery = encodeURIComponent(`track:${track.name} artist:${track.artist}`);
       const searchResponse = await fetchSpotifyWithRefresh(
@@ -80,7 +82,11 @@ export async function POST(request: Request) {
         const searchData = await searchResponse.json();
         if (searchData.tracks?.items?.[0]?.uri) {
           trackUris.push(searchData.tracks.items[0].uri);
+        } else {
+          notFoundTracks.push(track);
         }
+      } else {
+        notFoundTracks.push(track);
       }
     }
 
@@ -102,6 +108,7 @@ export async function POST(request: Request) {
       playlistId,
       playlistUrl: playlistData.external_urls?.spotify,
       tracksAdded: trackUris.length,
+      tracksNotFound: notFoundTracks,
     });
   } catch (error) {
     console.error("Error creating Spotify playlist:", error);

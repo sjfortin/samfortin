@@ -24,6 +24,8 @@ export default function PlaylistGenerator() {
   const [creatingPlaylist, setCreatingPlaylist] = useState(false);
   const [spotifyConnected, setSpotifyConnected] = useState(false);
   const [checkingConnection, setCheckingConnection] = useState(true);
+  const [notFoundTracks, setNotFoundTracks] = useState<Track[]>([]);
+  const [playlistCreated, setPlaylistCreated] = useState(false);
 
   useEffect(() => {
     checkSpotifyConnection();
@@ -47,6 +49,8 @@ export default function PlaylistGenerator() {
     setLoading(true);
     setError('');
     setGeneratedPlaylist(null);
+    setNotFoundTracks([]);
+    setPlaylistCreated(false);
 
     try {
       const response = await fetch('/api/generate-playlist', {
@@ -75,6 +79,8 @@ export default function PlaylistGenerator() {
 
     setCreatingPlaylist(true);
     setError('');
+    setNotFoundTracks([]);
+    setPlaylistCreated(false);
 
     try {
       const response = await fetch('/api/create-spotify-playlist', {
@@ -90,6 +96,13 @@ export default function PlaylistGenerator() {
       }
 
       const data = await response.json();
+
+      // Track which songs weren't found
+      if (data.tracksNotFound && data.tracksNotFound.length > 0) {
+        setNotFoundTracks(data.tracksNotFound);
+      }
+
+      setPlaylistCreated(true);
 
       // Open the playlist in Spotify
       if (data.playlistUrl) {
@@ -201,16 +214,21 @@ export default function PlaylistGenerator() {
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-4">
             <button
               onClick={handleCreateSpotifyPlaylist}
-              disabled={creatingPlaylist || !spotifyConnected}
+              disabled={creatingPlaylist || !spotifyConnected || playlistCreated}
               className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {creatingPlaylist ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Creating Playlist...
+                </>
+              ) : playlistCreated ? (
+                <>
+                  <Music className="h-4 w-4" />
+                  Playlist Created!
                 </>
               ) : (
                 <>
@@ -223,6 +241,24 @@ export default function PlaylistGenerator() {
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 Connect your Spotify account above to create playlists
               </p>
+            )}
+            
+            {notFoundTracks.length > 0 && (
+              <div className="rounded-lg border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 p-4">
+                <h4 className="text-sm font-semibold text-yellow-900 dark:text-yellow-200 mb-2">
+                  {notFoundTracks.length} {notFoundTracks.length === 1 ? 'track' : 'tracks'} not found on Spotify
+                </h4>
+                <p className="text-xs text-yellow-800 dark:text-yellow-300 mb-3">
+                  The following tracks could not be found and were not added to your playlist:
+                </p>
+                <div className="space-y-1">
+                  {notFoundTracks.map((track, index) => (
+                    <p key={index} className="text-xs text-yellow-800 dark:text-yellow-300">
+                      • {track.name} - {track.artist}
+                    </p>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </div>
