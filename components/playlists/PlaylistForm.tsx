@@ -29,7 +29,7 @@ export default function PlaylistForm({
           id="prompt"
           rows={4}
           className="block w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-white px-4 py-3 text-black placeholder-gray-500 focus:border-gray-900 dark:focus:border-white focus:outline-none focus:ring-1 focus:ring-gray-900 dark:focus:ring-white"
-          placeholder="e.g., Upbeat indie rock songs perfect for a road trip, or relaxing jazz for a cozy evening..."
+          placeholder="e.g., A chill playlist with head nodding beats for a drive along the southern coast of Iceland..."
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           disabled={loading}

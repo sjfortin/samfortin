@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { ClerkProvider } from '@clerk/nextjs'
 import { Analytics } from "@vercel/analytics/next"
+import QueryProvider from "@/components/providers/QueryProvider"
 
 const firaCode = Fira_Code({
   variable: "--font-fira-code",
@@ -32,7 +33,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClerkProvider>
-            {children}
+            <QueryProvider>
+              {children}
+            </QueryProvider>
           </ClerkProvider>
         </ThemeProvider>
         <Analytics />
