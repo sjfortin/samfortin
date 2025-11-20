@@ -9,17 +9,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Customize built-in components
     h1: ({ children }) => (
-      <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white mt-8 mb-4">
+      <h1 className="text-4xl font-bold tracking-tight text-black dark:text-white mt-8 mb-4">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-white mt-8 mb-4">
+      <h2 className="text-3xl font-semibold tracking-tight text-black dark:text-white mt-8 mb-4">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white mt-6 mb-3">
+      <h3 className="text-2xl font-semibold tracking-tight text-black dark:text-white mt-6 mb-3">
         {children}
       </h3>
     ),
@@ -50,7 +50,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <li className="ml-4">{children}</li>
     ),
     code: ({ children }) => (
-      <code className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono text-gray-900 dark:text-gray-100">
+      <code className="bg-gray-100 dark:bg-gray-800 rounded px-1.5 py-0.5 text-sm font-mono text-black dark:text-white">
         {children}
       </code>
     ),

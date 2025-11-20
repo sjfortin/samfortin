@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
 import AnimatedHomeVideo from "@/components/AnimatedHomeVideo";
+import { Subheading } from "@/components/ui/Subheading";
+import { Heading } from "@/components/ui/Heading";
 
 export default function Home() {
   return (
@@ -40,31 +42,31 @@ export default function Home() {
                     preload={true}
                     width={140}
                     height={140}
-                    className="aspect-[1/1] bg-gray-900/5 object-cover shadow-lg rounded-full mb-4"
+                    className="aspect-[1/1] bg-black/5 object-cover shadow-lg rounded-full mb-4"
                     initialY={0}
                     animateY={0}
                     duration={0.6}
                   />
-                  <h1 className="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white">
+                  <Heading>
                     Sam Fortin
-                  </h1>
-                  <h2 className="text-pretty text-xl font-semibold tracking-tight text-gray-500 sm:text-3xl dark:text-white">
+                  </Heading>
+                  <h2 className="text-pretty text-xl font-semibold tracking-tight text-black sm:text-3xl dark:text-white">
                     Full Stack Software Engineer
                   </h2>
-                  <p className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8 lg:max-w-none dark:text-gray-400">
+                  <Subheading>
                     I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
-                  </p>
+                  </Subheading>
                   <p className="hidden lg:block mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">Why all the Moebius? <ArrowRightIcon className="w-4 h-4 transition-transform duration-800 group-hover:translate-x-2" /></Link>
                   </p>
                   {/* Add cta to the /playlists feature */}
-                  <div className="hidden lg:block mt-8 w-full">
+                  <div className="hidden lg:block mt-4 w-full">
                     <Link
                       href="/playlists"
-                      className="group relative flex items-center gap-3 rounded-lg bg-gray-900 dark:bg-white px-6 py-4 transition-all hover:scale-105 active:scale-95 w-full justify-between"
+                      className="group relative flex items-center gap-3 rounded-lg bg-black dark:bg-white px-6 py-4 transition-all hover:scale-105 active:scale-95 w-full justify-between"
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-white dark:text-gray-900">AI Playlist Generator</span>
+                        <span className="text-sm font-semibold text-white dark:text-black">AI Playlist Generator</span>
                         <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
                       </div>
                       <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -78,7 +80,7 @@ export default function Home() {
                       src="/images/home/moebius-home-4.png"
                       preload={true}
                       delay={0.1}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-lg"
+                      className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg rounded-lg"
                     />
                   </div>
                   <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
@@ -86,25 +88,25 @@ export default function Home() {
                       src="/images/home/moebius-home-5.png"
                       preload={true}
                       delay={0.2}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-lg"
+                      className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg rounded-lg"
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-3.png"
                       preload={true}
                       delay={0.3}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-lg"
+                      className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg rounded-lg"
                     />
                   </div>
                   <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-6.png"
                       delay={0.4}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-lg"
+                      className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg rounded-lg"
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-2.png"
                       delay={0.5}
-                      className="aspect-[2/3] w-full bg-gray-900/5 object-cover shadow-lg rounded-lg"
+                      className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg rounded-lg"
                     />
                   </div>
                 </div>
@@ -113,13 +115,13 @@ export default function Home() {
                   <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
                   <div className="mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">Why all the Moebius? <ArrowRightIcon className="w-4 h-4" /></Link>
-                    <div className="mt-8 w-full lg:hidden">
+                    <div className="mt-4 w-full lg:hidden">
                       <Link
                         href="/playlists"
-                        className="group relative flex items-center gap-3 rounded-lg bg-gray-900 dark:bg-white px-6 py-4 w-full justify-between"
+                        className="group relative flex items-center gap-3 rounded-lg bg-black dark:bg-white px-6 py-4 w-full justify-between"
                       >
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-white dark:text-gray-900">AI Playlist Generator</span>
+                          <span className="text-sm font-semibold text-white dark:text-black">AI Playlist Generator</span>
                           <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
                         </div>
                         <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />

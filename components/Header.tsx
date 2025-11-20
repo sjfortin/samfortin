@@ -63,7 +63,7 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <Link key={item.name} href={item.href} className="text-base/7 font-semibold text-gray-900 dark:text-white">
+            <Link key={item.name} href={item.href} className="text-base/7 font-semibold text-black dark:text-white">
               {item.name}
             </Link>
           ))}
@@ -72,7 +72,7 @@ export default function Header() {
           <ThemeSwitcher />
           <SignedOut>
             <SignInButton>
-              <button className="cursor-pointer text-sm px-2 py-0.5 rounded border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white">
+              <button className="cursor-pointer text-sm px-2 py-0.5 rounded border border-gray-200 dark:border-gray-800 text-black dark:text-white">
                 Sign In
               </button>
             </SignInButton>
@@ -126,7 +126,7 @@ export default function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-1 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                    className="-mx-3 block rounded-lg px-3 py-1 text-base/7 font-semibold text-black hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
                   >
                     {item.name}
                   </Link>
@@ -134,7 +134,7 @@ export default function Header() {
                 <SignedOut>
                   <div className="flex flex-row gap-4 w-full">
                     <SignInButton>
-                      <button className="cursor-pointer block bg-gray-100 text-gray-900 px-2 py-1 rounded w-full">
+                      <button className="cursor-pointer block bg-gray-100 text-black px-2 py-1 rounded w-full">
                         Sign In
                       </button>
                     </SignInButton>

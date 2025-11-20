@@ -21,9 +21,9 @@ export default function GeneratedPlaylist({
   notFoundTracks,
 }: GeneratedPlaylistProps) {
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-6">
+    <div className="rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-black p-6 space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-semibold text-black dark:text-white">
           {playlist.name}
         </h2>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
