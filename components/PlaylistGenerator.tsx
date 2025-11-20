@@ -13,6 +13,7 @@ interface PlaylistResponse {
   name: string;
   description: string;
   tracks: Track[];
+  playlistId?: string; // Database ID
 }
 
 export default function PlaylistGenerator() {
@@ -254,7 +255,7 @@ export default function PlaylistGenerator() {
                 <div className="space-y-1">
                   {notFoundTracks.map((track, index) => (
                     <p key={index} className="text-xs text-yellow-800 dark:text-yellow-300">
-                      • {track.name} - {track.artist}
+                      • {track.artist} - {track.name}
                     </p>
                   ))}
                 </div>

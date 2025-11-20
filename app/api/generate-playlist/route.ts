@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -77,6 +78,49 @@ export async function POST(request: Request) {
       playlistData.tracks.length === 0
     ) {
       throw new Error("Invalid playlist structure from AI");
+    }
+
+    // Save playlist to database
+    const { data: playlist, error: playlistError } = await supabaseAdmin
+      .from("playlists")
+      .insert({
+        clerk_user_id: userId,
+        name: playlistData.name,
+        description: playlistData.description,
+        prompt,
+        playlist_length: playlistLength,
+      })
+      .select()
+      .single();
+
+    if (playlistError || !playlist) {
+      console.error("Error saving playlist to database:", playlistError);
+      // Don't fail the request, just log the error
+    }
+
+    // Save tracks to database
+    if (playlist) {
+      const tracksToInsert = playlistData.tracks.map((track: { name: string; artist: string }, index: number) => ({
+        playlist_id: playlist.id,
+        name: track.name,
+        artist: track.artist,
+        position: index,
+        found_on_spotify: true,
+      }));
+
+      const { error: tracksError } = await supabaseAdmin
+        .from("playlist_tracks")
+        .insert(tracksToInsert);
+
+      if (tracksError) {
+        console.error("Error saving tracks to database:", tracksError);
+      }
+
+      // Return playlist data with database ID
+      return NextResponse.json({
+        ...playlistData,
+        playlistId: playlist.id,
+      });
     }
 
     return NextResponse.json(playlistData);

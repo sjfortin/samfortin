@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { fetchSpotifyWithRefresh } from "@/lib/spotify/token-manager";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 interface Track {
   name: string;
@@ -11,6 +12,7 @@ interface PlaylistRequest {
   name: string;
   description: string;
   tracks: Track[];
+  playlistId?: string; // Database playlist ID
 }
 
 export async function POST(request: Request) {
@@ -21,7 +23,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { name, description, tracks }: PlaylistRequest = await request.json();
+    const { name, description, tracks, playlistId: dbPlaylistId }: PlaylistRequest = await request.json();
 
     if (!name || !description || !Array.isArray(tracks) || tracks.length === 0) {
       return NextResponse.json(
@@ -101,6 +103,36 @@ export async function POST(request: Request) {
           }),
         }
       );
+    }
+
+    // Update database with Spotify playlist info
+    if (dbPlaylistId) {
+      const { error: updateError } = await supabaseAdmin
+        .from("playlists")
+        .update({
+          spotify_playlist_id: playlistId,
+          spotify_playlist_url: playlistData.external_urls?.spotify,
+          tracks_added: trackUris.length,
+          tracks_not_found: notFoundTracks,
+        })
+        .eq("id", dbPlaylistId)
+        .eq("clerk_user_id", userId);
+
+      if (updateError) {
+        console.error("Error updating playlist in database:", updateError);
+      }
+
+      // Update tracks that weren't found
+      if (notFoundTracks.length > 0) {
+        for (const notFoundTrack of notFoundTracks) {
+          await supabaseAdmin
+            .from("playlist_tracks")
+            .update({ found_on_spotify: false })
+            .eq("playlist_id", dbPlaylistId)
+            .eq("name", notFoundTrack.name)
+            .eq("artist", notFoundTrack.artist);
+        }
+      }
     }
 
     return NextResponse.json({
