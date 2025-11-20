@@ -1,8 +1,11 @@
+'use client';
+
+import { useState, useMemo } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import Link from 'next/link';
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, X } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
 import { Subheading } from "@/components/ui/Subheading";
 import { Badge } from '@/components/ui/Badge';
@@ -67,7 +70,7 @@ const projects: Project[] = [
   {
     name: 'WindowParts.com',
     description: 'Ecommerce platform migration from Volusion to Shopify with full ecommerce site build. Built an ETL pipeline to migrate data from Volusion to Shopify in Node.js.',
-    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Node.js'],
+    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Node.js', 'Alpine.js'],
     links: [
       { name: 'WindowParts.com', url: 'https://windowparts.com/' },
     ],
@@ -79,6 +82,22 @@ const projects: Project[] = [
     technologies: [],
     links: [],
     video: '/videos/whiteboarding.mp4',
+  },
+  {
+    name: 'CFMoto',
+    description: 'CFMoto is a custom built React/Next.js application built within  that one large database that does not have a great SDK.',
+    technologies: ['React', 'Next.js', 'Tanstack Query', 'Tailwind CSS', 'Redux Toolkit', 'TypeScript'],
+    links: [
+      { name: 'CFMoto', url: 'https://cfmoto.com/' },
+    ],
+  },
+  {
+    name: 'FastSigns',
+    description: 'FastSigns is a custom built React/Next.js application built with OrderCloud backend APIs. Contributed to the development of the Next.js starter at https://github.com/ordercloud-api/headstart-nextjs.',
+    technologies: ['React', 'Next.js', 'Tanstack Query', 'Tailwind CSS', 'Redux Toolkit', 'TypeScript'],
+    links: [
+      { name: 'FastSigns', url: 'https://fastsigns.com/' },
+    ],
   },
   {
     name: 'Irish Titan',
@@ -117,9 +136,18 @@ const projects: Project[] = [
     image: '/images/experience/lacrosse.png',
   },
   {
+    name: 'Liberty Safe',
+    description: 'Ecommerce website for Liberty Safe built with Shopify.',
+    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Alpine.js'],
+    links: [
+      { name: 'Liberty Safe', url: 'https://libertysafe.com/' },
+    ],
+    image: '/images/experience/libertysafe.png',
+  },
+  {
     name: 'Optum',
     description: 'Software feature development work with the Optum User Experience Design Studio (UXDS).',
-    technologies: ['JavaScript', 'AEM', 'Sass and SCSS'],
+    technologies: ['JavaScript', 'AEM', 'CSS', 'HTML', 'SCSS'],
     links: [
       { name: 'Optum', url: 'https://optum.com/' },
     ],
@@ -128,7 +156,7 @@ const projects: Project[] = [
   {
     name: 'OneOme',
     description: 'Pharmacogenomics software development for OneOme.',
-    technologies: ['Grav CMS', 'JavaScript', 'CSS', 'HTML', 'Python', 'Flask', 'Braintree Payments'],
+    technologies: ['Grav CMS', 'JavaScript', 'CSS', 'HTML', 'Python', 'Flask', 'Braintree'],
     links: [
       { name: 'OneOme', url: 'https://oneome.com/' },
     ],
@@ -137,6 +165,37 @@ const projects: Project[] = [
 ];
 
 export default function Projects() {
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+
+  const allTechnologies = useMemo(() => {
+    const techSet = new Set<string>();
+    projects.forEach(project => {
+      project.technologies.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet).sort();
+  }, []);
+
+  const filteredProjects = useMemo(() => {
+    if (selectedTechnologies.length === 0) {
+      return projects;
+    }
+    return projects.filter(project =>
+      selectedTechnologies.some(tech => project.technologies.includes(tech))
+    );
+  }, [selectedTechnologies]);
+
+  const toggleTechnology = (tech: string) => {
+    setSelectedTechnologies(prev =>
+      prev.includes(tech)
+        ? prev.filter(t => t !== tech)
+        : [...prev, tech]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedTechnologies([]);
+  };
+
   return (
     <>
       <Header />
@@ -151,8 +210,44 @@ export default function Projects() {
             </Subheading>
           </div>
 
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-black dark:text-white">
+                Filter by Technology
+              </h3>
+              {selectedTechnologies.length > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
+                >
+                  <X className="h-3 w-3" />
+                  Clear filters
+                </button>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {allTechnologies.map((tech) => (
+                <button
+                  key={tech}
+                  onClick={() => toggleTechnology(tech)}
+                  className={`cursor-pointer relative z-10 inline-flex items-center rounded-xl border px-3 py-1 text-xs transition-colors ${selectedTechnologies.includes(tech)
+                      ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white'
+                      : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-black dark:border-gray-500 dark:text-gray-300 dark:hover:bg-gray-900'
+                    }`}
+                >
+                  {tech}
+                </button>
+              ))}
+            </div>
+            {selectedTechnologies.length > 0 && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Showing {filteredProjects.length} of {projects.length} projects
+              </p>
+            )}
+          </div>
+
           <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <article
                 key={project.name}
                 className="flex max-w-xl flex-col items-start"
@@ -172,12 +267,16 @@ export default function Projects() {
 
                 {!project.video && (
                   <>
-                    {project.image && (
+                    {project.image ? (
                       <AnimatedImage
                         coverImage={project.image}
                         title={project.name}
                         imageClassName="object-contain p-4"
                       />
+                    ) : (
+                      <div className="relative w-full aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-white">
+                        <div className="w-full h-full flex items-center justify-center text-gray-600 dark:text-black font-semibold text-xl uppercase">{project.name}</div>
+                      </div>
                     )}
                     <div className="group relative my-4">
                       <h3 className="text-xl font-semibold text-black group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
@@ -206,7 +305,6 @@ export default function Projects() {
                     )}
                   </>
                 )}
-
               </article>
             ))}
           </div>
