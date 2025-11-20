@@ -48,7 +48,10 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className={`flex lg:hidden ${mobileMenuOpen ? 'hidden' : ''}`}>
+        <div className={`flex lg:hidden gap-4 ${mobileMenuOpen ? 'hidden' : ''}`}>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
@@ -102,21 +105,23 @@ export default function Header() {
                 priority
               />
             </Link>
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200"
-            >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon aria-hidden="true" className="size-6" />
-            </button>
+            <div className="flex items-center gap-4">
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200"
+              >
+                <span className="sr-only">Close menu</span>
+                <XMarkIcon aria-hidden="true" className="size-6" />
+              </button>
+            </div>
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
               <div className="space-y-2 py-6">
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
@@ -127,7 +132,7 @@ export default function Header() {
                   </Link>
                 ))}
                 <SignedOut>
-                  <div className="flex flex-row gap-2 w-full">
+                  <div className="flex flex-row gap-4 w-full">
                     <SignInButton>
                       <button className="cursor-pointer block bg-gray-100 text-gray-900 px-2 py-1 rounded w-full">
                         Sign In

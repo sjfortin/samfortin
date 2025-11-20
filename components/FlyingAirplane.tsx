@@ -11,8 +11,9 @@ export default function FlyingAirplane() {
             animate={{ x: '100vw', opacity: 1, rotate: -5, y: '-50%', scale: 1 }}
             transition={{
                 duration: 4,
-                ease: "linear",
-                opacity: { duration: 0.5 }
+                ease: "easeInOut",
+                opacity: { duration: 0.5 },
+                delay: .5
             }}
         >
             <Image
