@@ -198,8 +198,8 @@ export default function Projects() {
                       <div className="flex flex-col gap-1 mt-4 w-full">
                         {project.links.map((link) => (
                           <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
-                            <ExternalLinkIcon className="h-4 w-4" />
                             {link.name}
+                            <ExternalLinkIcon className="h-4 w-4" />
                           </Link>
                         ))}
                       </div>
