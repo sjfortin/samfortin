@@ -65,7 +65,7 @@ export default async function BlogPost({
           </Link>
           {/* Cover Image */}
           {post.coverImage && (
-            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
+            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-black dark:border-gray-500 dark:border">
               <AnimatedImage
                 coverImage={post.coverImage}
                 slug={slug}
@@ -87,11 +87,11 @@ export default async function BlogPost({
                   day: 'numeric',
                 })}
               </time>
-              <span className="relative z-10 rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1.5 font-medium text-gray-600 dark:text-gray-300">
+              <span className="relative z-10 rounded-xl bg-white border-gray-300 border dark:bg-black dark:border-gray-500 dark:border px-3 py-1.5 font-medium text-gray-600 dark:text-gray-300 max-w-fit">
                 {post.category}
               </span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            <h1 className="text-4xl font-bold tracking-tight text-black dark:text-white sm:text-4xl">
               {post.title}
             </h1>
             {post.description && (

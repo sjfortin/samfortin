@@ -140,7 +140,7 @@ export default function Projects() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
-            <h1 className="text-4xl font-semibold tracking-tight text-gray-900 dark:text-white sm:text-7xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-white sm:text-7xl">
               Projects
             </h1>
             <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
@@ -177,7 +177,7 @@ export default function Projects() {
                       />
                     )}
                     <div className="group relative my-4">
-                      <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
+                      <h3 className="text-xl font-semibold text-black group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
                         {project.name}
                       </h3>
                       <p className="text-sm/6 text-gray-600 dark:text-gray-300 mt-2">
@@ -188,7 +188,7 @@ export default function Projects() {
                       {project.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-300"
+                          className="inline-flex items-center rounded-xl bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-black dark:border-gray-500 dark:border dark:text-gray-300"
                         >
                           {tech}
                         </span>
