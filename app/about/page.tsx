@@ -1,8 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import HoverVideoImage from "@/components/HoverVideoImage";
 import FlyingAirplane from "@/components/FlyingAirplane";
-import AnimatedImage from "@/components/AnimatedImage";
+import { Heading } from "@/components/ui/Heading";
+import { Subheading } from "@/components/ui/Subheading";
 
 export default function About() {
 
@@ -46,14 +46,15 @@ export default function About() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
-            <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-white sm:text-7xl">
+            <Heading>
               About Me
-            </h1>
+            </Heading>
+            <Subheading>
+              I'm a Software Engineer who has been building on the web for 8+ years. I love working with JavaScript, TypeScript and React. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
+            </Subheading>
             <div className="flex flex-col md:flex-row md:gap-4">
               <div className="w-full gap-4">
-                <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
-                  I'm a Software Engineer who has been building on the web for 8+ years. I love working with JavaScript, TypeScript and React. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
-                </p>
+
                 <h2 className="mt-8 text-3xl font-semibold tracking-tight text-black dark:text-white sm:text-4xl">
                   Recent Timeline
                 </h2>

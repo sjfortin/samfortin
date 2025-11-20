@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
 import AnimatedHomeVideo from "@/components/AnimatedHomeVideo";
+import { Subheading } from "@/components/ui/Subheading";
+import { Heading } from "@/components/ui/Heading";
 
 export default function Home() {
   return (
@@ -45,15 +47,15 @@ export default function Home() {
                     animateY={0}
                     duration={0.6}
                   />
-                  <h1 className="text-pretty text-3xl font-semibold tracking-tight text-black sm:text-7xl dark:text-white">
+                  <Heading>
                     Sam Fortin
-                  </h1>
+                  </Heading>
                   <h2 className="text-pretty text-xl font-semibold tracking-tight text-black sm:text-3xl dark:text-white">
                     Full Stack Software Engineer
                   </h2>
-                  <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
+                  <Subheading>
                     I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
-                  </p>
+                  </Subheading>
                   <p className="hidden lg:block mt-4">
                     <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">Why all the Moebius? <ArrowRightIcon className="w-4 h-4 transition-transform duration-800 group-hover:translate-x-2" /></Link>
                   </p>

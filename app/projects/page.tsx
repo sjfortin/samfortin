@@ -3,6 +3,9 @@ import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import Link from 'next/link';
 import { ExternalLinkIcon } from "lucide-react";
+import { Heading } from "@/components/ui/Heading";
+import { Subheading } from "@/components/ui/Subheading";
+import { Badge } from '@/components/ui/Badge';
 
 interface Project {
   name: string;
@@ -140,12 +143,12 @@ export default function Projects() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
-            <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-white sm:text-7xl">
+            <Heading>
               Projects
-            </h1>
-            <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
+            </Heading>
+            <Subheading>
               A selection of professional projects I've contributed to throughout my career.
-            </p>
+            </Subheading>
           </div>
 
           <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
@@ -186,12 +189,9 @@ export default function Projects() {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="inline-flex items-center rounded-xl bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-black dark:border-gray-500 dark:border dark:text-gray-300"
-                        >
+                        <Badge key={tech}>
                           {tech}
-                        </span>
+                        </Badge>
                       ))}
                     </div>
                     {project.links.length > 0 && (

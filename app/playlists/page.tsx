@@ -5,6 +5,8 @@ import PlaylistGenerator from "@/components/playlists/PlaylistGenerator";
 import { SignedOut } from "@clerk/nextjs";
 import { SignedIn } from "@clerk/nextjs";
 import { SignInButton } from "@clerk/nextjs";
+import { Heading } from "@/components/ui/Heading";
+import { Subheading } from "@/components/ui/Subheading";
 
 export default async function PlaylistsPage() {
 
@@ -14,12 +16,12 @@ export default async function PlaylistsPage() {
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
-            <h1 className="text-4xl font-semibold tracking-tight text-black dark:text-white sm:text-7xl">
+            <Heading>
               AI Playlist Generator
-            </h1>
-            <p className="mt-8 text-lg font-medium text-gray-500 dark:text-gray-400 sm:text-xl/8">
+            </Heading>
+            <Subheading>
               Create personalized Spotify playlists powered by AI. Describe the vibe, mood, or theme you're looking for and save it to Spotify!
-            </p>
+            </Subheading>
           </div>
           <div className="mt-8">
             <SignedOut>
