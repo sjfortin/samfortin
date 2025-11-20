@@ -10,3 +10,28 @@ export interface PlaylistResponse {
   tracks: Track[];
   playlistId?: string; // Database ID
 }
+
+export interface PlaylistTrack {
+  id: string;
+  name: string;
+  artist: string;
+  found_on_spotify: boolean;
+  spotify_uri: string | null;
+  position: number;
+}
+
+export interface SavedPlaylist {
+  id: string;
+  clerk_user_id: string;
+  name: string;
+  description: string | null;
+  prompt: string | null;
+  playlist_length: string | null;
+  spotify_playlist_id: string | null;
+  spotify_playlist_url: string | null;
+  tracks_added: number;
+  tracks_not_found: any;
+  created_at: string;
+  updated_at: string;
+  playlist_tracks?: PlaylistTrack[];
+}
