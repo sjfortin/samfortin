@@ -8,7 +8,6 @@ import Image from 'next/image'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import {
   SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -19,6 +18,7 @@ const navigation = [
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
   { name: 'Blog', href: '/blog' },
+  { name: 'Playlists', href: '/playlists' },
 ]
 
 export default function Header() {
