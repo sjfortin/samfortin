@@ -76,7 +76,7 @@ export const projects: Project[] = [
         description: 'CFMoto custom built Create React App admin for part inventory built with NetSuite ERP APIs powerig backend.',
         technologies: ['React', 'TypeScript', 'ChakraUI', 'Tanstack Query', 'Tailwind CSS', 'Redux Toolkit', 'NetSuite'],
         links: [
-            { name: 'CFMoto', url: 'https://cfmoto.com/' },
+            { name: 'CFMoto', url: 'https://www.cfmotousa.com/' },
         ],
         image: '/images/experience/cfmoto.png',
     },
