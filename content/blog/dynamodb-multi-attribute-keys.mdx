@@ -1,0 +1,101 @@
+---
+title: "DynamoDB Update! Multi-Attribute Keys Are Here"
+date: "2025-11-21"
+description: "No more string concatenation hacks. DynamoDB now lets you use multiple attributes as keys, making queries cleaner and data modeling simpler."
+category: "AWS"
+author: "Sam Fortin"
+coverImage: "/images/blog/dynamodb.png"
+---
+
+Previously, if you need to query user data for example using DynamoDB, something like location—country, state, and city, you'd have to mash these together into one ugly string like `"USA#MN#StPaul"` just to make it work as a sort key.
+
+I ran into this once and it was painful. Every time the data changed, I had to rebuild these fake keys. One typo in the concatenation logic and everything broke.
+
+**Good news: [as of November 19, 2025](https://aws.amazon.com/about-aws/whats-new/2025/11/amazon-dynamodb-multi-attribute-composite-keys-global-secondary-indexes/), you don't have to do this anymore.**
+
+## What's New?
+
+DynamoDB now supports **multi-attribute keys** in Global Secondary Indexes (GSIs). Instead of one attribute per key, you can now use up to:
+
+- **4 attributes** for your partition key
+- **4 attributes** for your sort key
+
+That's 8 total attributes you can work with.
+
+## Why This Matters
+
+Let's say you want to query users by location. Here's the difference:
+
+### The Old Way (Painful)
+
+```javascript
+// You had to create this fake field
+const item = {
+  UserId: "user_123",
+  LocationKey: "USA#MN#StPaul", // Manually glued together
+  Country: "USA",
+  State: "MN", 
+  City: "StPaul"
+};
+```
+
+Every time you wrote data, you had to remember to build that `LocationKey` string. Miss it once and your queries break.
+
+### The New Way (Clean)
+
+```javascript
+// Just use your actual data
+const item = {
+  UserId: "user_123",
+  Country: "USA",
+  State: "MN",
+  City: "StPaul"
+};
+```
+
+DynamoDB handles the rest. You tell it which fields to use as keys when you set up your index.
+
+## How to Set It Up
+
+When creating your GSI, you list multiple attributes:
+
+```javascript
+GlobalSecondaryIndexes: [
+  {
+    IndexName: "LocationIndex",
+    KeySchema: [
+      { AttributeName: "UserId", KeyType: "HASH" },
+      { AttributeName: "Country", KeyType: "RANGE" },
+      { AttributeName: "State", KeyType: "RANGE" },
+      { AttributeName: "City", KeyType: "RANGE" }
+    ]
+  }
+]
+```
+
+## Querying Is Flexible
+
+Here's the cool part—you can query at any level:
+
+```javascript
+// Just by country
+KeyConditionExpression: "UserId = :uid AND Country = :country"
+
+// Country + state
+KeyConditionExpression: "UserId = :uid AND Country = :country AND State = :state"
+
+// All three
+KeyConditionExpression: "UserId = :uid AND Country = :country AND State = :state AND City = :city"
+```
+
+You drill down left-to-right. No more `begins_with` hacks on concatenated strings.
+
+## The Bottom Line
+
+- **No more synthetic keys**: Use your real data fields
+- **Flexible queries**: Query at any level of your hierarchy
+- **No extra cost**: Available in all AWS regions at no additional charge
+
+If you're new to DynamoDB or have been avoiding it because of the key limitations, this update makes it much more approachable. And if you're already using it, this might be a good time to clean up those messy concatenation workarounds.
+
+Check out the [DynamoDB docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html) to get started.
