@@ -22,7 +22,7 @@ export const projects: Project[] = [
     {
         name: 'TC Farm',
         description: 'Custom React/Next.js application built with BigCommerce as the ecommerce platform to power the ordering, payment, and delivery process.',
-        technologies: ['React', 'Next.js', 'BigCommerce', 'AWS DynamoDB', 'Stripe', 'AWS Amplify', 'Tanstack Query', 'Tailwind CSS', 'Zustand'],
+        technologies: ['React', 'TypeScript', 'Next.js', 'BigCommerce', 'AWS DynamoDB', 'Stripe', 'AWS Amplify', 'Tanstack Query', 'Tailwind CSS', 'Zustand'],
         links: [
             { name: 'TC Farm', url: 'https://tc.farm/' },
         ],
@@ -49,7 +49,7 @@ export const projects: Project[] = [
     {
         name: '2DSemiConductors',
         description: 'Periodic table of elements React product search widget for 2DSemiConductors.',
-        technologies: ['React', 'Laravel', 'BigCommerce', 'Context API', 'Styled Components'],
+        technologies: ['React', 'Laravel', 'BigCommerce', 'Styled Components'],
         links: [
             { name: '2DSemiConductors', url: 'https://2dsemiconductors.com/' },
         ],

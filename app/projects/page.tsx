@@ -59,15 +59,15 @@ export default function Projects() {
           </div>
 
           <div className="mt-8">
-            <div className="flex-inline mb-4 p-2 border rounded-lg border-gray-200 dark:border-gray-700 w-full">
+            <div className="flex-inline mb-4 border rounded-lg border-gray-200 dark:border-gray-700 w-full">
               <Collapsible className="group">
-                <CollapsibleTrigger className="cursor-pointer text-xs font-semibold text-black dark:text-white flex items-center gap-1 w-full">
+                <CollapsibleTrigger className="cursor-pointer text-xs font-semibold text-black dark:text-white flex items-center gap-1 w-full p-2 ">
                   <PlusIcon className="h-4 w-4 group-data-[state=open]:hidden" />
                   <MinusIcon className="h-4 w-4 group-data-[state=closed]:hidden" />
                   Filter by Technology
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="mt-4">
+                  <div className="p-2">
                     <div className="flex flex-wrap gap-2">
                       {allTechnologies.map((tech) => (
                         <button
