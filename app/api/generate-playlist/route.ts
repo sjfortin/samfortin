@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
-import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
@@ -47,10 +46,10 @@ export async function POST(request: Request) {
     - Include diverse but thematically consistent songs
     - Make the playlist name catchy and relevant
     - Use songs that exist on Spotify
-    - Songs do not need to be popular but should fit within the theme of the playlist
+    - Songs do not need to be popular. The most important aspect is that the songs should fit within the theme of the playlist
     - You are acting as a DJ and mixtape artist and have a vast knowledge of all genres and artists throughout history.
     - The playlist you create will serve as a soundtrack to the user's life and should invoke emotions, nostalgia, and memories.
-    - Write a compelling description
+    - Write a compelling, creative description that has a max of 100 characters
     - Ensure all track names and artists are accurate`;
 
     const result = await genAI.models.generateContent({
@@ -80,50 +79,9 @@ export async function POST(request: Request) {
       throw new Error("Invalid playlist structure from AI");
     }
 
-    // Save playlist to database
-    const { data: playlist, error: playlistError } = await supabaseAdmin
-      .from("playlists")
-      .insert({
-        clerk_user_id: userId,
-        name: playlistData.name,
-        description: playlistData.description,
-        prompt,
-        playlist_length: playlistLength,
-      })
-      .select()
-      .single();
-
-    if (playlistError || !playlist) {
-      console.error("Error saving playlist to database:", playlistError);
-      // Don't fail the request, just log the error
-    }
-
-    // Save tracks to database
-    if (playlist) {
-      const tracksToInsert = playlistData.tracks.map((track: { name: string; artist: string }, index: number) => ({
-        playlist_id: playlist.id,
-        name: track.name,
-        artist: track.artist,
-        position: index,
-        found_on_spotify: true,
-      }));
-
-      const { error: tracksError } = await supabaseAdmin
-        .from("playlist_tracks")
-        .insert(tracksToInsert);
-
-      if (tracksError) {
-        console.error("Error saving tracks to database:", tracksError);
-      }
-
-      // Return playlist data with database ID
-      return NextResponse.json({
-        ...playlistData,
-        playlistId: playlist.id,
-      });
-    }
-
-    return NextResponse.json(playlistData);
+    return NextResponse.json({
+      ...playlistData,
+    });
   } catch (error) {
     console.error("Error generating playlist:", error);
     return NextResponse.json(
