@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import FlyingAirplane from "@/components/FlyingAirplane";
 import { Heading } from "@/components/ui/Heading";
 import { Subheading } from "@/components/ui/Subheading";
@@ -41,7 +39,6 @@ export default function About() {
 
   return (
     <>
-      <Header />
       <FlyingAirplane />
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
@@ -81,7 +78,6 @@ export default function About() {
 
         </div>
       </div>
-      <Footer />
     </>
   );
 }

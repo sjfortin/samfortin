@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
@@ -10,7 +8,6 @@ import { Heading } from "@/components/ui/Heading";
 export default function Home() {
   return (
     <>
-      <Header />
       <main>
         <div className="relative isolate">
           <svg
@@ -66,7 +63,7 @@ export default function Home() {
                       className="group relative flex items-center gap-3 rounded-lg bg-black dark:bg-white px-6 py-4 transition-all hover:scale-105 active:scale-95 w-full justify-between"
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-white dark:text-black">AI Playlist Generator</span>
+                        <span className="text-sm font-semibold text-white dark:text-black">AI Playlists</span>
                         <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
                       </div>
                       <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -121,7 +118,7 @@ export default function Home() {
                         className="group relative flex items-center gap-3 rounded-lg bg-black dark:bg-white px-6 py-4 w-full justify-between"
                       >
                         <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-white dark:text-black">AI Playlist Generator</span>
+                          <span className="text-sm font-semibold text-white dark:text-black">AI Playlists</span>
                           <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
                         </div>
                         <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
@@ -134,7 +131,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

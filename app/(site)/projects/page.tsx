@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { X, PlusIcon, MinusIcon } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
@@ -44,7 +42,6 @@ export default function Projects() {
 
   return (
     <>
-      <Header />
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
@@ -109,7 +106,6 @@ export default function Projects() {
           </div>
         </div>
       </div >
-      <Footer />
     </>
   );
 }
