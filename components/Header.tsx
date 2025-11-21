@@ -18,7 +18,7 @@ const navigation = [
   { name: 'About', href: '/about' },
   { name: 'Projects', href: '/projects' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Playlists', href: '/playlists' },
+  { name: 'AI Playlists', href: '/playlists' },
 ]
 
 export default function Header() {

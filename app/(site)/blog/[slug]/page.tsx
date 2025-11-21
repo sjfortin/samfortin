@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getAllPostSlugs, getPostBySlug } from '@/lib/blog';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import AnimatedImage from '@/components/AnimatedImage';
@@ -57,7 +55,6 @@ export default async function BlogPost({
 
   return (
     <>
-      <Header />
       <div className="min-h-screen">
         <article className="mx-auto max-w-3xl px-6 py-24 sm:py-32 lg:px-8">
           <Link href="/blog" className="flex items-center gap-x-2 mb-8 text-gray-500 dark:text-gray-400 text-xs hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
@@ -123,7 +120,6 @@ export default async function BlogPost({
           </div>
         </article>
       </div>
-      <Footer />
     </>
   );
 }
