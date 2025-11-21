@@ -1,36 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { PlaylistResponse, Track, SavedPlaylist } from './types';
+import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { PlaylistResponse } from './types';
 import PlaylistForm from './PlaylistForm';
-import GeneratedPlaylist from './GeneratedPlaylist';
-import CreatedPlaylists from './CreatedPlaylists';
-import { UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
-import { Home, Plus, Disc, Music4 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import PlaylistSidebar from './PlaylistSidebar';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function PlaylistGenerator() {
   const [prompt, setPrompt] = useState('');
   const [playlistLength, setPlaylistLength] = useState('1');
-  const [notFoundTracks, setNotFoundTracks] = useState<Track[]>([]);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const queryClient = useQueryClient();
-
-  const { data: playlistsData, isLoading: isLoadingPlaylists } = useQuery({
-    queryKey: ['playlists'],
-    queryFn: async () => {
-      const response = await fetch('/api/playlists');
-      if (!response.ok) {
-        throw new Error('Failed to fetch playlists');
-      }
-      return response.json() as Promise<{ playlists: SavedPlaylist[] }>;
-    },
-  });
+  const router = useRouter();
 
   const generatePlaylistMutation = useMutation({
     mutationFn: async ({ prompt, playlistLength }: { prompt: string; playlistLength: string }) => {
-      const response = await fetch('/api/generate-playlist', {
+      // Step 1: Generate the playlist
+      const generateResponse = await fetch('/api/generate-playlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,41 +26,39 @@ export default function PlaylistGenerator() {
         body: JSON.stringify({ prompt, playlistLength }),
       });
 
-      if (!response.ok) {
+      if (!generateResponse.ok) {
         throw new Error('Failed to generate playlist');
       }
 
-      return response.json() as Promise<PlaylistResponse>;
-    },
-    onSuccess: () => {
-      setNotFoundTracks([]);
-    },
-  });
+      const playlistData = await generateResponse.json() as PlaylistResponse;
 
-  const createSpotifyPlaylistMutation = useMutation({
-    mutationFn: async (playlist: PlaylistResponse) => {
-      const response = await fetch('/api/create-spotify-playlist', {
+      // Step 2: Save the playlist to the database
+      const saveResponse = await fetch('/api/playlists', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(playlist),
+        body: JSON.stringify({
+          name: playlistData.name,
+          description: playlistData.description,
+          prompt: prompt,
+          playlist_length: playlistLength,
+          tracks: playlistData.tracks,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create Spotify playlist');
+      if (!saveResponse.ok) {
+        throw new Error('Failed to save playlist');
       }
 
-      return response.json();
+      const { playlist } = await saveResponse.json();
+      return playlist;
     },
-    onSuccess: (data) => {
-      if (data.tracksNotFound && data.tracksNotFound.length > 0) {
-        setNotFoundTracks(data.tracksNotFound);
-      }
-      if (data.playlistUrl) {
-        window.open(data.playlistUrl, '_blank');
-      }
+    onSuccess: (playlist) => {
+      // Invalidate playlists query to refresh the sidebar
       queryClient.invalidateQueries({ queryKey: ['playlists'] });
+      // Navigate to the playlist detail page
+      router.push(`/playlists/${playlist.id}`);
     },
   });
 
@@ -81,100 +67,53 @@ export default function PlaylistGenerator() {
     generatePlaylistMutation.mutate({ prompt, playlistLength });
   };
 
-  const handleCreateSpotifyPlaylist = () => {
-    if (generatePlaylistMutation.data) {
-      createSpotifyPlaylistMutation.mutate(generatePlaylistMutation.data);
-    }
+  const handleNewPlaylist = () => {
+    setPrompt('');
+    generatePlaylistMutation.reset();
   };
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-border bg-muted/30 flex flex-col hidden md:flex">
-        <div className="p-4 h-14 flex items-center gap-2 font-semibold border-b border-border">
-          <Music4 className="w-5 h-5" />
-          <span>Your Library</span>
-        </div>
-        
-        <div className="flex-1 overflow-auto py-2">
-            <div className="px-3 mb-2">
-                 <button 
-                    onClick={() => {
-                        setPrompt('');
-                        generatePlaylistMutation.reset();
-                        setNotFoundTracks([]);
-                    }}
-                    className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                 >
-                    <Plus className="w-4 h-4" />
-                    New Playlist
-                 </button>
-            </div>
-
-            <CreatedPlaylists 
-                playlists={playlistsData?.playlists || []} 
-                isLoading={isLoadingPlaylists}
-                mode="list"
-                className="px-2"
-            />
-        </div>
-
-        <div className="p-4 border-t border-border space-y-4">
-           <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-             <Home className="w-4 h-4" />
-             Back to Sam
-           </Link>
-           <div className="flex items-center gap-2">
-             <UserButton afterSignOutUrl="/" />
-             <span className="text-sm font-medium">Account</span>
-           </div>
-        </div>
-      </aside>
+      <PlaylistSidebar 
+        onNewPlaylist={handleNewPlaylist} 
+        mobileOpen={mobileSidebarOpen}
+        setMobileOpen={setMobileSidebarOpen}
+      />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
-        {/* Mobile Header (TODO: Add mobile sidebar toggle if needed) */}
+        {/* Mobile Header */}
+        <div className="md:hidden flex items-center p-4 border-b border-border">
+            <button
+                onClick={() => setMobileSidebarOpen(true)}
+                className="p-2 -ml-2 text-muted-foreground hover:text-foreground rounded-md"
+            >
+                <Bars3Icon className="w-6 h-6" />
+            </button>
+            <span className="ml-2 font-semibold">Playlists</span>
+        </div>
         
         <div className="flex-1 overflow-auto p-6 lg:p-10">
             <div className="max-w-4xl mx-auto space-y-8 pb-20">
-                {!generatePlaylistMutation.data && (
-                    <div className="space-y-2">
-                        <h1 className="text-3xl font-bold tracking-tight">Generate a Playlist</h1>
-                        <p className="text-muted-foreground">Describe the vibe you want and AI will curate the tracks.</p>
-                    </div>
-                )}
-
-                <div className={cn(
-                    "transition-all duration-500 ease-in-out",
-                    generatePlaylistMutation.data ? "opacity-100" : "opacity-100"
-                )}>
-                    <PlaylistForm
-                        prompt={prompt}
-                        setPrompt={setPrompt}
-                        playlistLength={playlistLength}
-                        setPlaylistLength={setPlaylistLength}
-                        loading={generatePlaylistMutation.isPending}
-                        onSubmit={handleGenerate}
-                    />
+                <div className="space-y-2">
+                    <h1 className="text-3xl font-bold tracking-tight">Generate a Playlist</h1>
+                    <p className="text-muted-foreground">Describe the vibe you want and AI will curate the tracks.</p>
                 </div>
 
-                {(generatePlaylistMutation.error || createSpotifyPlaylistMutation.error) && (
+                <PlaylistForm
+                    prompt={prompt}
+                    setPrompt={setPrompt}
+                    playlistLength={playlistLength}
+                    setPlaylistLength={setPlaylistLength}
+                    loading={generatePlaylistMutation.isPending}
+                    onSubmit={handleGenerate}
+                />
+
+                {generatePlaylistMutation.error && (
                     <div className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
                         <p className="text-sm text-destructive font-medium">
-                            {generatePlaylistMutation.error?.message || createSpotifyPlaylistMutation.error?.message}
+                            {generatePlaylistMutation.error?.message}
                         </p>
-                    </div>
-                )}
-
-                {generatePlaylistMutation.data && (
-                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <GeneratedPlaylist
-                            playlist={generatePlaylistMutation.data}
-                            onCreateSpotify={handleCreateSpotifyPlaylist}
-                            creatingPlaylist={createSpotifyPlaylistMutation.isPending}
-                            playlistCreated={createSpotifyPlaylistMutation.isSuccess}
-                            notFoundTracks={notFoundTracks}
-                        />
                     </div>
                 )}
             </div>

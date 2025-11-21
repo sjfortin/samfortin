@@ -6,9 +6,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { SavedPlaylist, Track } from './types';
 import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
-import { Home, ArrowLeft, ExternalLink, Trash2, Music, Calendar, Clock, AlertCircle, Loader2 } from 'lucide-react';
+import { Home, ArrowLeft, ExternalLink, Trash2, Music, Calendar, Clock, AlertCircle, Loader2, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TracksNotFoundWarning from './TracksNotFoundWarning';
+import PlaylistSidebar from './PlaylistSidebar';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 interface PlaylistDetailProps {
   playlist: SavedPlaylist;
@@ -20,6 +29,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [playlist, setPlaylist] = useState(initialPlaylist);
   const [notFoundTracks, setNotFoundTracks] = useState<Track[]>([]);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const createSpotifyPlaylistMutation = useMutation({
     mutationFn: async () => {
@@ -98,82 +108,36 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-border bg-muted/30 flex flex-col hidden md:flex">
-        <div className="p-4 h-14 flex items-center gap-2 font-semibold border-b border-border">
-          <Music className="w-5 h-5" />
-          <span>Playlist Details</span>
-        </div>
-        
-        <div className="flex-1 overflow-auto p-4 space-y-4">
-          <Link 
-            href="/playlists"
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Playlists
-          </Link>
-
-          <div className="space-y-2 pt-4 border-t border-border">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Stats
-            </div>
-            <div className="space-y-1 text-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Total Tracks</span>
-                <span className="font-medium">{sortedTracks.length}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">On Spotify</span>
-                <span className="font-medium text-green-600 dark:text-green-500">{foundTracks.length}</span>
-              </div>
-              {notFoundInPlaylist.length > 0 && (
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Not Found</span>
-                  <span className="font-medium text-amber-600 dark:text-amber-500">{notFoundInPlaylist.length}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {playlist.prompt && (
-            <div className="space-y-2 pt-4 border-t border-border">
-              <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Original Prompt
-              </div>
-              <p className="text-sm text-muted-foreground italic">
-                "{playlist.prompt}"
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 border-t border-border space-y-4">
-          <Link href="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <Home className="w-4 h-4" />
-            Back to Sam
-          </Link>
-          <div className="flex items-center gap-2">
-            <UserButton afterSignOutUrl="/" />
-            <span className="text-sm font-medium">Account</span>
-          </div>
-        </div>
-      </aside>
+      <PlaylistSidebar
+        mobileOpen={mobileSidebarOpen}
+        setMobileOpen={setMobileSidebarOpen}
+      />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Mobile Header */}
+        <div className="md:hidden flex items-center p-4 border-b border-border">
+          <button
+            onClick={() => setMobileSidebarOpen(true)}
+            className="p-2 -ml-2 text-muted-foreground hover:text-foreground rounded-md"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          {/* <span className="ml-2 font-semibold">Details</span> */}
+        </div>
+
         <div className="flex-1 overflow-auto p-6 lg:p-10">
-          <div className="max-w-4xl mx-auto space-y-6">
+          <div className="space-y-6 pb-20">
             {/* Header */}
             <div className="space-y-4">
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <h1 className="text-3xl font-bold tracking-tight truncate">{playlist.name}</h1>
+                  <h1 className="text-3xl font-bold tracking-tight">{playlist.name}</h1>
                   {playlist.description && (
                     <p className="mt-2 text-muted-foreground">{playlist.description}</p>
                   )}
                 </div>
-                
+
                 <div className="flex-shrink-0 flex items-center gap-2">
                   {!playlist.spotify_playlist_url && (
                     <button
@@ -194,15 +158,43 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                       )}
                     </button>
                   )}
-                  <button
-                    onClick={() => setShowDeleteConfirm(true)}
-                    disabled={deletePlaylistMutation.isPending}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    Delete
-                  </button>
                 </div>
+              </div>
+
+              {/* Stats and Prompt Section (Moved from Sidebar) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-muted/30 rounded-lg border border-border">
+                <div className="space-y-2">
+                  <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Stats
+                  </div>
+                  <div className="flex gap-6 text-sm">
+                    <div>
+                      <span className="block text-muted-foreground text-xs">Total Tracks</span>
+                      <span className="font-medium text-lg">{sortedTracks.length}</span>
+                    </div>
+                    {playlist.spotify_playlist_url && <div>
+                      <span className="block text-muted-foreground text-xs">On Spotify</span>
+                      <span className="font-medium text-lg text-green-600 dark:text-green-500">{foundTracks.length}</span>
+                    </div>}
+                    {notFoundInPlaylist.length > 0 && (
+                      <div>
+                        <span className="block text-muted-foreground text-xs">Not Found</span>
+                        <span className="font-medium text-lg text-amber-600 dark:text-amber-500">{notFoundInPlaylist.length}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {playlist.prompt && (
+                  <div className="space-y-2">
+                    <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                      Original Prompt
+                    </div>
+                    <p className="text-sm text-muted-foreground italic line-clamp-3 hover:line-clamp-none transition-all">
+                      "{playlist.prompt}"
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Error Messages */}
@@ -219,7 +211,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                 <TracksNotFoundWarning tracks={notFoundTracks} />
               )}
 
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-col flex-wrap gap-2 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4" />
                   <span>{new Date(playlist.created_at).toLocaleDateString()}</span>
@@ -227,7 +219,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                 {playlist.playlist_length && (
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-4 h-4" />
-                    <span>{playlist.playlist_length} hour{playlist.playlist_length !== '1' ? 's' : ''}</span>
+                    <span>Estimated Length: {playlist.playlist_length} hour{playlist.playlist_length !== '1' ? 's' : ''}</span>
                   </div>
                 )}
                 {playlist.spotify_playlist_url && (
@@ -247,7 +239,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
             {/* Tracks List */}
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Tracks</h2>
-              
+
               {sortedTracks.length === 0 ? (
                 <div className="text-center py-12 bg-muted/50 rounded-lg border border-border">
                   <Music className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
@@ -283,41 +275,51 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                 </div>
               )}
             </div>
+
+
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={deletePlaylistMutation.isPending}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <Trash2 className="w-4 h-4" />
+                Delete Playlist
+              </button>
+            </div>
           </div>
         </div>
       </main>
 
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background border border-border rounded-lg p-6 max-w-md w-full space-y-4">
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold">Delete Playlist?</h3>
-              <p className="text-sm text-muted-foreground">
-                This will permanently delete "{playlist.name}" from your library
-                {playlist.spotify_playlist_url && " and unfollow it on Spotify"}.
-                This action cannot be undone.
-              </p>
-            </div>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-accent transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors disabled:opacity-50"
-              >
-                {deletePlaylistMutation.isPending ? 'Deleting...' : 'Delete'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Playlist?</DialogTitle>
+            <DialogDescription>
+              This will permanently delete "{playlist.name}" from your library
+              {playlist.spotify_playlist_url && " and unfollow it on Spotify"}.
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <button
+              onClick={() => setShowDeleteConfirm(false)}
+              disabled={deletePlaylistMutation.isPending}
+              className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-accent transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={deletePlaylistMutation.isPending}
+              className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors disabled:opacity-50"
+            >
+              {deletePlaylistMutation.isPending ? 'Deleting...' : 'Delete'}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
