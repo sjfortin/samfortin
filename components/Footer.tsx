@@ -92,9 +92,16 @@ export default function Footer() {
             </a>
           ))}
         </div>
-        <p className="mt-10 text-center text-sm/6 text-gray-600 dark:text-gray-400">
-          &copy; {new Date().getFullYear()} Sam Fortin.
-        </p>
+        <div className="mt-10 flex flex-col items-center gap-4 text-center text-sm/6 text-gray-600 dark:text-gray-400">
+          <p>
+            &copy; {new Date().getFullYear()} Sam Fortin. All rights reserved.
+          </p>
+          <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-500">
+            <p>Built with Next.js, React, TypeScript, Tailwind CSS, Clerk, Supabase, and Vercel</p>
+            <p>Playlist functionality powered by Gemini AI and Spotify API</p>
+            <p>All images created with Nano Banana and inspired by works of Moebius</p>
+          </div>
+        </div>
         <div className="flex justify-center lg:flex-1 text-center mt-5">
           <Link href="/">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
