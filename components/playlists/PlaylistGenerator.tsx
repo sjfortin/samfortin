@@ -4,26 +4,41 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { PlaylistResponse } from './types';
-import PlaylistForm from './PlaylistForm';
+import PlaylistForm, { type AIModel } from './PlaylistForm';
 import PlaylistSidebar from './PlaylistSidebar';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function PlaylistGenerator() {
   const [prompt, setPrompt] = useState('');
   const [playlistLength, setPlaylistLength] = useState('1');
+  const [model, setModel] = useState<AIModel>('gemini');
+  const [genres, setGenres] = useState<string[]>([]);
+  const [decades, setDecades] = useState<string[]>([]);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
 
   const generatePlaylistMutation = useMutation({
-    mutationFn: async ({ prompt, playlistLength }: { prompt: string; playlistLength: string }) => {
+    mutationFn: async ({ 
+      prompt, 
+      playlistLength, 
+      model, 
+      genres, 
+      decades 
+    }: { 
+      prompt: string; 
+      playlistLength: string; 
+      model: AIModel;
+      genres: string[];
+      decades: string[];
+    }) => {
       // Step 1: Generate the playlist
       const generateResponse = await fetch('/api/generate-playlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt, playlistLength }),
+        body: JSON.stringify({ prompt, playlistLength, model, genres, decades }),
       });
 
       if (!generateResponse.ok) {
@@ -64,7 +79,7 @@ export default function PlaylistGenerator() {
 
   const handleGenerate = (e: React.FormEvent) => {
     e.preventDefault();
-    generatePlaylistMutation.mutate({ prompt, playlistLength });
+    generatePlaylistMutation.mutate({ prompt, playlistLength, model, genres, decades });
   };
 
   const handleNewPlaylist = () => {
@@ -105,6 +120,12 @@ export default function PlaylistGenerator() {
                     setPrompt={setPrompt}
                     playlistLength={playlistLength}
                     setPlaylistLength={setPlaylistLength}
+                    model={model}
+                    setModel={setModel}
+                    genres={genres}
+                    setGenres={setGenres}
+                    decades={decades}
+                    setDecades={setDecades}
                     loading={generatePlaylistMutation.isPending}
                     onSubmit={handleGenerate}
                 />
