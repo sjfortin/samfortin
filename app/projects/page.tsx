@@ -1,142 +1,49 @@
+'use client';
+
+import { useState, useMemo } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import Link from 'next/link';
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, X, PlusIcon, MinusIcon } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
 import { Subheading } from "@/components/ui/Subheading";
 import { Badge } from '@/components/ui/Badge';
-
-interface Project {
-  name: string;
-  description: string;
-  technologies: string[];
-  links: { name: string; url: string }[];
-  image?: string;
-  video?: string;
-}
-
-const projects: Project[] = [
-  {
-    name: 'Estee Lauder Companies',
-    description: 'Launced a React/Typescript microfrontend application for Estee Lauder Companies that launched on brands such as Clinique and MAC Cosmetics.',
-    technologies: ['React', 'TypeScript', 'Mobx', 'Elixir', 'Perl'],
-    links: [
-      { name: 'Estee Lauder Companies', url: 'https://www.elcompanies.com/en/our-brands' },
-      { name: 'Clinique', url: 'https://www.clinique.com/smartrewards' },
-      { name: 'MAC Cosmetics', url: 'https://www.maccosmetics.com/mac-lover' },
-    ],
-    image: '/images/experience/estee.png',
-  },
-  {
-    name: 'TC Farm',
-    description: 'Custom React/Next.js application built with BigCommerce as the ecommerce platform to power the ordering, payment, and delivery process.',
-    technologies: ['React', 'Next.js', 'BigCommerce', 'AWS DynamoDB', 'Stripe', 'AWS Amplify', 'Tanstack Query', 'Tailwind CSS', 'Zustand'],
-    links: [
-      { name: 'TC Farm', url: 'https://tc.farm/' },
-    ],
-    image: '/images/experience/tcfarm.png',
-  },
-  {
-    name: 'Darn Tough Socks',
-    description: 'Shopify re-theme and development. PIM integration.',
-    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML'],
-    links: [
-      { name: 'Darn Tough Socks', url: 'https://darntough.com/' },
-    ],
-    image: '/images/experience/darntough.png',
-  },
-  {
-    name: 'GED.com',
-    description: 'Wordpress multi-site development.',
-    technologies: ['Wordpress', 'JavaScript', 'CSS', 'HTML'],
-    links: [
-      { name: 'GED.com', url: 'https://ged.com/' },
-    ],
-    image: '/images/experience/ged.svg',
-  },
-  {
-    name: '2DSemiConductors',
-    description: 'Periodic table of elements React product search widget for 2DSemiConductors.',
-    technologies: ['React', 'Laravel', 'BigCommerce'],
-    links: [
-      { name: '2DSemiConductors', url: 'https://2dsemiconductors.com/' },
-    ],
-    image: '/images/experience/2dsemi.png',
-  },
-  {
-    name: 'WindowParts.com',
-    description: 'Ecommerce platform migration from Volusion to Shopify with full ecommerce site build. Built an ETL pipeline to migrate data from Volusion to Shopify in Node.js.',
-    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Node.js'],
-    links: [
-      { name: 'WindowParts.com', url: 'https://windowparts.com/' },
-    ],
-    image: '/images/experience/windowparts.png',
-  },
-  {
-    name: 'Random Whiteboarding Video',
-    description: 'Random Whiteboarding Video.',
-    technologies: [],
-    links: [],
-    video: '/videos/whiteboarding.mp4',
-  },
-  {
-    name: 'Irish Titan',
-    description: 'Marketing website for Irish Titan built with React and Gatsby.',
-    technologies: ['React', 'Gatsby', 'Stripe', 'AWS Amplify'],
-    links: [
-      { name: 'Irish Titan', url: 'https://irishtitan.com/' },
-    ],
-    image: '/images/experience/irishtitan.png',
-  },
-  {
-    name: 'Tradehome Shoes',
-    description: 'Ecommerce website for Tradehome Shoes built with Shopify.',
-    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid'],
-    links: [
-      { name: 'Tradehome Shoes', url: 'https://tradehome.com/' },
-    ],
-    image: '/images/experience/tradehome.png',
-  },
-  {
-    name: 'Nordicware',
-    description: 'Headless ecommerce website for Nordicware built with BigCommerce and Wordpress.',
-    technologies: ['BigCommerce', 'Wordpress', 'JavaScript', 'CSS', 'HTML', 'PHP'],
-    links: [
-      { name: 'Nordicware', url: 'https://nordicware.com/' },
-    ],
-    image: '/images/experience/nordicware.png',
-  },
-  {
-    name: 'LaCrosse Technology',
-    description: 'Ecommerce website for LaCrosse Technology built with Shopify. Custom integration with LaCrosse Technology mobile app product registration.',
-    technologies: ['Shopify', 'JavaScript', 'CSS', 'HTML', 'Liquid', 'Laravel'],
-    links: [
-      { name: 'LaCrosse Technology', url: 'https://lacrossetechnology.com/' },
-    ],
-    image: '/images/experience/lacrosse.png',
-  },
-  {
-    name: 'Optum',
-    description: 'Software feature development work with the Optum User Experience Design Studio (UXDS).',
-    technologies: ['JavaScript', 'AEM', 'Sass and SCSS'],
-    links: [
-      { name: 'Optum', url: 'https://optum.com/' },
-    ],
-    image: '/images/experience/optum.svg',
-  },
-  {
-    name: 'OneOme',
-    description: 'Pharmacogenomics software development for OneOme.',
-    technologies: ['Grav CMS', 'JavaScript', 'CSS', 'HTML', 'Python', 'Flask', 'Braintree Payments'],
-    links: [
-      { name: 'OneOme', url: 'https://oneome.com/' },
-    ],
-    image: '/images/experience/oneome.png',
-  },
-];
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
+import { projects } from "./projectData";
 
 export default function Projects() {
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+
+  const allTechnologies = useMemo(() => {
+    const techSet = new Set<string>();
+    projects.forEach(project => {
+      project.technologies.forEach(tech => techSet.add(tech));
+    });
+    return Array.from(techSet).sort();
+  }, []);
+
+  const filteredProjects = useMemo(() => {
+    if (selectedTechnologies.length === 0) {
+      return projects;
+    }
+    return projects.filter(project =>
+      selectedTechnologies.some(tech => project.technologies.includes(tech))
+    );
+  }, [selectedTechnologies]);
+
+  const toggleTechnology = (tech: string) => {
+    setSelectedTechnologies(prev =>
+      prev.includes(tech)
+        ? prev.filter(t => t !== tech)
+        : [...prev, tech]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedTechnologies([]);
+  };
+
   return (
     <>
       <Header />
@@ -151,11 +58,57 @@ export default function Projects() {
             </Subheading>
           </div>
 
+          <div className="mt-8">
+            <div className="flex-inline mb-4 border rounded-lg border-gray-200 dark:border-gray-700 w-full">
+              <Collapsible className="group">
+                <CollapsibleTrigger className="cursor-pointer text-xs font-semibold text-black dark:text-white flex items-center gap-1 w-full p-2 ">
+                  <PlusIcon className="h-4 w-4 group-data-[state=open]:hidden" />
+                  <MinusIcon className="h-4 w-4 group-data-[state=closed]:hidden" />
+                  Filter by Technology
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="p-2">
+                    <div className="flex flex-wrap gap-2">
+                      {allTechnologies.map((tech) => (
+                        <button
+                          key={tech}
+                          onClick={() => toggleTechnology(tech)}
+                          className={`cursor-pointer relative z-10 inline-flex items-center rounded-xl border px-3 py-1 text-xs transition-colors ${selectedTechnologies.includes(tech)
+                            ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white'
+                            : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-black dark:border-gray-500 dark:text-gray-300 dark:hover:bg-gray-900'
+                            }`}
+                        >
+                          {tech}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+            <div className="flex items-center gap-4">
+              {selectedTechnologies.length > 0 && (
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Showing {filteredProjects.length} of {projects.length} projects
+                </p>
+              )}
+              {selectedTechnologies.length > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white flex items-center gap-1 cursor-pointer"
+                >
+                  <X className="h-3 w-3" />
+                  Clear filters
+                </button>
+              )}
+            </div>
+          </div>
+
           <div className="mx-auto mt-8 grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <article
                 key={project.name}
-                className="flex max-w-xl flex-col items-start"
+                className="flex max-w-xl flex-col items-start border border-gray-200 dark:border-none rounded-lg"
               >
                 {project.video && (
                   <div className="rounded-lg overflow-hidden aspect-ratio-9/16">
@@ -172,41 +125,46 @@ export default function Projects() {
 
                 {!project.video && (
                   <>
-                    {project.image && (
+                    {project.image ? (
                       <AnimatedImage
                         coverImage={project.image}
                         title={project.name}
                         imageClassName="object-contain p-4"
                       />
-                    )}
-                    <div className="group relative my-4">
-                      <h3 className="text-xl font-semibold text-black group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
-                        {project.name}
-                      </h3>
-                      <p className="text-sm/6 text-gray-600 dark:text-gray-300 mt-2">
-                        {project.description}
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <Badge key={tech}>
-                          {tech}
-                        </Badge>
-                      ))}
-                    </div>
-                    {project.links.length > 0 && (
-                      <div className="flex flex-col gap-1 mt-4 w-full">
-                        {project.links.map((link) => (
-                          <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
-                            {link.name}
-                            <ExternalLinkIcon className="h-4 w-4" />
-                          </Link>
-                        ))}
+                    ) : (
+                      <div className="relative w-full aspect-video overflow-hidden rounded-t-lg bg-gray-100 dark:bg-white">
+                        <div className="w-full h-full flex items-center justify-center text-gray-600 dark:text-black font-semibold text-xl uppercase">{project.name}</div>
                       </div>
                     )}
+                    <div className="p-3">
+                      <div className="group relative my-4">
+                        <h3 className="text-xl font-semibold text-black group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
+                          {project.name}
+                        </h3>
+                        <p className="text-sm/6 text-gray-600 dark:text-gray-300 mt-2">
+                          {project.description}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech) => (
+                          <Badge key={tech}>
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                      {project.links.length > 0 && (
+                        <div className="flex flex-col gap-1 mt-4 w-full">
+                          {project.links.map((link) => (
+                            <Link key={link.url} target="_blank" rel="noopener noreferrer" href={link.url} className="text-xs text-gray-400 dark:text-gray-400 flex align-center gap-1 hover:text-gray-600 dark:hover:text-gray-300">
+                              {link.name}
+                              <ExternalLinkIcon className="h-4 w-4" />
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </>
                 )}
-
               </article>
             ))}
           </div>
