@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ExternalLink, Music, Calendar, Disc } from 'lucide-react';
 import type { SavedPlaylist } from './types';
 import { cn } from '@/lib/utils';
@@ -54,15 +55,12 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
         return (
             <div className={cn("flex flex-col gap-1", className)}>
                 {playlists.map((playlist) => (
-                    <a
+                    <Link
                         key={playlist.id}
-                        href={playlist.spotify_playlist_url || '#'}
-                        target={playlist.spotify_playlist_url ? "_blank" : undefined}
-                        rel="noopener noreferrer"
+                        href={`/playlists/${playlist.id}`}
                         className={cn(
                             "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors group",
-                            "hover:bg-accent hover:text-accent-foreground",
-                            !playlist.spotify_playlist_url && "opacity-60 cursor-default hover:bg-transparent"
+                            "hover:bg-accent hover:text-accent-foreground"
                         )}
                     >
                         <div className="flex-shrink-0 w-8 h-8 rounded bg-muted flex items-center justify-center">
@@ -74,10 +72,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                                 {playlist.prompt || `${playlist.playlist_tracks?.length || 0} tracks`}
                             </div>
                         </div>
-                        {playlist.spotify_playlist_url && (
-                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-50" />
-                        )}
-                    </a>
+                    </Link>
                 ))}
             </div>
         );
