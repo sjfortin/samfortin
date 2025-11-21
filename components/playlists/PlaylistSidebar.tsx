@@ -2,13 +2,18 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Home, Plus, Music4, X } from 'lucide-react';
+import { Home, Plus, Music4 } from 'lucide-react';
 import { UserButton } from '@clerk/nextjs';
 import CreatedPlaylists from './CreatedPlaylists';
 import { useQuery } from '@tanstack/react-query';
 import { SavedPlaylist } from './types';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogPanel } from '@headlessui/react';
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet';
 
 interface PlaylistSidebarProps {
   onNewPlaylist?: () => void;
@@ -35,11 +40,11 @@ export default function PlaylistSidebar({
   });
 
   const SidebarContent = () => (
-    <div className="flex h-full flex-col bg-background border-r border-border">
+    <div className="flex h-full flex-col bg-background">
         {/* Header */}
         <div className="p-4 h-14 flex items-center gap-2 font-semibold border-b border-border">
           <Music4 className="w-5 h-5" />
-          <span>Your Library</span>
+          <span>Your Playlists</span>
         </div>
         
         {/* Content */}
@@ -86,34 +91,20 @@ export default function PlaylistSidebar({
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className={cn("hidden md:flex w-64 flex-col h-full", className)}>
+      <aside className={cn("hidden md:flex w-64 flex-col h-full border-r border-border bg-muted/30", className)}>
         <SidebarContent />
       </aside>
 
       {/* Mobile Sidebar Sheet */}
-       <Dialog as="div" className="relative z-50 md:hidden" open={mobileOpen} onClose={() => setMobileOpen?.(false)}>
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity" aria-hidden="true" />
-        
-        <div className="fixed inset-0 flex z-50">
-            <DialogPanel 
-                className={cn(
-                    "relative mr-16 flex w-full max-w-[300px] flex-1 transform flex-col transition duration-300 ease-in-out bg-background h-full shadow-xl",
-                    "data-[closed]:-translate-x-full"
-                )}
-            >
-                <div className="absolute top-3 right-3 z-50">
-                    <button 
-                        type="button"
-                        className="p-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-accent"
-                        onClick={() => setMobileOpen?.(false)}
-                    >
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-                <SidebarContent />
-            </DialogPanel>
-        </div>
-      </Dialog>
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="w-[300px] p-0">
+          <SheetTitle className="sr-only">Playlist Library</SheetTitle>
+          <SheetDescription className="sr-only">
+            Navigate your playlists and create new ones
+          </SheetDescription>
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
     </>
   );
 }

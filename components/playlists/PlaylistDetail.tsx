@@ -123,7 +123,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
           >
             <Menu className="w-6 h-6" />
           </button>
-          <span className="ml-2 font-semibold">Details</span>
+          {/* <span className="ml-2 font-semibold">Details</span> */}
         </div>
 
         <div className="flex-1 overflow-auto p-6 lg:p-10">

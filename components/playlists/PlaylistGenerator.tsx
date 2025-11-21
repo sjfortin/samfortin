@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { PlaylistResponse } from './types';
 import PlaylistForm from './PlaylistForm';
 import PlaylistSidebar from './PlaylistSidebar';
-import { Menu } from 'lucide-react';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function PlaylistGenerator() {
   const [prompt, setPrompt] = useState('');
@@ -88,7 +88,7 @@ export default function PlaylistGenerator() {
                 onClick={() => setMobileSidebarOpen(true)}
                 className="p-2 -ml-2 text-muted-foreground hover:text-foreground rounded-md"
             >
-                <Menu className="w-6 h-6" />
+                <Bars3Icon className="w-6 h-6" />
             </button>
             <span className="ml-2 font-semibold">Playlists</span>
         </div>
