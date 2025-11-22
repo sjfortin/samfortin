@@ -4,7 +4,7 @@ import { SignedOut, SignedIn, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samfortin.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sjfortin.com";
 
 export const metadata: Metadata = {
   title: "AI Playlists | Sam Fortin",

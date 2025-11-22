@@ -7,11 +7,11 @@ import { Heading } from '@/components/ui/Heading';
 import { Subheading } from '@/components/ui/Subheading';
 import { Badge } from '@/components/ui/Badge';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://samfortin.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sjfortin.com';
 
 export const metadata: Metadata = {
   title: 'Blog | Sam Fortin',
-  description: 'Technical tutorials, engineering stories, and AI playlist experiments by Sam Fortin.',
+  description: 'Thoughts, tutorials, and insights on web dev, design, tech and more by Sam Fortin.',
   alternates: {
     canonical: `${siteUrl}/blog`,
   },
@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     type: 'website',
     url: `${siteUrl}/blog`,
     title: 'Sam Fortin Blog',
-    description: 'Technical tutorials, engineering stories, and AI playlist experiments.',
+    description: 'Thoughts, tutorials, and insights on web dev, design, tech and more by Sam Fortin.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sam Fortin Blog',
-    description: 'Technical tutorials, engineering stories, and AI playlist experiments.',
+    description: 'Thoughts, tutorials, and insights on web dev, design, tech and more by Sam Fortin.',
   },
 };
 

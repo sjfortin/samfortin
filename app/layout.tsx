@@ -6,7 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Analytics } from "@vercel/analytics/next"
 import QueryProvider from "@/components/providers/QueryProvider"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://samfortin.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sjfortin.com";
 
 const firaCode = Fira_Code({
   variable: "--font-fira-code",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: "Sam Fortin | Full Stack Software Engineer",
     siteName: "Sam Fortin",
-    description: "Thoughts on software, AI-powered playlists, and personal projects.",
+    description: "Thoughts, tutorials, and insights on web dev, design, tech and more.",
     images: [
       {
         url: `${siteUrl}/images/blog/moebius-server.png`,
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sam Fortin | Full Stack Software Engineer",
-    description: "Thoughts on software, AI-powered playlists, and personal projects.",
-    creator: "@samfortin",
+    description: "Thoughts, tutorials, and insights on web dev, design, tech and more.",
+    creator: "@sjfortin",
     images: [`${siteUrl}/images/moebius-server.png`],
   },
   alternates: {
