@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAllPosts } from '@/lib/blog';
@@ -6,10 +7,43 @@ import { Heading } from '@/components/ui/Heading';
 import { Subheading } from '@/components/ui/Subheading';
 import { Badge } from '@/components/ui/Badge';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://samfortin.com';
+
+export const metadata: Metadata = {
+  title: 'Blog | Sam Fortin',
+  description: 'Technical tutorials, engineering stories, and AI playlist experiments by Sam Fortin.',
+  alternates: {
+    canonical: `${siteUrl}/blog`,
+  },
+  openGraph: {
+    type: 'website',
+    url: `${siteUrl}/blog`,
+    title: 'Sam Fortin Blog',
+    description: 'Technical tutorials, engineering stories, and AI playlist experiments.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sam Fortin Blog',
+    description: 'Technical tutorials, engineering stories, and AI playlist experiments.',
+  },
+};
+
 export default function Blog() {
   const posts = getAllPosts();
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    url: `${siteUrl}/blog`,
+    name: 'Sam Fortin Blog',
+    description: 'Technical tutorials, engineering stories, and AI playlist experiments.',
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">
