@@ -6,6 +6,8 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import AnimatedImage from '@/components/AnimatedImage';
 import { Badge } from '@/components/ui/Badge';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sjfortin.com';
+
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
   return slugs.map((slug) => ({
@@ -27,9 +29,30 @@ export async function generateMetadata({
     };
   }
 
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const ogImage = post.coverImage ? `${siteUrl}${post.coverImage}` : `${siteUrl}/images/moebius-server.png`;
+
   return {
-    title: `${post.title} | Sam Fortin`,
+    title: post.title,
     description: post.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: post.title,
+      description: post.description,
+      publishedTime: post.date,
+      authors: [post.author],
+      images: [ogImage],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [ogImage],
+    },
   };
 }
 
@@ -53,8 +76,32 @@ export default async function BlogPost({
     return { default: () => null };
   });
 
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const ogImage = post.coverImage ? `${siteUrl}${post.coverImage}` : `${siteUrl}/images/moebius-server.png`;
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    image: ogImage,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+    },
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <div className="min-h-screen">
         <article className="mx-auto max-w-3xl px-6 py-24 sm:py-32 lg:px-8">
           <Link href="/blog" className="flex items-center gap-x-2 mb-8 text-gray-500 dark:text-gray-400 text-xs hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
