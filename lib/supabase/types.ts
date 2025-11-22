@@ -47,3 +47,23 @@ export interface UpdatePlaylistAfterSpotifyCreation {
   tracks_added: number;
   tracks_not_found: TrackNotFound[];
 }
+
+// Christmas Types
+export interface ChristmasPerson {
+  id: string;
+  clerk_user_id: string;
+  name: string;
+  budget: number;
+  created_at: string;
+  gifts?: ChristmasGift[];
+}
+
+export interface ChristmasGift {
+  id: string;
+  person_id: string;
+  name: string;
+  link: string | null;
+  cost: number;
+  status: 'idea' | 'bought';
+  created_at: string;
+}
