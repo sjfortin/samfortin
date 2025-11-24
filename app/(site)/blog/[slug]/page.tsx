@@ -110,7 +110,7 @@ export default async function BlogPost({
           </Link>
           {/* Cover Image */}
           {post.coverImage && (
-            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-black dark:border-gray-500 dark:border">
+            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-black dark:border-gray-500 dark:border shadow-lg">
               <AnimatedImage
                 coverImage={post.coverImage}
                 slug={slug}

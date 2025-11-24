@@ -93,8 +93,8 @@ export default function Blog() {
                       {post.description}
                     </p>
                   </div>
-                  <div className="relative flex items-center gap-x-4">
-                    <div className="size-10 rounded-full bg-gray-100 dark:bg-black dark:border-gray-500 dark:border flex items-center justify-center">
+                  {/* <div className="relative flex items-center gap-x-4">
+                    <div className="size-10 bg-gray-100 dark:bg-black dark:border-gray-500 dark:border flex items-center justify-center">
                       <Image
                         src="/images/moebius-sam.png"
                         alt="Moebius"
@@ -108,7 +108,7 @@ export default function Blog() {
                         {post.author}
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                 </article>
               ))
             )}
