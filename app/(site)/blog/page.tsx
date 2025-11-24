@@ -68,6 +68,7 @@ export default function Blog() {
                       coverImage={post.coverImage}
                       slug={post.slug}
                       title={post.title}
+                      imageClassName="p-1 border border-gray-300"
                     />
                   )}
                   <div className="mt-4 flex flex-row items-center gap-y-2 gap-x-4 text-xs">
@@ -100,7 +101,6 @@ export default function Blog() {
                         alt="Moebius"
                         width={40}
                         height={40}
-                        className="rounded-full"
                       />
                     </div>
                     <div className="text-sm/6">

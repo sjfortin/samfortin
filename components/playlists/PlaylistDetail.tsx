@@ -119,7 +119,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
         <div className="md:hidden flex items-center p-4 border-b border-border">
           <button
             onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 -ml-2 text-muted-foreground hover:text-foreground rounded-md"
+            className="p-2 -ml-2 text-muted-foreground hover:text-foreground"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -143,7 +143,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                     <button
                       onClick={handleCreateSpotify}
                       disabled={createSpotifyPlaylistMutation.isPending || sortedTracks.length === 0}
-                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700  transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {createSpotifyPlaylistMutation.isPending ? (
                         <>
@@ -161,8 +161,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                 </div>
               </div>
 
-              {/* Stats and Prompt Section (Moved from Sidebar) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-muted/30 rounded-lg border border-border">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-muted/30 border border-border">
                 <div className="space-y-2">
                   <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Stats
@@ -199,7 +198,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
 
               {/* Error Messages */}
               {createSpotifyPlaylistMutation.error && (
-                <div className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
+                <div className="bg-destructive/10 p-4 border border-destructive/20">
                   <p className="text-sm text-destructive font-medium">
                     {createSpotifyPlaylistMutation.error.message}
                   </p>
@@ -241,7 +240,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
               <h2 className="text-xl font-semibold">Tracks</h2>
 
               {sortedTracks.length === 0 ? (
-                <div className="text-center py-12 bg-muted/50 rounded-lg border border-border">
+                <div className="text-center py-12 bg-muted/50 border border-border">
                   <Music className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                   <p className="text-muted-foreground">No tracks in this playlist</p>
                 </div>
@@ -251,7 +250,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
                     <div
                       key={track.id}
                       className={cn(
-                        "flex items-center gap-4 p-4 rounded-lg border transition-colors",
+                        "flex items-center gap-4 p-4 border transition-colors",
                         track.found_on_spotify
                           ? "bg-card border-border hover:bg-accent/50"
                           : "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900"
@@ -281,7 +280,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={deletePlaylistMutation.isPending}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors disabled:opacity-50"
               >
                 <Trash2 className="w-4 h-4" />
                 Delete Playlist
@@ -306,14 +305,14 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
             <button
               onClick={() => setShowDeleteConfirm(false)}
               disabled={deletePlaylistMutation.isPending}
-              className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-accent transition-colors"
+              className="px-4 py-2 text-sm font-medium hover:bg-accent transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleDelete}
               disabled={deletePlaylistMutation.isPending}
-              className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50"
             >
               {deletePlaylistMutation.isPending ? 'Deleting...' : 'Delete'}
             </button>

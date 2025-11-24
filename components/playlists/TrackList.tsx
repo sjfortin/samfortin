@@ -17,7 +17,7 @@ export default function TrackList({ tracks }: TrackListProps) {
         {tracks.map((track, index) => (
           <div
             key={index}
-            className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-black"
+            className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-black"
           >
             <Music className="h-4 w-4 text-gray-400" />
             <div className="flex-1">

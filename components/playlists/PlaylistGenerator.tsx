@@ -110,7 +110,7 @@ export default function PlaylistGenerator() {
                 />
 
                 {generatePlaylistMutation.error && (
-                    <div className="rounded-lg bg-destructive/10 p-4 border border-destructive/20">
+                    <div className="bg-destructive/10 p-4 border border-destructive/20">
                         <p className="text-sm text-destructive font-medium">
                             {generatePlaylistMutation.error?.message}
                         </p>
