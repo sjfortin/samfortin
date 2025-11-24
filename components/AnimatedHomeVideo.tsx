@@ -17,7 +17,7 @@ export default function AnimatedHomeVideo({
             loop
             muted
             playsInline
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{

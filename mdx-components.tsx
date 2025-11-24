@@ -68,7 +68,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <Image
         sizes="100vw"
         style={{ width: '100%', height: 'auto' }}
-        className="rounded-lg my-4"
+        className="my-4"
         {...(props as ImageProps)}
       />
     ),

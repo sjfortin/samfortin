@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from "next/image"
+import { LogoMark } from './LogoMark'
 
 const navigation = {
   main: [
@@ -105,20 +106,7 @@ export default function Footer() {
         <div className="flex justify-center lg:flex-1 text-center mt-5">
           <Link href="/">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
-            <Image
-              alt=""
-              src="/logo.svg"
-              width={100}
-              height={24}
-              className="h-8 w-auto dark:hidden hover:opacity-80"
-            />
-            <Image
-              alt=""
-              src="/logo-white.svg"
-              width={100}
-              height={24}
-              className="h-8 w-auto hidden dark:block hover:opacity-80"
-            />
+            <LogoMark />
           </Link>
         </div>
       </div>

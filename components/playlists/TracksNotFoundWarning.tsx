@@ -10,7 +10,7 @@ export default function TracksNotFoundWarning({ tracks }: TracksNotFoundWarningP
   if (tracks.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 p-4">
+    <div className="border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 p-4">
       <h4 className="text-sm font-semibold text-yellow-900 dark:text-yellow-200 mb-2">
         {tracks.length} {tracks.length === 1 ? 'track' : 'tracks'} not found on Spotify
       </h4>

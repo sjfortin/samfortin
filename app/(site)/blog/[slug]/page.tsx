@@ -110,17 +110,18 @@ export default async function BlogPost({
           </Link>
           {/* Cover Image */}
           {post.coverImage && (
-            <div className="relative w-full aspect-video mb-8 overflow-hidden rounded-lg bg-gray-100 dark:bg-black dark:border-gray-500 dark:border">
+            <div>
               <AnimatedImage
                 coverImage={post.coverImage}
                 slug={slug}
                 title={post.title}
+                imageClassName="p-1 border border-gray-300"
               />
             </div>
           )}
 
           {/* Post Header */}
-          <header className="mb-8">
+          <header className="mb-8 mt-4">
             <div className="flex items-center gap-x-4 text-xs mb-4">
               <time
                 dateTime={post.date}
@@ -158,7 +159,7 @@ export default async function BlogPost({
                 alt="Moebius"
                 width={80}
                 height={80}
-                className="rounded-full"
+                className="p-1 border border-gray-300"
               />
               <span className="text-gray-500 dark:text-gray-400">
                 {post.author}

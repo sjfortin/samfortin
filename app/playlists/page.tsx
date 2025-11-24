@@ -63,7 +63,7 @@ export default async function PlaylistsPage() {
                 </div>
                 
                 <SignInButton mode="modal">
-                    <button className="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-lg font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 cursor-pointer">
+                    <button className="inline-flex h-12 items-center justify-center bg-primary px-8 text-lg font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 cursor-pointer">
                         Get Started
                     </button>
                 </SignInButton>

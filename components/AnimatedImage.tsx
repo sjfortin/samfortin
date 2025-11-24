@@ -14,7 +14,7 @@ interface AnimatedImageProps {
 export default function AnimatedImage({ coverImage, slug, title, imageClassName = "object-cover" }: AnimatedImageProps) {
   return (
     <motion.div
-      className="relative w-full aspect-video overflow-hidden rounded-lg bg-white dark:bg-white"
+      className="relative w-full aspect-video overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.1, duration: 0.25 }}

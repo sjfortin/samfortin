@@ -20,7 +20,7 @@ export default function CreateSpotifyButton({
             <button
                 onClick={onClick}
                 disabled={disabled}
-                className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
                 {loading ? (
                     <>

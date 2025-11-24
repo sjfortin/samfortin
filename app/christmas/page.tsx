@@ -16,7 +16,7 @@ export default function ChristmasPage() {
           </p>
           <div className="mt-4">
              <SignInButton mode="modal">
-                <button className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold shadow-lg transition-transform hover:scale-105">
+                <button className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg transition-transform hover:scale-105">
                     Start Your List
                 </button>
              </SignInButton>

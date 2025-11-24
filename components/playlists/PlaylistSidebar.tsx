@@ -59,7 +59,7 @@ export default function PlaylistSidebar({
                         }
                         if (setMobileOpen) setMobileOpen(false);
                     }}
-                    className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
                  >
                     <Plus className="w-4 h-4" />
                     New Playlist

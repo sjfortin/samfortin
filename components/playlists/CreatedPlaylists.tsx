@@ -22,7 +22,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                     </h2>
                 )}
                 <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+                    <div className="animate-spin h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
                 </div>
             </div>
         );
@@ -41,7 +41,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                 <h2 className="text-2xl font-bold text-black dark:text-white">
                     Your Playlists
                 </h2>
-                <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-800">
+                <div className="text-center py-12 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800">
                     <Music className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600 mb-4" />
                     <p className="text-gray-600 dark:text-gray-400">
                         No playlists created yet. Generate your first playlist above!
@@ -59,7 +59,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                         key={playlist.id}
                         href={`/playlists/${playlist.id}`}
                         className={cn(
-                            "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors group",
+                            "flex items-center gap-3 px-3 py-2 text-sm transition-colors group",
                             "hover:bg-accent hover:text-accent-foreground"
                         )}
                     >
@@ -87,7 +87,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                 {playlists.map((playlist) => (
                     <div
                         key={playlist.id}
-                        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6"
+                        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-6"
                     >
                         <div className="space-y-3">
                             <div className="flex items-start justify-between">
@@ -134,7 +134,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
 
                             {!playlist.spotify_playlist_url && (
                                 <div className="pt-3">
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-500">
+                                    <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-500">
                                         Not added to Spotify
                                     </span>
                                 </div>

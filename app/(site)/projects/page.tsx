@@ -68,7 +68,7 @@ export default function Projects() {
                         <button
                           key={tech}
                           onClick={() => toggleTechnology(tech)}
-                          className={`cursor-pointer relative z-10 inline-flex items-center rounded-xl border px-3 py-1 text-xs transition-colors ${selectedTechnologies.includes(tech)
+                          className={`cursor-pointer relative z-10 inline-flex items-center border px-3 py-1 text-xs transition-colors ${selectedTechnologies.includes(tech)
                             ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white'
                             : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-black dark:border-gray-500 dark:text-gray-300 dark:hover:bg-gray-900'
                             }`}

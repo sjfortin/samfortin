@@ -16,7 +16,7 @@ export function Badge({ className, children, theme, ...props }: BadgeProps) {
   return (
     <span 
       className={cn(
-        "relative z-10 inline-flex items-center rounded-xl border px-3 py-1 text-xs max-w-fit",
+        "relative z-10 inline-flex items-center border px-3 py-1 text-xs max-w-fit",
         themeClasses,
         className
       )} 

@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { LogoMark } from './LogoMark'
 import {
   SignInButton,
   SignedIn,
@@ -36,22 +36,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
-            <Image
-              alt=""
-              src="/logo.svg"
-              width={100}
-              height={24}
-              className="h-8 w-auto dark:hidden hover:opacity-80"
-              priority
-            />
-            <Image
-              alt=""
-              src="/logo-white.svg"
-              width={100}
-              height={24}
-              className="h-8 w-auto hidden dark:block hover:opacity-80"
-              priority
-            />
+            <LogoMark />
           </Link>
         </div>
         <div className={`flex lg:hidden gap-4 ${mobileMenuOpen ? 'hidden' : ''}`}>
@@ -98,22 +83,7 @@ export default function Header() {
           <div className="flex items-center justify-between mb-8">
             <Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
               <span className="sr-only">Sam Fortin</span>
-              <Image
-                alt=""
-                src="/logo.svg"
-                width={100}
-                height={24}
-                className="h-8 w-auto dark:hidden"
-                priority
-              />
-              <Image
-                alt=""
-                src="/logo-white.svg"
-                width={100}
-                height={24}
-                className="h-8 w-auto hidden dark:block"
-                priority
-              />
+              <LogoMark />
             </Link>
             <div className="flex gap-4">
               <SheetClose asChild>

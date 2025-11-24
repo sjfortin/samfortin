@@ -68,6 +68,7 @@ export default function Blog() {
                       coverImage={post.coverImage}
                       slug={post.slug}
                       title={post.title}
+                      imageClassName="p-1 border border-gray-300"
                     />
                   )}
                   <div className="mt-4 flex flex-row items-center gap-y-2 gap-x-4 text-xs">
@@ -93,14 +94,13 @@ export default function Blog() {
                       {post.description}
                     </p>
                   </div>
-                  <div className="relative flex items-center gap-x-4">
-                    <div className="size-10 rounded-full bg-gray-100 dark:bg-black dark:border-gray-500 dark:border flex items-center justify-center">
+                  {/* <div className="relative flex items-center gap-x-4">
+                    <div className="size-10 bg-gray-100 dark:bg-black dark:border-gray-500 dark:border flex items-center justify-center">
                       <Image
                         src="/images/moebius-sam.png"
                         alt="Moebius"
                         width={40}
                         height={40}
-                        className="rounded-full"
                       />
                     </div>
                     <div className="text-sm/6">
@@ -108,7 +108,7 @@ export default function Blog() {
                         {post.author}
                       </p>
                     </div>
-                  </div>
+                  </div> */}
                 </article>
               ))
             )}
