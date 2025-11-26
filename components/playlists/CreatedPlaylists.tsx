@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ExternalLink, Music, Calendar, Disc } from 'lucide-react';
+import { ExternalLink, Music, Calendar, Disc, Loader2 } from 'lucide-react';
 import type { SavedPlaylist } from './types';
 import { cn } from '@/lib/utils';
 
@@ -22,7 +22,7 @@ export default function CreatedPlaylists({ playlists, isLoading, mode = 'grid', 
                     </h2>
                 )}
                 <div className="flex items-center justify-center py-12">
-                    <div className="animate-spin h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+                    <Loader2 className="h-8 w-8 animate-spin text-gray-500 dark:text-gray-400" />
                 </div>
             </div>
         );
