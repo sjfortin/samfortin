@@ -1,9 +1,8 @@
-import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
 import AnimatedHomeVideo from "@/components/AnimatedHomeVideo";
 import { Subheading } from "@/components/ui/Subheading";
 import { Heading } from "@/components/ui/Heading";
+import { HomeCTA } from "@/components/HomeCTA";
 
 export default function Home() {
   return (
@@ -35,11 +34,11 @@ export default function Home() {
 
 
                   <AnimatedHomeImage
-                    src="/images/moebius-sam.png"
+                    src="/images/sam-in-a-box.png"
                     preload={true}
                     width={120}
                     height={120}
-                    className="aspect-[1/1] bg-black/5 object-cover shadow-lg mb-4 p-1 border border-gray-300"
+                    className="aspect-[1/1] bg-white dark:bg-black object-cover shadow-lg mb-4 p-1 border border-gray-300"
                     initialY={0}
                     animateY={0}
                     duration={0.6}
@@ -48,26 +47,29 @@ export default function Home() {
                     Sam Fortin
                   </Heading>
                   <h2 className="text-pretty text-xl font-semibold tracking-tight text-black sm:text-3xl dark:text-white">
-                    Full Stack Software Engineer
+                    Software Engineer
                   </h2>
                   <Subheading>
                     I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
                   </Subheading>
-                  <p className="hidden lg:block mt-4">
-                    <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 group">Why all the Moebius? <ArrowRightIcon className="w-4 h-4 transition-transform duration-800 group-hover:translate-x-2" /></Link>
-                  </p>
+                  <div className="hidden lg:block mt-4 w-full">
+                    <HomeCTA
+                      href={`/blog/moebius`}
+                      title="Moebius Influence"
+                      description="The influence of Moebius on this site."
+                      eyebrow="Blog"
+                      variant="secondary"
+                    />
+                  </div>
                   {/* Add cta to the /playlists feature */}
                   <div className="hidden lg:block mt-4 w-full">
-                    <Link
+                    <HomeCTA
                       href="/playlists"
-                      className="group relative flex items-center gap-3 bg-black dark:bg-white px-6 py-4 transition-all hover:scale-105 active:scale-95 w-full justify-between"
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-white dark:text-black">AI Playlists</span>
-                        <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
-                      </div>
-                      <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                    </Link>
+                      title="AI Playlists"
+                      description="Turn your mood into a Spotify playlist"
+                      variant="primary"
+                      eyebrow="Feature"
+                    />
                   </div>
                 </div>
                 {/* Desktop */}
@@ -109,20 +111,32 @@ export default function Home() {
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
-                  <div className="mt-4">
-                    <Link href="/blog/moebius" className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">Why all the Moebius? <ArrowRightIcon className="w-4 h-4" /></Link>
-                    <div className="mt-4 w-full lg:hidden">
-                      <Link
+                  <div className="w-full">
+                    
+                    <AnimatedHomeImage
+                      src="/images/home/moebius-home-4.png"
+                      preload={true}
+                      delay={0.5}
+                      className="aspect-video w-full bg-black/5 object-cover"
+                    />
+                    <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
+                  </div>
+                  <div className="mt-4 space-y-4">
+                    <HomeCTA
+                      href={`/blog/moebius`}
+                      title="Moebius Influence"
+                      description="The influence of Moebius on this site."
+                      eyebrow="Blog"
+                      variant="secondary"
+                    />
+                    <div className="w-full lg:hidden">
+                      <HomeCTA
                         href="/playlists"
-                        className="group relative flex items-center gap-3 bg-black dark:bg-white px-6 py-4 w-full justify-between"
-                      >
-                        <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-white dark:text-black">AI Playlists</span>
-                          <span className="text-xs text-gray-400 dark:text-gray-500">Turn your mood into a Spotify playlist</span>
-                        </div>
-                        <ArrowRightIcon className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-500" />
-                      </Link>
+                        title="AI Playlists"
+                        description="Turn your mood into a Spotify playlist"
+                        variant="primary"
+                        eyebrow="Feature"
+                      />
                     </div>
                   </div>
                 </div>

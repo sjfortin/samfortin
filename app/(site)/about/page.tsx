@@ -47,7 +47,7 @@ export default function About() {
               About Me
             </Heading>
             <Subheading>
-              I'm a Software Engineer who has been building on the web for 8+ years. I love working with JavaScript, TypeScript and React. I'm all about writing clean code, making things fast, creating great looking websites while ensuring everything is secure and accessible.
+              I'm a Software Engineer who has been building on the web for 8+ years. I love working with JavaScript, TypeScript and React. I am dedicated to writing clean code, making things fast, and creating great looking websites while ensuring everything is secure and accessible.
             </Subheading>
             <div className="flex flex-col md:flex-row md:gap-4">
               <div className="w-full gap-4">
