@@ -33,5 +33,21 @@ export interface SavedPlaylist {
   tracks_not_found: any;
   created_at: string;
   updated_at: string;
+  is_temporary?: boolean;
+  conversation_id?: string | null;
   playlist_tracks?: PlaylistTrack[];
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  playlist?: PlaylistResponse;
+  timestamp: Date;
+}
+
+export interface PlaylistGenerationOptions {
+  genres?: string[];
+  eras?: string[];
+  playlistLength: string;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PlaylistGenerator from "@/components/playlists/PlaylistGenerator";
+import PlaylistChatInterface from "@/components/playlists/PlaylistChatInterface";
 import { SignedOut, SignedIn, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -75,7 +75,7 @@ export default async function PlaylistsPage() {
       </SignedOut>
 
       <SignedIn>
-        <PlaylistGenerator />
+        <PlaylistChatInterface />
       </SignedIn>
     </div>
   );

@@ -60,9 +60,7 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
       if (data.tracksNotFound && data.tracksNotFound.length > 0) {
         setNotFoundTracks(data.tracksNotFound);
       }
-      if (data.playlistUrl) {
-        window.open(data.playlistUrl, '_blank');
-      }
+      // Don't auto-open the link - user can click it manually
       // Update local playlist state
       setPlaylist(prev => ({
         ...prev,
