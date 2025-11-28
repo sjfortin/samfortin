@@ -112,13 +112,6 @@ export default function Home() {
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
                   <div className="w-full">
-                    
-                    <AnimatedHomeImage
-                      src="/images/home/moebius-home-4.png"
-                      preload={true}
-                      delay={0.5}
-                      className="aspect-video w-full bg-black/5 object-cover"
-                    />
                     <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
                   </div>
                   <div className="mt-4 space-y-4">
