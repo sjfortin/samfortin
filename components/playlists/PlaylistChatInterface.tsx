@@ -3,17 +3,21 @@
 import { useState, useRef, useEffect } from 'react';
 import { useUser, SignInButton } from '@clerk/nextjs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Loader2, Sparkles, Send, Music, Save, ExternalLink } from 'lucide-react';
+import { Loader2, Sparkles, Send, Music, Save, ExternalLink, Plus, Trash2 } from 'lucide-react';
 import type { ChatMessage, PlaylistResponse } from './types';
 import ChatMessageComponent from './ChatMessage';
 import GenreSelector from './GenreSelector';
 import EraSelector from './EraSelector';
-import { cn } from '@/lib/utils';
 import PlaylistSidebar from './PlaylistSidebar';
-import { Bars3Icon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
 
-export default function PlaylistChatInterface() {
-  const { isSignedIn, user } = useUser();
+interface PlaylistChatInterfaceProps {
+  initialPlaylistId?: string;
+}
+
+export default function PlaylistChatInterface({ initialPlaylistId }: PlaylistChatInterfaceProps = {}) {
+  const { isSignedIn } = useUser();
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(initialPlaylistId || null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistResponse | null>(null);
@@ -22,8 +26,9 @@ export default function PlaylistChatInterface() {
   const [selectedEras, setSelectedEras] = useState<string[]>([]);
   const [showPlaylistView, setShowPlaylistView] = useState(false);
   const [spotifyUrl, setSpotifyUrl] = useState<string | null>(null);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [showSavePrompt, setShowSavePrompt] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [savedPlaylistId, setSavedPlaylistId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
 
@@ -31,9 +36,77 @@ export default function PlaylistChatInterface() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Function to save a message to the database
+  const saveMessageToDb = async (playlistId: string, role: 'user' | 'assistant', content: string, playlistSnapshot?: any) => {
+    if (!isSignedIn) return; // Only save if user is signed in
+
+    try {
+      await fetch('/api/playlist-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          playlistId,
+          role,
+          content,
+          playlistSnapshot,
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to save message:', error);
+      // Don't throw - we don't want to break the UI if message saving fails
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Load playlist and chat history when selectedPlaylistId changes
+  useEffect(() => {
+    if (!selectedPlaylistId || !isSignedIn) return;
+
+    const loadPlaylistAndHistory = async () => {
+      try {
+        // Fetch the playlist details
+        const playlistResponse = await fetch(`/api/playlists/${selectedPlaylistId}`);
+        if (!playlistResponse.ok) return;
+        
+        const { playlist } = await playlistResponse.json();
+        
+        // Fetch the chat history
+        const messagesResponse = await fetch(`/api/playlist-messages?playlistId=${selectedPlaylistId}`);
+        if (!messagesResponse.ok) return;
+        
+        const messagesData = await messagesResponse.json();
+        
+        // Convert database messages to ChatMessage format
+        const loadedMessages: ChatMessage[] = messagesData.map((msg: any) => ({
+          id: msg.id,
+          role: msg.role,
+          content: msg.content,
+          playlist: msg.playlist_snapshot,
+          timestamp: new Date(msg.created_at),
+        }));
+        
+        // Set the state
+        setMessages(loadedMessages);
+        setSavedPlaylistId(selectedPlaylistId);
+        
+        // Find the last playlist snapshot in the messages
+        const lastPlaylistMessage = [...loadedMessages].reverse().find(m => m.playlist);
+        if (lastPlaylistMessage?.playlist) {
+          setCurrentPlaylist(lastPlaylistMessage.playlist);
+          setShowPlaylistView(true);
+        }
+      } catch (error) {
+        console.error('Failed to load playlist history:', error);
+      }
+    };
+
+    loadPlaylistAndHistory();
+  }, [selectedPlaylistId, isSignedIn]);
 
   const generatePlaylistMutation = useMutation({
     mutationFn: async ({ prompt, isModification }: { prompt: string; isModification: boolean }) => {
@@ -61,12 +134,12 @@ export default function PlaylistChatInterface() {
 
       return response.json() as Promise<PlaylistResponse>;
     },
-    onSuccess: (playlistData, variables) => {
+    onSuccess: async (playlistData, variables) => {
       // Add assistant message with playlist
       const assistantMessage: ChatMessage = {
         id: Date.now().toString() + '-assistant',
         role: 'assistant',
-        content: variables.isModification 
+        content: variables.isModification
           ? `I've updated your playlist! Here's "${playlistData.name}".`
           : `I've created a playlist for you! Here's "${playlistData.name}".`,
         playlist: playlistData,
@@ -75,6 +148,11 @@ export default function PlaylistChatInterface() {
       setMessages(prev => [...prev, assistantMessage]);
       setCurrentPlaylist(playlistData);
       setShowPlaylistView(true);
+      
+      // Save assistant message to DB if playlist is already saved
+      if (savedPlaylistId) {
+        await saveMessageToDb(savedPlaylistId, 'assistant', assistantMessage.content, playlistData);
+      }
     },
   });
 
@@ -102,9 +180,44 @@ export default function PlaylistChatInterface() {
 
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ['playlists'] });
       setShowSavePrompt(false);
+      
+      // Save the playlist ID and save all messages to database
+      if (data.playlist?.id) {
+        setSavedPlaylistId(data.playlist.id);
+        
+        // Save all messages in the conversation
+        for (const message of messages) {
+          await saveMessageToDb(
+            data.playlist.id,
+            message.role,
+            message.content,
+            message.playlist
+          );
+        }
+      }
+    },
+  });
+
+  const deletePlaylistMutation = useMutation({
+    mutationFn: async (playlistId: string) => {
+      const response = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete playlist');
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['playlists'] });
+      // Reset to new chat state
+      handleNewChat();
+      setShowDeleteConfirm(false);
     },
   });
 
@@ -138,7 +251,7 @@ export default function PlaylistChatInterface() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || generatePlaylistMutation.isPending) return;
 
@@ -150,6 +263,12 @@ export default function PlaylistChatInterface() {
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, userMessage]);
+    
+    // Save user message to DB if playlist is already saved
+    if (savedPlaylistId) {
+      await saveMessageToDb(savedPlaylistId, 'user', input);
+    }
+    
     setInput('');
 
     // Generate playlist
@@ -164,6 +283,25 @@ export default function PlaylistChatInterface() {
     setSpotifyUrl(null);
     setSelectedGenres([]);
     setSelectedEras([]);
+    setSavedPlaylistId(null);
+    setSelectedPlaylistId(null);
+  };
+
+  const handleSelectPlaylist = (playlistId: string) => {
+    // Reset state and load the selected playlist
+    setSelectedPlaylistId(playlistId);
+    setShowPlaylistView(false);
+    setSpotifyUrl(null);
+  };
+
+  const handleDeleteFromSidebar = (playlistId: string) => {
+    // If deleting the currently open playlist, close it first
+    if (playlistId === savedPlaylistId) {
+      handleNewChat();
+    }
+    // Show confirmation and delete
+    setSavedPlaylistId(playlistId);
+    setShowDeleteConfirm(true);
   };
 
   const handleSavePlaylist = () => {
@@ -184,33 +322,33 @@ export default function PlaylistChatInterface() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
-      <PlaylistSidebar
-        onNewPlaylist={handleNewChat}
-        mobileOpen={mobileSidebarOpen}
-        setMobileOpen={setMobileSidebarOpen}
-      />
-
+      {/* Sidebar */}
+      {isSignedIn && <PlaylistSidebar onSelectPlaylist={handleSelectPlaylist} onDeletePlaylist={handleDeleteFromSidebar} />}
+      
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
-        {/* Mobile Header */}
-        <div className="md:hidden flex items-center p-4 border-b border-border">
-          <button
-            onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 -ml-2 text-muted-foreground hover:text-foreground rounded-md"
-          >
-            <Bars3Icon className="w-6 h-6" />
-          </button>
-          <span className="ml-2 font-semibold">AI Playlist Generator</span>
-        </div>
+        {/* Header with New Chat button */}
+        {messages.length > 0 && (
+          <div className="border-b border-border p-3 flex items-center justify-between bg-background">
+            <div className="text-sm text-muted-foreground">
+              {savedPlaylistId ? 'Continuing conversation' : 'New conversation'}
+            </div>
+            <button
+              onClick={handleNewChat}
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium hover:bg-accent transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              New Chat
+            </button>
+          </div>
+        )}
+
 
         {/* Messages Area */}
         <div className="flex-1 overflow-auto">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full p-6 text-center">
               <div className="max-w-2xl space-y-6">
-                <div className="w-16 h-16 rounded-full bg-purple-600 flex items-center justify-center mx-auto">
-                  <Sparkles className="w-8 h-8 text-white" />
-                </div>
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tight">Generate Your Perfect Playlist</h1>
                   <p className="text-muted-foreground text-lg">
@@ -283,7 +421,7 @@ export default function PlaylistChatInterface() {
                     Sign in to save this playlist or create it on Spotify
                   </div>
                 )}
-                
+
                 {spotifyUrl ? (
                   <a
                     href={spotifyUrl}
@@ -338,6 +476,17 @@ export default function PlaylistChatInterface() {
                   <div className="text-sm text-green-600 dark:text-green-500 font-medium text-center py-2">
                     ✓ Saved to your library
                   </div>
+                )}
+
+                {/* Delete button - only show if playlist is saved */}
+                {savedPlaylistId && (
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors border border-destructive/20"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete Playlist
+                  </button>
                 )}
               </div>
 
@@ -466,6 +615,41 @@ export default function PlaylistChatInterface() {
                   Sign In
                 </button>
               </SignInButton>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background border border-border max-w-md w-full p-6 space-y-4">
+            <h3 className="text-lg font-semibold">Delete Playlist?</h3>
+            <p className="text-sm text-muted-foreground">
+              This will permanently delete this playlist and all its chat history. This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={deletePlaylistMutation.isPending}
+                className="px-4 py-2 text-sm font-medium hover:bg-accent transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => savedPlaylistId && deletePlaylistMutation.mutate(savedPlaylistId)}
+                disabled={deletePlaylistMutation.isPending}
+                className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50"
+              >
+                {deletePlaylistMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin inline mr-2" />
+                    Deleting...
+                  </>
+                ) : (
+                  'Delete'
+                )}
+              </button>
             </div>
           </div>
         </div>

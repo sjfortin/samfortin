@@ -4,12 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { SavedPlaylist, Track } from './types';
-import { UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
-import { Home, ArrowLeft, ExternalLink, Trash2, Music, Calendar, Clock, AlertCircle, Loader2, Menu } from 'lucide-react';
+import { ExternalLink, Trash2, Music, Calendar, Clock, AlertCircle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TracksNotFoundWarning from './TracksNotFoundWarning';
-import PlaylistSidebar from './PlaylistSidebar';
 import {
   Dialog,
   DialogContent,
@@ -29,7 +26,6 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [playlist, setPlaylist] = useState(initialPlaylist);
   const [notFoundTracks, setNotFoundTracks] = useState<Track[]>([]);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const createSpotifyPlaylistMutation = useMutation({
     mutationFn: async () => {
@@ -106,24 +102,8 @@ export default function PlaylistDetail({ playlist: initialPlaylist }: PlaylistDe
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
-      <PlaylistSidebar
-        mobileOpen={mobileSidebarOpen}
-        setMobileOpen={setMobileSidebarOpen}
-      />
-
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Mobile Header */}
-        <div className="md:hidden flex items-center p-4 border-b border-border">
-          <button
-            onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 -ml-2 text-muted-foreground hover:text-foreground"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-          {/* <span className="ml-2 font-semibold">Details</span> */}
-        </div>
-
         <div className="flex-1 overflow-auto p-6 lg:p-10">
           <div className="space-y-6 pb-20">
             {/* Header */}
