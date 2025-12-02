@@ -1,4 +1,3 @@
-import FlyingAirplane from "@/components/FlyingAirplane";
 import { Heading } from "@/components/ui/Heading";
 import { Subheading } from "@/components/ui/Subheading";
 
@@ -39,7 +38,7 @@ export default function About() {
 
   return (
     <>
-      <FlyingAirplane />
+      {/* <FlyingAirplane /> */}
       <div>
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto lg:mx-0">

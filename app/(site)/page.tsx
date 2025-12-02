@@ -1,5 +1,4 @@
 import AnimatedHomeImage from "@/components/AnimatedHomeImage";
-import AnimatedHomeVideo from "@/components/AnimatedHomeVideo";
 import { Subheading } from "@/components/ui/Subheading";
 import { Heading } from "@/components/ui/Heading";
 import { HomeCTA } from "@/components/HomeCTA";
@@ -34,7 +33,7 @@ export default function Home() {
 
 
                   <AnimatedHomeImage
-                    src="/images/sam-in-a-box.png"
+                    src="/images/moebius-sam.png"
                     preload={true}
                     width={120}
                     height={120}
@@ -53,21 +52,21 @@ export default function Home() {
                     I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
                   </Subheading>
                   <div className="hidden lg:block mt-4 w-full">
-                    <HomeCTA
+                    {/* <HomeCTA
                       href={`/blog/moebius`}
                       title="Moebius Influence"
                       description="The influence of Moebius on this site."
                       eyebrow="Blog"
                       variant="secondary"
-                    />
+                    /> */}
                   </div>
                   {/* Add cta to the /playlists feature */}
                   <div className="hidden lg:block mt-4 w-full">
                     <HomeCTA
                       href="/playlists"
-                      title="AI Playlists"
+                      title="Playlists"
                       description="Turn your mood into a Spotify playlist"
-                      variant="primary"
+                      variant="secondary"
                       eyebrow="Feature"
                     />
                   </div>
@@ -111,23 +110,23 @@ export default function Home() {
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  <div className="w-full">
+                  {/* <div className="w-full">
                     <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
-                  </div>
+                  </div> */}
                   <div className="mt-4 space-y-4">
-                    <HomeCTA
+                    {/* <HomeCTA
                       href={`/blog/moebius`}
                       title="Moebius Influence"
                       description="The influence of Moebius on this site."
                       eyebrow="Blog"
                       variant="secondary"
-                    />
+                    /> */}
                     <div className="w-full lg:hidden">
                       <HomeCTA
                         href="/playlists"
-                        title="AI Playlists"
+                        title="Playlists"
                         description="Turn your mood into a Spotify playlist"
-                        variant="primary"
+                        variant="secondary"
                         eyebrow="Feature"
                       />
                     </div>
