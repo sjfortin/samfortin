@@ -1,13 +1,20 @@
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
+import PlaylistSidebar from "@/components/playlists/PlaylistSidebar"
+
 export default function PlaylistLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-full w-full">
-      <div className="flex-1">
-        {children}
-      </div>
-    </div>
+    <SidebarProvider>
+      <PlaylistSidebar />
+      <SidebarInset>
+        <main>
+          <SidebarTrigger variant="ghost" size="icon" />
+          {children}
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
