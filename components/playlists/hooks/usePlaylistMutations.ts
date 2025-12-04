@@ -102,6 +102,44 @@ export function useSavePlaylist() {
   });
 }
 
+// Update playlist tracks mutation
+interface UpdatePlaylistTracksParams {
+  playlistId: string;
+  name?: string;
+  description?: string;
+  tracks: Array<{ name: string; artist: string; uri?: string }>;
+}
+
+export function useUpdatePlaylistTracks() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (params: UpdatePlaylistTracksParams) => {
+      const response = await fetch(`/api/playlists/${params.playlistId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: params.name,
+          description: params.description,
+          tracks: params.tracks,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update playlist tracks');
+      }
+
+      return response.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['playlists'] });
+      queryClient.invalidateQueries({ queryKey: ['playlist', variables.playlistId] });
+    },
+  });
+}
+
 // Delete playlist mutation
 export function useDeletePlaylist() {
   const queryClient = useQueryClient();

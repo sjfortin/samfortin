@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import PlaylistChatInterface from "@/components/playlists/PlaylistChatInterface";
-import { SignedOut, SignedIn, SignInButton } from "@clerk/nextjs";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import PlaylistCreator from "@/components/playlists/PlaylistCreator";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sjfortin.com";
 
@@ -43,7 +40,8 @@ export default async function PlaylistsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <PlaylistChatInterface />
+      
+      <PlaylistCreator />
     </div>
   );
 }
