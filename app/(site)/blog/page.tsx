@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getAllPosts } from '@/lib/blog';
 import AnimatedImage from '@/components/AnimatedImage';
 import { Heading } from '@/components/ui/Heading';

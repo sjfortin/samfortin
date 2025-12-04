@@ -19,10 +19,6 @@ export async function POST(request: Request) {
   try {
     const { userId } = await auth();
 
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const { name, description, tracks, playlistId: dbPlaylistId }: PlaylistRequest = await request.json();
 
     if (!name || !description || !Array.isArray(tracks) || tracks.length === 0) {
@@ -105,8 +101,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Update database with Spotify playlist info
-    if (dbPlaylistId) {
+    // Update database with Spotify playlist info (only if user is authenticated)
+    if (dbPlaylistId && userId) {
       const { error: updateError } = await supabaseAdmin
         .from("playlists")
         .update({
