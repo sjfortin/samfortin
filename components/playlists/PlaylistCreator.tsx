@@ -86,7 +86,7 @@ export default function PlaylistCreator() {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="max-w-md w-full text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-purple-600 text-white flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-full dark:text-white flex items-center justify-center mx-auto">
             <Sparkles className="w-8 h-8" />
           </div>
           <h2 className="text-2xl font-bold">Create AI Playlists</h2>
@@ -95,7 +95,7 @@ export default function PlaylistCreator() {
           </p>
           <SignInButton mode="modal">
             <button className="px-6 py-3 text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-md">
-              Sign In to Get Started
+              Sign in
             </button>
           </SignInButton>
         </div>
@@ -106,33 +106,14 @@ export default function PlaylistCreator() {
   return (
     <>
       {/* Hero Section */}
-      <div className="flex items-center justify-center py-8">
-        <div className="w-full md:max-w-2xl">
-          <div className="text-center space-y-2">
+      <div className="flex py-8 px-4 md:px-10">
+        <div className="w-full">
+          <div className="space-y-2">
             <h1 className="text-3xl font-bold">Create Your Playlist</h1>
             <p className="text-muted-foreground">
-              Describe the vibe, mood, or theme you're looking for, and AI will curate a personalized playlist for you.
+              Add a mood, vibe, or theme for your playlist and let AI curate the perfect soundtrack.
             </p>
           </div>
-
-          {(generatePlaylistMutation.isPending || savePlaylistMutation.isPending) && (
-            <div className="flex gap-4 p-6 bg-muted/50 rounded-lg border border-border">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center">
-                  <Sparkles className="w-6 h-6" />
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="font-medium mb-1">AI Assistant</div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>
-                    {generatePlaylistMutation.isPending ? 'Curating your playlist...' : 'Saving playlist...'}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 

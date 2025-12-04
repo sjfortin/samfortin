@@ -179,13 +179,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden">
-      {/* Header with playlist info */}
       <div className="flex-none border-b border-border bg-background p-4 md:p-6">
-        <Link href="/playlists" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-          <ArrowLeft className="w-4 h-4" />
-          Create new playlist
-        </Link>
-
         <div className="space-y-2">
           <h1 className="text-2xl font-bold">{playlist.name}</h1>
           {playlist.description && (
@@ -237,10 +231,8 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
 
       {/* Main Content - Split View */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Column 1: Chat & Input (70%) - Only show if not on Spotify */}
         {!spotifyUrl ? (
-          <div className="flex flex-col w-full md:w-[70%] border-b md:border-b-0 md:border-r border-border h-1/2 md:h-full">
-            {/* Messages Area - Flexible height */}
+          <div className="flex flex-col w-full md:w-[50%] border-b md:border-b-0 md:border-r border-border h-1/2 md:h-full">
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
                 <div className="space-y-0 pb-4">
@@ -265,7 +257,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                   {generatePlaylistMutation.isPending && (
                     <div className="flex gap-4 p-4 bg-background">
                       <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center">
+                        <div className="w-8 h-8 rounded-full text-white flex items-center justify-center">
                           <Sparkles className="w-5 h-5" />
                         </div>
                       </div>
@@ -283,7 +275,6 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               </ScrollArea>
             </div>
 
-            {/* Input Area - Fixed at bottom of column */}
             <div className="flex-none border-t border-border p-4 bg-background">
               <form onSubmit={handleSubmit}>
                 <div className="relative border border-input bg-background shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring rounded-lg">
@@ -344,10 +335,9 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
           </div>
         ) : null}
 
-        {/* Column 2: Tracks (30% normally, full width when on Spotify) */}
         <div className={cn(
           "flex flex-col bg-muted/10 overflow-hidden",
-          spotifyUrl ? "w-full h-full" : "w-full md:w-[30%] h-1/2 md:h-full"
+          spotifyUrl ? "w-full h-full" : "w-full md:w-[50%] h-1/2 md:h-full"
         )}>
           <div className="flex-none p-4 border-b border-border bg-muted/30">
             <h2 className="font-semibold text-sm">

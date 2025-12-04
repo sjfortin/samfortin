@@ -18,7 +18,7 @@ export default function ChatMessage({ message, onViewPlaylist }: ChatMessageProp
         <div
           className={cn(
             'w-8 h-8 rounded-full flex items-center justify-center',
-            isUser ? 'bg-primary text-primary-foreground' : 'bg-purple-600 text-white'
+            isUser ? 'bg-primary text-primary-foreground' : 'bg-white-600 dark:bg-white-600 dark:text-white'
           )}
         >
           {isUser ? <User className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}

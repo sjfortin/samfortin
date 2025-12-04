@@ -1,18 +1,13 @@
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface LogoMarkProps {
   className?: string;
+  height?: number;
+  width?: number;
 }
 
-export function LogoMark({ className }: LogoMarkProps) {
+export function LogoMark({ className, height = 40, width = 40 }: LogoMarkProps) {
   return (
-    <div
-      className={cn(
-        "flex h-10 w-10 items-center justify-center border border-gray-400 bg-white text-black text-sm font-semibold uppercase tracking-wide dark:border-white dark:bg-black dark:text-white hover:opacity-80 cursor-pointer transition-all duration-200 ease-in-out  hover:scale-110",
-        className,
-      )}
-    >
-      sf
-    </div>
+    <Image src="/images/sam-in-a-box-logo.png" alt="Logo" width={width} height={height} className={className} />
   );
 }

@@ -1,5 +1,5 @@
-import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import PlaylistSidebar from "@/components/playlists/PlaylistSidebar"
+import PlaylistHeader from "@/components/playlists/PlaylistHeader";
 
 export default function PlaylistLayout({
   children,
@@ -7,14 +7,14 @@ export default function PlaylistLayout({
   children: React.ReactNode
 }) {
   return (
-    <SidebarProvider>
-      <PlaylistSidebar />
-      <SidebarInset>
-        <main>
-          <SidebarTrigger variant="ghost" size="icon" />
+    <div className="flex flex-col h-screen">
+      <PlaylistHeader />
+      <main className="flex flex-col md:flex-row h-full">
+        <PlaylistSidebar />
+        <div className="flex-1">
           {children}
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
+        </div>
+      </main>
+    </div>
   )
 }
