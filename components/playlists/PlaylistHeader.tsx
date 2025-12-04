@@ -8,7 +8,7 @@ export default function PlaylistHeader() {
         <header className="flex justify-between items-center w-full p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
                 <Link href="/">
-                    <Image src="/images/sam-in-a-box-logo.png" alt="Logo" width={40} height={40} />
+                    <Image className="rounded-full" src="/images/sam-in-a-box-logo.png" alt="Logo" width={40} height={40} />
                 </Link>
             </div>
             <h1 className="text-xl font-bold">Playlists</h1>
