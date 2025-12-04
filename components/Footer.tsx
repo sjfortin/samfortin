@@ -106,7 +106,7 @@ export default function Footer() {
         <div className="flex justify-center lg:flex-1 text-center mt-5">
           <Link href="/">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
-            <LogoMark />
+            <LogoMark className='rounded-full' />
           </Link>
         </div>
       </div>

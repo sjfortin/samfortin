@@ -39,7 +39,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
-            <LogoMark />
+            <LogoMark className='rounded-full' />
           </Link>
         </div>
         <div className={`flex lg:hidden gap-4 ${mobileMenuOpen ? 'hidden' : ''}`}>
@@ -93,7 +93,7 @@ export default function Header() {
           <div className="flex-1 flex flex-col gap-6">
             <div className="flex flex-col gap-2 items-center">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                <LogoMark width={80} height={80} />
+                <LogoMark width={80} height={80} className='rounded-full' />
               </Link>
               {navigation.map((item) => (
                 <Link
