@@ -69,6 +69,7 @@ export async function POST(request: Request) {
     // Search for tracks and get their URIs
     const trackUris: string[] = [];
     const notFoundTracks: Track[] = [];
+    const foundTracks: Array<Track & { uri: string }> = [];
     
     for (const track of tracks) {
       const searchQuery = encodeURIComponent(`track:${track.name} artist:${track.artist}`);
@@ -79,7 +80,9 @@ export async function POST(request: Request) {
       if (searchResponse.ok) {
         const searchData = await searchResponse.json();
         if (searchData.tracks?.items?.[0]?.uri) {
-          trackUris.push(searchData.tracks.items[0].uri);
+          const uri = searchData.tracks.items[0].uri;
+          trackUris.push(uri);
+          foundTracks.push({ ...track, uri });
         } else {
           notFoundTracks.push(track);
         }
@@ -110,12 +113,28 @@ export async function POST(request: Request) {
           spotify_playlist_url: playlistData.external_urls?.spotify,
           tracks_added: trackUris.length,
           tracks_not_found: notFoundTracks,
+          updated_at: new Date().toISOString(),
         })
         .eq("id", dbPlaylistId)
         .eq("clerk_user_id", userId);
 
       if (updateError) {
         console.error("Error updating playlist in database:", updateError);
+      }
+
+      // Update tracks that were found with their Spotify URIs
+      if (foundTracks.length > 0) {
+        for (const foundTrack of foundTracks) {
+          await supabaseAdmin
+            .from("playlist_tracks")
+            .update({ 
+              found_on_spotify: true,
+              spotify_uri: foundTrack.uri 
+            })
+            .eq("playlist_id", dbPlaylistId)
+            .eq("name", foundTrack.name)
+            .eq("artist", foundTrack.artist);
+        }
       }
 
       // Update tracks that weren't found

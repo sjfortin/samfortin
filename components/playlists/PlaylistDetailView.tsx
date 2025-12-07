@@ -2,20 +2,19 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { Loader2, Sparkles, Send, Music, ExternalLink, Trash2, ArrowLeft } from 'lucide-react';
+import { Loader2, Sparkles, Send, Music, ExternalLink, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import type { ChatMessage, PlaylistResponse, SavedPlaylist } from './types';
+import type { PlaylistResponse, SavedPlaylist } from './types';
 import ChatMessageComponent from './ChatMessage';
 import { cn } from '@/lib/utils';
 import {
-  useGeneratePlaylist,
   useDeletePlaylist,
   useCreateSpotifyPlaylist,
   useUpdatePlaylistTracks,
   saveMessageToDb,
   fetchPlaylistWithHistory,
 } from './hooks/usePlaylistMutations';
-import Link from 'next/link';
+import { usePlaylistChat } from './hooks/usePlaylistChat';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface PlaylistDetailViewProps {
@@ -25,19 +24,39 @@ interface PlaylistDetailViewProps {
 export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState('');
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistResponse | null>(null);
   const [playlistLength, setPlaylistLength] = useState(playlist.playlist_length || '1');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [spotifyUrl, setSpotifyUrl] = useState<string | null>(playlist.spotify_playlist_url);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Use custom hooks
-  const generatePlaylistMutation = useGeneratePlaylist();
+  // Local input state (AI SDK v5 doesn't provide input/setInput)
+  const [input, setInput] = useState('');
+
+  // Use custom hooks for non-chat operations
   const deletePlaylistMutation = useDeletePlaylist();
   const createSpotifyPlaylistMutation = useCreateSpotifyPlaylist();
   const updatePlaylistTracksMutation = useUpdatePlaylistTracks();
+
+  // Use custom playlist chat hook
+  const { messages, isGenerating, generatePlaylist, setMessages } = usePlaylistChat({
+    playlistId: playlist.id,
+    onPlaylistGenerated: async (playlistData, messageText) => {
+      setCurrentPlaylist(playlistData);
+
+      // Save to database
+      if (playlist.id && isSignedIn) {
+        await saveMessageToDb(playlist.id, 'assistant', messageText, playlistData);
+        updatePlaylistTracksMutation.mutate({
+          playlistId: playlist.id,
+          name: playlistData.name,
+          description: playlistData.description,
+          tracks: playlistData.tracks,
+        });
+      }
+    },
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,98 +72,63 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
 
     const loadPlaylistAndHistory = async () => {
       try {
-        const { playlist: playlistData, messages: messagesData } = await fetchPlaylistWithHistory(playlist.id);
+        setIsLoadingHistory(true);
+        const { messages: messagesData } = await fetchPlaylistWithHistory(playlist.id);
 
-        // Convert database messages to ChatMessage format
-        const loadedMessages: ChatMessage[] = messagesData.map((msg: any) => ({
+        // Convert database messages to AI SDK UIMessage format
+        const loadedMessages = messagesData.map((msg: any) => ({
           id: msg.id,
-          role: msg.role,
-          content: msg.content,
-          playlist: msg.playlist_snapshot,
-          timestamp: new Date(msg.created_at),
+          role: msg.role as 'user' | 'assistant',
+          // Store playlist snapshot in parts for tool results
+          parts: msg.playlist_snapshot
+            ? [
+              { type: 'text' as const, text: msg.content },
+              {
+                type: 'tool-generatePlaylist' as const,
+                toolName: 'generatePlaylist',
+                result: msg.playlist_snapshot,
+                state: 'result' as const,
+                toolCallId: `loaded-${msg.id}`,
+                args: {},
+              },
+            ]
+            : [{ type: 'text' as const, text: msg.content }],
         }));
 
-        // Set the state
         setMessages(loadedMessages);
 
-        // Find the last playlist snapshot in the messages
-        const lastPlaylistMessage = [...loadedMessages].reverse().find(m => m.playlist);
-        if (lastPlaylistMessage?.playlist) {
-          setCurrentPlaylist(lastPlaylistMessage.playlist);
+        // Find the last playlist snapshot
+        const lastPlaylistMsg = [...messagesData].reverse().find((m: any) => m.playlist_snapshot);
+        if (lastPlaylistMsg?.playlist_snapshot) {
+          setCurrentPlaylist(lastPlaylistMsg.playlist_snapshot);
         }
       } catch (error) {
         console.error('Failed to load playlist history:', error);
+      } finally {
+        setIsLoadingHistory(false);
       }
     };
 
     loadPlaylistAndHistory();
-  }, [playlist.id, isSignedIn]);
-
-  // Handle successful playlist generation
-  const handlePlaylistGenerated = async (playlistData: PlaylistResponse) => {
-    const assistantMessage: ChatMessage = {
-      id: Date.now().toString() + '-assistant',
-      role: 'assistant',
-      content: `I've updated your playlist! Here's "${playlistData.name}".`,
-      playlist: playlistData,
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, assistantMessage]);
-    setCurrentPlaylist(playlistData);
-
-    // Save assistant message to DB and update tracks in database
-    if (playlist.id && isSignedIn) {
-      // Save the message with playlist snapshot
-      await saveMessageToDb(playlist.id, 'assistant', assistantMessage.content, playlistData);
-
-      // Update the tracks in the database
-      updatePlaylistTracksMutation.mutate({
-        playlistId: playlist.id,
-        name: playlistData.name,
-        description: playlistData.description,
-        tracks: playlistData.tracks,
-      });
-    }
-  };
+  }, [playlist.id, isSignedIn, setMessages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || generatePlaylistMutation.isPending) return;
+    if (!input.trim() || isGenerating) return;
 
-    // Add user message
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input,
-      timestamp: new Date(),
-    };
-    setMessages(prev => [...prev, userMessage]);
+    const userInput = input;
 
-    // Save user message to DB
+    // Save user message to DB first
     if (playlist.id) {
-      await saveMessageToDb(playlist.id, 'user', input);
+      await saveMessageToDb(playlist.id, 'user', userInput);
     }
 
+    // Generate playlist using custom hook
+    generatePlaylist(userInput, {
+      playlistLength,
+      currentPlaylist,
+    });
     setInput('');
-
-    // Generate playlist modification
-    generatePlaylistMutation.mutate(
-      {
-        prompt: input,
-        playlistLength,
-        genres: [],
-        eras: [],
-        conversationHistory: messages.map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        currentPlaylist,
-        isModification: true,
-      },
-      {
-        onSuccess: (data) => handlePlaylistGenerated(data),
-      }
-    );
   };
 
   const handleCreateSpotify = () => {
@@ -156,11 +140,23 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         name: currentPlaylist.name,
         description: currentPlaylist.description,
         tracks: currentPlaylist.tracks,
+        playlistId: playlist.id,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           if (data.playlistUrl) {
             setSpotifyUrl(data.playlistUrl);
+            
+            // Reload playlist data to get updated found_on_spotify flags
+            if (playlist.id) {
+              try {
+                const { playlist: updatedPlaylist } = await fetchPlaylistWithHistory(playlist.id);
+                // Force a re-render by updating the playlist reference
+                window.location.reload();
+              } catch (error) {
+                console.error('Failed to reload playlist data:', error);
+              }
+            }
           }
         },
       }
@@ -229,14 +225,20 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         </div>
       </div>
 
-      {/* Main Content - Split View */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {!spotifyUrl ? (
           <div className="flex flex-col w-full md:w-[50%] border-b md:border-b-0 md:border-r border-border h-1/2 md:h-full">
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
                 <div className="space-y-0 pb-4">
-                  {messages.length === 0 ? (
+                  {isLoadingHistory ? (
+                    <div className="flex items-center justify-center h-full min-h-[200px] p-8">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span className="text-sm">Loading conversation...</span>
+                      </div>
+                    </div>
+                  ) : messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full min-h-[200px] p-8">
                       <div className="text-center text-muted-foreground">
                         <p className="text-sm">No conversation history yet.</p>
@@ -248,13 +250,25 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                       {messages.map((message) => (
                         <ChatMessageComponent
                           key={message.id}
-                          message={message}
-                          onViewPlaylist={() => { }}
+                          message={{
+                            id: message.id,
+                            role: message.role as 'user' | 'assistant',
+                            // Get text content from parts
+                            content: message.parts
+                              ?.filter((p: any) => p.type === 'text')
+                              .map((p: any) => p.text)
+                              .join('') || '',
+                            timestamp: new Date(),
+                            // Extract playlist from tool result if present
+                            playlist: (message.parts?.find(
+                              (p: any) => p.type?.startsWith('tool-') && p.result
+                            ) as { result: PlaylistResponse } | undefined)?.result,
+                          }}
                         />
                       ))}
                     </>
                   )}
-                  {generatePlaylistMutation.isPending && (
+                  {isGenerating && (
                     <div className="flex gap-4 p-4 bg-background">
                       <div className="flex-shrink-0">
                         <div className="w-8 h-8 rounded-full text-white flex items-center justify-center">
@@ -289,7 +303,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                     }}
                     placeholder="Ask me to modify the playlist..."
                     rows={3}
-                    disabled={generatePlaylistMutation.isPending}
+                    disabled={isGenerating}
                     className="block w-full border-0 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:ring-0 sm:text-sm resize-none"
                   />
 
@@ -299,7 +313,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                       <select
                         value={playlistLength}
                         onChange={(e) => setPlaylistLength(e.target.value)}
-                        disabled={generatePlaylistMutation.isPending}
+                        disabled={isGenerating}
                         className="block border-0 bg-transparent py-1.5 pl-3 pr-8 text-muted-foreground focus:ring-2 focus:ring-ring sm:text-xs cursor-pointer hover:text-foreground transition-colors"
                       >
                         <option value="1">1 hour</option>
@@ -310,13 +324,13 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
 
                     <button
                       type="submit"
-                      disabled={generatePlaylistMutation.isPending || !input.trim()}
+                      disabled={isGenerating || !input.trim()}
                       className={cn(
                         'inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all rounded-md',
-                        (generatePlaylistMutation.isPending || !input.trim()) && 'opacity-50 cursor-not-allowed'
+                        (isGenerating || !input.trim()) && 'opacity-50 cursor-not-allowed'
                       )}
                     >
-                      {generatePlaylistMutation.isPending ? (
+                      {isGenerating ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin" />
                           Updating...
@@ -341,14 +355,50 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         )}>
           <div className="flex-none p-4 border-b border-border bg-muted/30">
             <h2 className="font-semibold text-sm">
-              Tracks ({currentPlaylist?.tracks?.length ?? playlist.playlist_tracks?.length ?? 0})
+              Tracks ({spotifyUrl ? playlist.playlist_tracks?.length ?? 0 : currentPlaylist?.tracks?.length ?? playlist.playlist_tracks?.length ?? 0})
             </h2>
           </div>
           <div className="flex-1 min-h-0">
             <ScrollArea className="h-full w-full">
               <div className="p-4 space-y-2">
-                {/* Use currentPlaylist tracks if available (after modifications), otherwise use original playlist tracks */}
-                {currentPlaylist?.tracks && currentPlaylist.tracks.length > 0 ? (
+                {/* Show info message if Spotify playlist exists and some tracks weren't found */}
+                {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.some(t => t.found_on_spotify === false) && (
+                  <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md text-sm">
+                    <p className="text-destructive font-medium">Some tracks were not found on Spotify</p>
+                    <p className="text-muted-foreground text-xs mt-1">
+                      Tracks marked below could not be added to your Spotify playlist.
+                    </p>
+                  </div>
+                )}
+                
+                {/* If Spotify playlist exists, always show playlist_tracks with found_on_spotify info */}
+                {/* Otherwise, use currentPlaylist tracks if available (after modifications), or original playlist tracks */}
+                {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.length > 0 ? (
+                  playlist.playlist_tracks
+                    .sort((a, b) => a.position - b.position)
+                    .map((track, index) => (
+                      <div
+                        key={track.id}
+                        className={cn(
+                          "flex gap-3 text-sm p-3 border rounded-md shadow-sm",
+                          track.found_on_spotify === false
+                            ? "border-destructive/30 bg-destructive/5"
+                            : "border-border bg-card"
+                        )}
+                      >
+                        <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className={cn("font-medium truncate", track.found_on_spotify === false && "text-muted-foreground")}>
+                            {track.name}
+                          </div>
+                          <div className="text-xs text-muted-foreground truncate">{track.artist}</div>
+                          {track.found_on_spotify === false && (
+                            <div className="text-xs text-destructive mt-1">Not found on Spotify</div>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                ) : currentPlaylist?.tracks && currentPlaylist.tracks.length > 0 ? (
                   currentPlaylist.tracks.map((track, index) => (
                     <div key={`${track.name}-${track.artist}-${index}`} className="flex gap-3 text-sm p-3 border border-border bg-card rounded-md shadow-sm">
                       <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>

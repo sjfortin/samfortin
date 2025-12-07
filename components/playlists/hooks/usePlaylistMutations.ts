@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { PlaylistResponse } from '../types';
 
 // Fetch all playlists
 export function usePlaylists() {
@@ -28,44 +27,6 @@ export async function fetchPlaylistWithHistory(playlistId: string) {
   const messages = await messagesResponse.json();
 
   return { playlist, messages };
-}
-
-// Generate playlist mutation
-interface GeneratePlaylistParams {
-  prompt: string;
-  playlistLength: string;
-  genres: string[];
-  eras: string[];
-  conversationHistory: Array<{ role: string; content: string }>;
-  currentPlaylist: PlaylistResponse | null;
-  isModification: boolean;
-}
-
-export function useGeneratePlaylist() {
-  return useMutation({
-    mutationFn: async (params: GeneratePlaylistParams) => {
-      const response = await fetch('/api/playlist-chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: params.prompt,
-          playlistLength: params.playlistLength,
-          genres: params.genres,
-          eras: params.eras,
-          conversationHistory: params.conversationHistory,
-          currentPlaylist: params.isModification ? params.currentPlaylist : null,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to generate playlist');
-      }
-
-      return response.json() as Promise<PlaylistResponse>;
-    },
-  });
 }
 
 // Save playlist mutation
@@ -167,6 +128,7 @@ interface CreateSpotifyPlaylistParams {
   name: string;
   description: string;
   tracks: Array<{ name: string; artist: string; uri?: string }>;
+  playlistId?: string;
 }
 
 export function useCreateSpotifyPlaylist() {
