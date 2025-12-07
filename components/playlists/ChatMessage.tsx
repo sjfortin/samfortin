@@ -6,10 +6,9 @@ import { cn } from '@/lib/utils';
 
 interface ChatMessageProps {
   message: ChatMessageType;
-  onViewPlaylist?: (playlist: any) => void;
 }
 
-export default function ChatMessage({ message, onViewPlaylist }: ChatMessageProps) {
+export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === 'user';
 
   return (
@@ -27,25 +26,6 @@ export default function ChatMessage({ message, onViewPlaylist }: ChatMessageProp
       <div className="flex-1 space-y-2 min-w-0">
         <div className="font-medium text-sm">{isUser ? 'You' : 'AI Assistant'}</div>
         <div className="text-sm whitespace-pre-wrap break-words">{message.content}</div>
-        {message.playlist && (
-          <div className="mt-4 border border-border bg-card p-4 space-y-3">
-            <div>
-              <h3 className="font-semibold text-base">{message.playlist.name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{message.playlist.description}</p>
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {message.playlist.tracks.length} tracks
-            </div>
-            {onViewPlaylist && (
-              <button
-                onClick={() => onViewPlaylist(message.playlist)}
-                className="text-xs text-primary hover:underline font-medium"
-              >
-                View full playlist →
-              </button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
