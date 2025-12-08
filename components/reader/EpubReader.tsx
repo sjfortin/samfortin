@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ReactReader } from 'react-reader';
 import { HighlightMenu } from './HighlightMenu';
 import { ImageModal } from './ImageModal';

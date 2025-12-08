@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useCallback } from 'react';
-import { Upload, BookOpen } from 'lucide-react';
+import { useCallback } from 'react';
+import { Upload } from 'lucide-react';
 import { motion } from 'motion/react';
+import { LogoMark } from '@/components/LogoMark';
+import Link from 'next/link';
 
 interface UploadScreenProps {
   onFileUpload: (arrayBuffer: ArrayBuffer, fileName: string) => void;
@@ -33,12 +35,14 @@ export function UploadScreen({ onFileUpload }: UploadScreenProps) {
       >
         <div className="text-center mb-8">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', delay: 0.1 }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-2xl shadow-cyan-500/25 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="mb-6 flex items-center justify-center"
           >
-            <BookOpen className="w-10 h-10 text-white" />
+            <Link href="/">
+              <LogoMark className="rounded-full" width={60} height={60} />
+            </Link>
           </motion.div>
           <h1 className="text-3xl font-bold text-white mb-2">Visual Reader</h1>
           <p className="text-zinc-400">

@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -16,7 +15,7 @@ export function NavigationControls({ onPrev, onNext }: NavigationControlsProps) 
         variant="ghost"
         size="icon-sm"
         onClick={onPrev}
-        className="text-zinc-400 hover:text-white"
+        className="text-zinc-400 hover:text-white hover:bg-zinc-700/50"
       >
         <ChevronLeft className="w-5 h-5" />
       </Button>
@@ -25,7 +24,7 @@ export function NavigationControls({ onPrev, onNext }: NavigationControlsProps) 
         variant="ghost"
         size="icon-sm"
         onClick={onNext}
-        className="text-zinc-400 hover:text-white"
+        className="text-zinc-400 hover:text-white hover:bg-zinc-700/50"
       >
         <ChevronRight className="w-5 h-5" />
       </Button>

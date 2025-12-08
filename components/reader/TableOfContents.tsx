@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';
@@ -47,7 +46,7 @@ export function TableOfContents({ isOpen, items, onClose, onNavigate }: TableOfC
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="text-zinc-400 hover:text-white"
+                className="text-zinc-400 hover:text-white hover:bg-zinc-700/50"
               >
                 <X className="w-5 h-5" />
               </Button>
