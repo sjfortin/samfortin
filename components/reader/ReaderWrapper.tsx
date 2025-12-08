@@ -10,7 +10,7 @@ const EpubReader = dynamic(
     loading: () => (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+          <Loader2 className="w-8 h-8 text-cyan-500 animate-spin" />
           <p className="text-zinc-400">Loading reader...</p>
         </div>
       </div>

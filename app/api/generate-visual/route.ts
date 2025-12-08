@@ -15,15 +15,36 @@ export async function POST(req: Request) {
       );
     }
 
-    // Craft a rich prompt for visual interpretation
-    const prompt = `Create a beautiful, evocative ${style} that visually interprets this literary passage. 
-Capture the mood, atmosphere, and imagery suggested by the text. 
-Be artistic and imaginative in your interpretation.
+    const bookName = 'A Christmas Carol';
+    const author = 'Charles Dickens';
 
-Passage: "${text.slice(0, 500)}"`;
+    // Craft a rich prompt for visual interpretation
+    const prompt = `Create a beautiful illustration in the distinctive style of Moebius (Jean Giraud) that visually interprets this literary passage from "${bookName}" by ${author}.
+
+ART STYLE - MOEBIUS:
+- Clean, precise linework with fine hatching and crosshatching
+- Surreal, dreamlike quality with vast open spaces
+- Distinctive use of color: soft pastels, ethereal blues, warm desert tones
+- Intricate detail work combined with minimalist compositions
+- Otherworldly, contemplative atmosphere
+- European comic book aesthetic (bande dessinée)
+
+CRITICAL REQUIREMENTS:
+- NO TEXT whatsoever in the image - no words, letters, numbers, captions, titles, labels, or any written content
+- NO quotes or passages from the book visible in the image
+- The image must be purely visual - only imagery, colors, shapes, and artistic elements
+- This is a companion illustration, not a text overlay
+
+ARTISTIC DIRECTION:
+- Capture the mood, atmosphere, and emotional essence of the passage
+- Be imaginative and evocative in your visual interpretation
+- Focus on the imagery, setting, characters, or feelings suggested by the text
+
+Passage to interpret: "${text.slice(0, 500)}"`;
+
 
     const result = await generateText({
-      model: google('gemini-2.0-flash-exp'),
+      model: google('gemini-2.5-flash-image'),
       providerOptions: {
         google: { responseModalities: ['TEXT', 'IMAGE'] },
       },
@@ -32,7 +53,7 @@ Passage: "${text.slice(0, 500)}"`;
 
     // Find the generated image in the files array
     const imageFile = result.files?.find(file => file.mediaType.startsWith('image/'));
-    
+
     if (!imageFile) {
       return NextResponse.json(
         { error: 'No image was generated. Please try again.' },
@@ -48,7 +69,7 @@ Passage: "${text.slice(0, 500)}"`;
     });
   } catch (error) {
     console.error('Image generation error:', error);
-    
+
     // Check for specific error types
     if (error instanceof Error) {
       if (error.message.includes('safety')) {
@@ -58,7 +79,7 @@ Passage: "${text.slice(0, 500)}"`;
         );
       }
     }
-    
+
     return NextResponse.json(
       { error: 'Failed to generate image. Please try again.' },
       { status: 500 }

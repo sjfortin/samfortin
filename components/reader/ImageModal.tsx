@@ -53,7 +53,7 @@ export function ImageModal({
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-zinc-700/50">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-400" />
+                <Sparkles className="w-5 h-5 text-cyan-400" />
                 <h2 className="text-lg font-semibold text-white">Visual Interpretation</h2>
               </div>
               <Button
@@ -71,8 +71,8 @@ export function ImageModal({
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-20 gap-6">
                   <div className="relative">
-                    <div className="w-20 h-20 rounded-full border-4 border-zinc-700 border-t-amber-400 animate-spin" />
-                    <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-amber-400 animate-pulse" />
+                    <div className="w-20 h-20 rounded-full border-4 border-zinc-700 border-t-cyan-400 animate-spin" />
+                    <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400 animate-pulse" />
                   </div>
                   <div className="text-center">
                     <p className="text-white font-medium text-lg">Generating your visual...</p>
@@ -117,7 +117,7 @@ export function ImageModal({
                     className="bg-zinc-800/50 rounded-xl p-4 border border-zinc-700/50"
                   >
                     <div className="flex items-start gap-3">
-                      <Quote className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                      <Quote className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
                       <p className="text-zinc-300 italic text-sm leading-relaxed line-clamp-4">
                         &ldquo;{selectedText}&rdquo;
                       </p>

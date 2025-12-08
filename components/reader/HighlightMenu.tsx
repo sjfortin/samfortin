@@ -53,7 +53,7 @@ export function HighlightMenu({
         onClick={handleClick}
         onMouseDown={handleClick}
       >
-        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-xl shadow-2xl border border-zinc-700/50 p-1 flex items-center gap-1">
+        <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 shadow-2xl border border-zinc-700/50 p-1 flex items-center gap-1">
           <Button
             onClick={(e) => {
               e.stopPropagation();
@@ -62,7 +62,7 @@ export function HighlightMenu({
             }}
             disabled={isGenerating}
             size="sm"
-            className="gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-lg shadow-amber-500/25"
+            className="rounded-none gap-2 bg-gradient-to-r from-cyan-500 to-cyan-500 hover:from-cyan-600 hover:to-cyan-600 text-white border-0 shadow-lg"
           >
             <Sparkles className="w-4 h-4" />
             {isGenerating ? 'Generating...' : 'Visualize'}
@@ -80,7 +80,7 @@ export function HighlightMenu({
             <X className="w-4 h-4" />
           </Button>
         </div>
-        
+
         {/* Arrow pointer */}
         <div className="absolute left-1/2 -translate-x-1/2 -bottom-2">
           <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-zinc-800" />
