@@ -46,7 +46,7 @@ export function UploadScreen({ onFileUpload }: UploadScreenProps) {
           </motion.div>
           <h1 className="text-3xl font-bold text-white mb-2">Visual Reader</h1>
           <p className="text-zinc-400">
-            Upload an EPUB book and transform passages into AI-generated artwork
+            Upload an EPUB book and transform passages into AI generated artwork inspired by Moebius.
           </p>
         </div>
 
