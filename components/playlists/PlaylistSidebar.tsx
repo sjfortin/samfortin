@@ -40,7 +40,16 @@ export default function PlaylistSidebar() {
                 {playlists.map((playlist: SavedPlaylist) => (
                   <li key={playlist.id} className="py-2">
                     <Link href={`/playlists/${playlist.id}`} className="flex items-center gap-2">
-                      <div className="flex-shrink-0 w-8 h-8 rounded bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                      <div className="flex-shrink-0 w-10 h-10 rounded overflow-hidden bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                        {playlist.cover_image_url ? (
+                          <img
+                            src={playlist.cover_image_url}
+                            alt={playlist.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Music className="w-4 h-4 text-gray-400" />
+                        )}
                       </div>
                       <div className="flex flex-col gap-0.5 text-left min-w-0 text-sm">
                         <span className="font-medium truncate">{playlist.name}</span>

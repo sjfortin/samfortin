@@ -29,6 +29,7 @@ export interface SavedPlaylist {
   playlist_length: string | null;
   spotify_playlist_id: string | null;
   spotify_playlist_url: string | null;
+  cover_image_url: string | null;
   tracks_added: number;
   tracks_not_found: any;
   created_at: string;
