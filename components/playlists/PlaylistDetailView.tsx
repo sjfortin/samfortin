@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { Loader2, Sparkles, Send, Music, ExternalLink, Trash2 } from 'lucide-react';
+import { Loader2, Sparkles, Send, Music, ExternalLink, Trash2, ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { PlaylistResponse, SavedPlaylist } from './types';
 import ChatMessageComponent from './ChatMessage';
@@ -16,6 +16,8 @@ import {
 } from './hooks/usePlaylistMutations';
 import { usePlaylistChat } from './hooks/usePlaylistChat';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { PlaylistCoverModal } from './PlaylistCoverModal';
+import { Button } from '@/components/ui/button';
 
 interface PlaylistDetailViewProps {
   playlist: SavedPlaylist;
@@ -28,7 +30,9 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   const [playlistLength, setPlaylistLength] = useState(playlist.playlist_length || '1');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [spotifyUrl, setSpotifyUrl] = useState<string | null>(playlist.spotify_playlist_url);
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(playlist.cover_image_url);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [showCoverModal, setShowCoverModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Local input state (AI SDK v5 doesn't provide input/setInput)
@@ -146,7 +150,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         onSuccess: async (data) => {
           if (data.playlistUrl) {
             setSpotifyUrl(data.playlistUrl);
-            
+
             // Reload playlist data to get updated found_on_spotify flags
             if (playlist.id) {
               try {
@@ -176,11 +180,26 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden">
       <div className="flex-none border-b border-border bg-background p-4 md:p-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold">{playlist.name}</h1>
-          {playlist.description && (
-            <p className="text-sm text-muted-foreground">{playlist.description}</p>
+        <div className="flex gap-4">
+          {/* Cover Image */}
+          {coverImageUrl && (
+            <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden shadow-lg">
+              <img
+                src={coverImageUrl}
+                alt={`${playlist.name} cover`}
+                className="w-full h-full object-cover"
+              />
+            </div>
           )}
+
+          <div className="flex-1 min-w-0">
+            <div className="space-y-2">
+              <h1 className="text-2xl font-bold">{playlist.name}</h1>
+              {playlist.description && (
+                <p className="text-sm text-muted-foreground">{playlist.description}</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Action buttons */}
@@ -196,10 +215,10 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               Open in Spotify
             </a>
           ) : (
-            <button
+            <Button
               onClick={handleCreateSpotify}
               disabled={createSpotifyPlaylistMutation.isPending}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 rounded-md"
+              variant="default"
             >
               {createSpotifyPlaylistMutation.isPending ? (
                 <>
@@ -212,16 +231,25 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                   Create on Spotify
                 </>
               )}
-            </button>
+            </Button>
           )}
 
-          <button
+          {spotifyUrl && (
+            <Button
+              onClick={() => setShowCoverModal(true)}
+            >
+              <ImageIcon className="w-4 h-4" />
+              Generate Cover
+            </Button>
+          )}
+
+          <Button
             onClick={() => setShowDeleteConfirm(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors border border-destructive/20 rounded-md"
+            variant="destructive"
           >
             <Trash2 className="w-4 h-4" />
             Delete
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -370,7 +398,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                     </p>
                   </div>
                 )}
-                
+
                 {/* If Spotify playlist exists, always show playlist_tracks with found_on_spotify info */}
                 {/* Otherwise, use currentPlaylist tracks if available (after modifications), or original playlist tracks */}
                 {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.length > 0 ? (
@@ -453,17 +481,17 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               This will permanently delete this playlist and all its chat history. This action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
-              <button
+              <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium hover:bg-accent transition-colors disabled:opacity-50 rounded-md"
+                variant="outline"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleDelete}
                 disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50 rounded-md"
+                variant="destructive"
               >
                 {deletePlaylistMutation.isPending ? (
                   <>
@@ -473,11 +501,25 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                 ) : (
                   'Delete'
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Playlist Cover Modal */}
+      <PlaylistCoverModal
+        isOpen={showCoverModal}
+        onClose={() => setShowCoverModal(false)}
+        playlistName={playlist.name}
+        playlistDescription={playlist.description || ''}
+        tracks={
+          playlist.playlist_tracks?.map((t) => ({ name: t.name, artist: t.artist })) || []
+        }
+        spotifyPlaylistId={playlist.spotify_playlist_id}
+        dbPlaylistId={playlist.id}
+        onCoverUploaded={(url) => setCoverImageUrl(url)}
+      />
     </div>
   );
 }

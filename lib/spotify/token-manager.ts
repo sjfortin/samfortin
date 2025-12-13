@@ -64,12 +64,22 @@ export async function fetchSpotifyWithRefresh(
   }
 
   // Make request with Clerk-managed token
+  // Allow custom Content-Type headers (needed for image uploads)
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${tokens.accessToken}`,
+  };
+
+  // Only set default Content-Type if not provided in init.headers
+  const initHeaders = init?.headers as Record<string, string> | undefined;
+  if (!initHeaders?.["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(input, {
     ...init,
     headers: {
-      ...init?.headers,
-      Authorization: `Bearer ${tokens.accessToken}`,
-      "Content-Type": "application/json",
+      ...initHeaders,
+      ...headers,
     },
   });
 
