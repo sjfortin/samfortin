@@ -21,6 +21,7 @@ export default function PlaylistCreator() {
   const [playlistLength, setPlaylistLength] = useState('1');
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedEras, setSelectedEras] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Use custom hooks
   const savePlaylistMutation = useSavePlaylist();
@@ -64,8 +65,10 @@ export default function PlaylistCreator() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isGenerating || savePlaylistMutation.isPending) return;
+    if (!input.trim() || isGenerating || isSubmitting || savePlaylistMutation.isPending) return;
     if (!isSignedIn) return;
+
+    setIsSubmitting(true);
 
     // Generate playlist using custom hook
     generatePlaylist(input, {
@@ -164,13 +167,13 @@ export default function PlaylistCreator() {
 
                   <button
                     type="submit"
-                    disabled={isGenerating || savePlaylistMutation.isPending || !input.trim()}
+                    disabled={isGenerating || isSubmitting || savePlaylistMutation.isPending || !input.trim()}
                     className={cn(
                       'inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all rounded-md',
-                      (isGenerating || savePlaylistMutation.isPending || !input.trim()) && 'opacity-50 cursor-not-allowed'
+                      (isGenerating || isSubmitting || savePlaylistMutation.isPending || !input.trim()) && 'opacity-50 cursor-not-allowed'
                     )}
                   >
-                    {isGenerating || savePlaylistMutation.isPending ? (
+                    {isGenerating || isSubmitting || savePlaylistMutation.isPending ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
                         Creating...

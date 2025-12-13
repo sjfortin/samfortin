@@ -8,6 +8,7 @@ import {
     SheetHeader,
     SheetTitle,
 } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 interface PlaylistViewSheetProps {
     open: boolean;
@@ -122,13 +123,13 @@ export default function PlaylistViewSheet({
 
                         {/* Delete button - only show if playlist is saved */}
                         {savedPlaylistId && (
-                            <button
+                            <Button
                                 onClick={onDeletePlaylist}
-                                className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors border border-destructive/20 rounded-md"
+                                variant="destructive"
                             >
                                 <Trash2 className="w-4 h-4" />
                                 Delete Playlist
-                            </button>
+                            </Button>
                         )}
                     </div>
 

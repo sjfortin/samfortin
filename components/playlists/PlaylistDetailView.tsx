@@ -17,6 +17,7 @@ import {
 import { usePlaylistChat } from './hooks/usePlaylistChat';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PlaylistCoverModal } from './PlaylistCoverModal';
+import { Button } from '@/components/ui/button';
 
 interface PlaylistDetailViewProps {
   playlist: SavedPlaylist;
@@ -149,7 +150,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         onSuccess: async (data) => {
           if (data.playlistUrl) {
             setSpotifyUrl(data.playlistUrl);
-            
+
             // Reload playlist data to get updated found_on_spotify flags
             if (playlist.id) {
               try {
@@ -190,7 +191,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               />
             </div>
           )}
-          
+
           <div className="flex-1 min-w-0">
             <div className="space-y-2">
               <h1 className="text-2xl font-bold">{playlist.name}</h1>
@@ -214,10 +215,10 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               Open in Spotify
             </a>
           ) : (
-            <button
+            <Button
               onClick={handleCreateSpotify}
               disabled={createSpotifyPlaylistMutation.isPending}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 rounded-md"
+              variant="default"
             >
               {createSpotifyPlaylistMutation.isPending ? (
                 <>
@@ -230,26 +231,25 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                   Create on Spotify
                 </>
               )}
-            </button>
+            </Button>
           )}
 
           {spotifyUrl && (
-            <button
+            <Button
               onClick={() => setShowCoverModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-purple-600 text-white hover:bg-purple-700 transition-colors rounded-md"
             >
               <ImageIcon className="w-4 h-4" />
               Generate Cover
-            </button>
+            </Button>
           )}
 
-          <button
+          <Button
             onClick={() => setShowDeleteConfirm(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors border border-destructive/20 rounded-md"
+            variant="destructive"
           >
             <Trash2 className="w-4 h-4" />
             Delete
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -398,7 +398,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                     </p>
                   </div>
                 )}
-                
+
                 {/* If Spotify playlist exists, always show playlist_tracks with found_on_spotify info */}
                 {/* Otherwise, use currentPlaylist tracks if available (after modifications), or original playlist tracks */}
                 {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.length > 0 ? (
@@ -481,17 +481,17 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               This will permanently delete this playlist and all its chat history. This action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
-              <button
+              <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium hover:bg-accent transition-colors disabled:opacity-50 rounded-md"
+                variant="outline"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleDelete}
                 disabled={deletePlaylistMutation.isPending}
-                className="px-4 py-2 text-sm font-medium bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors disabled:opacity-50 rounded-md"
+                variant="destructive"
               >
                 {deletePlaylistMutation.isPending ? (
                   <>
@@ -501,7 +501,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                 ) : (
                   'Delete'
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
