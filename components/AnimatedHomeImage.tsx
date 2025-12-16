@@ -14,6 +14,7 @@ interface AnimatedHomeImageProps {
     animateY?: number;
     className?: string;
     duration?: number;
+    grayscaleHover?: boolean;
 }
 
 export default function AnimatedHomeImage({
@@ -27,6 +28,7 @@ export default function AnimatedHomeImage({
     animateY = 0,
     className = "",
     duration = 0.6,
+    grayscaleHover = false,
 }: AnimatedHomeImageProps) {
     return (
         <motion.div
@@ -45,7 +47,7 @@ export default function AnimatedHomeImage({
                 src={src}
                 width={width}
                 height={height}
-                className={className}
+                className={`${grayscaleHover ? 'grayscale hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${className}`}
             />
         </motion.div>
     );

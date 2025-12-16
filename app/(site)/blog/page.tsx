@@ -68,6 +68,7 @@ export default function Blog() {
                       slug={post.slug}
                       title={post.title}
                       imageClassName="p-1 border border-gray-300"
+                      grayscaleHover={true}
                     />
                   )}
                   <div className="mt-4 flex flex-row items-center gap-y-2 gap-x-4 text-xs">
