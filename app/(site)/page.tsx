@@ -41,6 +41,7 @@ export default function Home() {
                     initialY={0}
                     animateY={0}
                     duration={0.6}
+                    grayscaleHover={true}
                   />
                   <Heading>
                     Sam Fortin

@@ -47,7 +47,7 @@ export default function AnimatedHomeImage({
                 src={src}
                 width={width}
                 height={height}
-                className={`${grayscaleHover ? 'grayscale hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${className}`}
+                className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${className}`}
             />
         </motion.div>
     );
