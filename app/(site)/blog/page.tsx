@@ -59,9 +59,9 @@ export default function Blog() {
               <Subheading>
                 No blog posts yet. Create your first post in the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">content/blog</code> directory!
               </Subheading>
-            ) : ( 
+            ) : (
               posts.map((post) => (
-                <article key={post.slug} className="flex max-w-xl flex-col items-start">
+                <article key={post.slug} className="flex max-w-xl flex-col items-start group">
                   {post.coverImage && (
                     <AnimatedImage
                       coverImage={post.coverImage}

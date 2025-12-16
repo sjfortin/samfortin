@@ -26,7 +26,7 @@ export default function AnimatedImage({ coverImage, slug, title, imageClassName 
             src={coverImage}
             alt={title}
             fill
-            className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
+            className={`${grayscaleHover ? 'md:grayscale md:group-hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
           />
         </Link>
       ) : (
@@ -34,7 +34,7 @@ export default function AnimatedImage({ coverImage, slug, title, imageClassName 
           src={coverImage}
           alt={title}
           fill
-          className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
+          className={`${grayscaleHover ? 'md:grayscale md:group-hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
         />
       )}
     </motion.div>
