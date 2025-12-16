@@ -9,9 +9,10 @@ interface AnimatedImageProps {
   slug?: string;
   title: string;
   imageClassName?: string;
+  grayscaleHover?: boolean;
 }
 
-export default function AnimatedImage({ coverImage, slug, title, imageClassName = "object-cover" }: AnimatedImageProps) {
+export default function AnimatedImage({ coverImage, slug, title, imageClassName = "object-cover", grayscaleHover = false }: AnimatedImageProps) {
   return (
     <motion.div
       className="relative w-full aspect-video overflow-hidden"
@@ -25,7 +26,7 @@ export default function AnimatedImage({ coverImage, slug, title, imageClassName 
             src={coverImage}
             alt={title}
             fill
-            className={imageClassName}
+            className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
           />
         </Link>
       ) : (
@@ -33,7 +34,7 @@ export default function AnimatedImage({ coverImage, slug, title, imageClassName 
           src={coverImage}
           alt={title}
           fill
-          className={imageClassName}
+          className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${imageClassName}`}
         />
       )}
     </motion.div>

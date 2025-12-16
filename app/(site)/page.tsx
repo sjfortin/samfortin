@@ -79,6 +79,7 @@ export default function Home() {
                       preload={true}
                       delay={0.1}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
+                      grayscaleHover={true}
                     />
                   </div>
                   <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
@@ -87,12 +88,14 @@ export default function Home() {
                       preload={true}
                       delay={0.2}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
+                      grayscaleHover={true}
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-3.png"
                       preload={true}
                       delay={0.3}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
+                      grayscaleHover={true}
                     />
                   </div>
                   <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
@@ -100,11 +103,13 @@ export default function Home() {
                       src="/images/home/moebius-home-6.png"
                       delay={0.4}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
+                      grayscaleHover={true}
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-2.png"
                       delay={0.5}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
+                      grayscaleHover={true}
                     />
                   </div>
                 </div>
