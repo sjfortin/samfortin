@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatedLogo } from './AnimatedLogo'
 import Link from 'next/link'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -33,14 +34,13 @@ const navigation = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="font-semibold text-base/7 sr-only">Sam Fortin</span>
-            <LogoMark className='rounded-full' />
+            <AnimatedLogo className='rounded-full' />
           </Link>
         </div>
         <div className={`flex lg:hidden gap-4 ${mobileMenuOpen ? 'hidden' : ''}`}>

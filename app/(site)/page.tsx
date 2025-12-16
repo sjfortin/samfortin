@@ -30,8 +30,6 @@ export default function Home() {
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-32 sm:pt-48 lg:px-8 lg:pt-32">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
-
-
                   <AnimatedHomeImage
                     src="/images/moebius-sam.png"
                     preload={true}
@@ -41,7 +39,9 @@ export default function Home() {
                     initialY={0}
                     animateY={0}
                     duration={0.6}
-                    grayscaleHover={true}
+                    grayscaleScroll={true}
+                    grayscaleScrollThreshold={100}
+                    grayscaleScrollThresholdMobile={50}
                   />
                   <Heading>
                     Sam Fortin
@@ -80,7 +80,8 @@ export default function Home() {
                       preload={true}
                       delay={0.1}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
-                      grayscaleHover={true}
+                      grayscaleScroll={true}
+                      grayscaleScrollThreshold={200}
                     />
                   </div>
                   <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
@@ -89,14 +90,16 @@ export default function Home() {
                       preload={true}
                       delay={0.2}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
-                      grayscaleHover={true}
+                      grayscaleScroll={true}
+                      grayscaleScrollThreshold={100}
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-3.png"
                       preload={true}
                       delay={0.3}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
-                      grayscaleHover={true}
+                      grayscaleScroll={true}
+                      grayscaleScrollThreshold={200}
                     />
                   </div>
                   <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
@@ -104,13 +107,15 @@ export default function Home() {
                       src="/images/home/moebius-home-6.png"
                       delay={0.4}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
-                      grayscaleHover={true}
+                      grayscaleScroll={true}
+                      grayscaleScrollThreshold={100}
                     />
                     <AnimatedHomeImage
                       src="/images/home/moebius-home-2.png"
                       delay={0.5}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
-                      grayscaleHover={true}
+                      grayscaleScroll={true}
+                      grayscaleScrollThreshold={400}
                     />
                   </div>
                 </div>

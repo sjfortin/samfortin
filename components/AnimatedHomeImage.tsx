@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface AnimatedHomeImageProps {
     src: string;
@@ -14,7 +15,9 @@ interface AnimatedHomeImageProps {
     animateY?: number;
     className?: string;
     duration?: number;
-    grayscaleHover?: boolean;
+    grayscaleScroll?: boolean;
+    grayscaleScrollThreshold?: number;
+    grayscaleScrollThresholdMobile?: number;
 }
 
 export default function AnimatedHomeImage({
@@ -28,8 +31,28 @@ export default function AnimatedHomeImage({
     animateY = 0,
     className = "",
     duration = 0.6,
-    grayscaleHover = false,
+    grayscaleScroll = false,
+    grayscaleScrollThreshold = 200,
+    grayscaleScrollThresholdMobile = 100,
 }: AnimatedHomeImageProps) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    const threshold = isMobile ? grayscaleScrollThresholdMobile : grayscaleScrollThreshold;
+    const { scrollY } = useScroll();
+    const grayscaleValue = useTransform(
+        scrollY,
+        [0, threshold],
+        [1, 0]
+    );
+    const grayscaleFilter = useTransform(grayscaleValue, (v) => `grayscale(${v})`);
+
     return (
         <motion.div
             className="relative"
@@ -41,14 +64,25 @@ export default function AnimatedHomeImage({
                 ease: "easeOut"
             }}
         >
-            <Image
-                preload={preload}
-                alt={alt}
-                src={src}
-                width={width}
-                height={height}
-                className={`${grayscaleHover ? 'md:grayscale md:hover:grayscale-0 transition-all duration-500 ease-in-out' : ''} ${className}`}
-            />
+            {grayscaleScroll ? (
+                <motion.img
+                    src={src}
+                    alt={alt}
+                    width={width}
+                    height={height}
+                    className={className}
+                    style={{ filter: grayscaleFilter }}
+                />
+            ) : (
+                <Image
+                    preload={preload}
+                    alt={alt}
+                    src={src}
+                    width={width}
+                    height={height}
+                    className={className}
+                />
+            )}
         </motion.div>
     );
 }
