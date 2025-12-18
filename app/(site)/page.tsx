@@ -121,17 +121,7 @@ export default function Home() {
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  {/* <div className="w-full">
-                    <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
-                  </div> */}
                   <div className="mt-4 space-y-4">
-                    {/* <HomeCTA
-                      href={`/blog/moebius`}
-                      title="Moebius Influence"
-                      description="The influence of Moebius on this site."
-                      eyebrow="Blog"
-                      variant="secondary"
-                    /> */}
                     <div className="w-full lg:hidden">
                       <HomeCTA
                         href="/playlists"
