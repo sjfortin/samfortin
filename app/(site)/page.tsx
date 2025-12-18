@@ -27,7 +27,7 @@ export default function Home() {
             <rect fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" width="100%" height="100%" strokeWidth={0} />
           </svg>
           <div className="overflow-hidden">
-            <div className="mx-auto max-w-7xl px-6 pb-32 pt-32 sm:pt-48 lg:px-8 lg:pt-32">
+            <div className="mx-auto max-w-7xl px-6 pb-32 pt-16">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
                   <AnimatedHomeImage
@@ -121,17 +121,7 @@ export default function Home() {
                 </div>
                 {/* Mobile */}
                 <div className="lg:hidden mt-8">
-                  {/* <div className="w-full">
-                    <AnimatedHomeVideo src="/videos/moebius-home-2.mp4" />
-                  </div> */}
                   <div className="mt-4 space-y-4">
-                    {/* <HomeCTA
-                      href={`/blog/moebius`}
-                      title="Moebius Influence"
-                      description="The influence of Moebius on this site."
-                      eyebrow="Blog"
-                      variant="secondary"
-                    /> */}
                     <div className="w-full lg:hidden">
                       <HomeCTA
                         href="/playlists"
