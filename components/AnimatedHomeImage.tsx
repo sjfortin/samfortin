@@ -65,17 +65,19 @@ export default function AnimatedHomeImage({
             }}
         >
             {grayscaleScroll ? (
-                <motion.img
-                    src={src}
-                    alt={alt}
-                    width={width}
-                    height={height}
-                    className={className}
-                    style={{ filter: grayscaleFilter }}
-                />
+                <motion.div style={{ filter: grayscaleFilter }}>
+                    <Image
+                        priority={preload}
+                        alt={alt}
+                        src={src}
+                        width={width}
+                        height={height}
+                        className={className}
+                    />
+                </motion.div>
             ) : (
                 <Image
-                    preload={preload}
+                    priority={preload}
                     alt={alt}
                     src={src}
                     width={width}
