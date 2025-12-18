@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { CreatePlaylistInput } from "@/lib/supabase/types";
 
@@ -105,6 +106,7 @@ export async function POST(request: Request) {
       // Don't fail the request, playlist is already created
     }
 
+    revalidatePath('/playlists');
     return NextResponse.json({ playlist });
   } catch (error) {
     console.error("Error in POST /api/playlists:", error);

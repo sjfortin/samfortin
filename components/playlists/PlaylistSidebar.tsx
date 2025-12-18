@@ -1,16 +1,38 @@
-'use client';
-
 import { Music, Plus } from 'lucide-react';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
 import Link from 'next/link';
-import { usePlaylists } from './hooks/usePlaylistMutations';
+import Image from 'next/image';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { SavedPlaylist } from './types';
-import { Loader2 } from 'lucide-react';
 
-export default function PlaylistSidebar() {
-  const { data, isLoading } = usePlaylists();
+async function getPlaylists(userId: string): Promise<SavedPlaylist[]> {
+  const { data: playlists, error } = await supabaseAdmin
+    .from('playlists')
+    .select(`
+      *,
+      playlist_tracks (
+        id,
+        name,
+        artist,
+        found_on_spotify,
+        spotify_uri,
+        position
+      )
+    `)
+    .eq('clerk_user_id', userId)
+    .order('created_at', { ascending: false });
 
-  const playlists: SavedPlaylist[] = data?.playlists || [];
+  if (error) {
+    console.error('Error fetching playlists:', error);
+    return [];
+  }
+
+  return playlists || [];
+}
+
+export default async function PlaylistSidebar() {
+  const { userId } = await auth();
+  const playlists = userId ? await getPlaylists(userId) : [];
 
   return (
     <div className="flex flex-col md:h-full md:w-64 md:border-r border-gray-200 p-4">
@@ -24,13 +46,9 @@ export default function PlaylistSidebar() {
           <Plus className="w-3 h-3" />
         </Link>
       </div>
-      <SignedIn>
+      {userId ? (
         <div>
-          {isLoading ? (
-            <div className="p-4 flex items-center justify-center text-center text-sm text-muted-foreground">
-              <Loader2 className="w-5 h-5 animate-spin" />
-            </div>
-          ) : !playlists.length ? (
+          {!playlists.length ? (
             <div className="py-4 text-sm text-muted-foreground">
               No playlists yet.
             </div>
@@ -42,9 +60,11 @@ export default function PlaylistSidebar() {
                     <Link href={`/playlists/${playlist.id}`} className="flex items-center gap-2">
                       <div className="flex-shrink-0 w-10 h-10 rounded overflow-hidden bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
                         {playlist.cover_image_url ? (
-                          <img
+                          <Image
                             src={playlist.cover_image_url}
                             alt={playlist.name}
+                            width={40}
+                            height={40}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -61,7 +81,7 @@ export default function PlaylistSidebar() {
             </div>
           )}
         </div>
-      </SignedIn>
+      ) : null}
     </div>
   );
 }
