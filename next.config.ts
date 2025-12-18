@@ -4,6 +4,9 @@ import createMDX from '@next/mdx';
 const nextConfig: NextConfig = {
   // Configure pageExtensions to include MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  images: {
+    domains: ['image-cdn-ak.spotifycdn.com'],
+  },
 };
 
 const withMDX = createMDX({

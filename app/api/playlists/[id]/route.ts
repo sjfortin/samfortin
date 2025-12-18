@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import type { UpdatePlaylistAfterSpotifyCreation } from "@/lib/supabase/types";
 import { fetchSpotifyWithRefresh } from "@/lib/spotify/token-manager";
@@ -216,6 +217,7 @@ export async function PUT(
       );
     }
 
+    revalidatePath('/playlists');
     return NextResponse.json({ playlist: updatedPlaylist });
   } catch (error) {
     console.error("Error in PUT /api/playlists/[id]:", error);
@@ -291,6 +293,7 @@ export async function DELETE(
       );
     }
 
+    revalidatePath('/playlists');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error in DELETE /api/playlists/[id]:", error);

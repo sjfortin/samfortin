@@ -173,6 +173,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
     deletePlaylistMutation.mutate(playlist.id, {
       onSuccess: () => {
         router.push('/playlists');
+        router.refresh();
       },
     });
   };
@@ -219,6 +220,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               onClick={handleCreateSpotify}
               disabled={createSpotifyPlaylistMutation.isPending}
               variant="default"
+              className="bg-green-600 hover:bg-green-700"
             >
               {createSpotifyPlaylistMutation.isPending ? (
                 <>

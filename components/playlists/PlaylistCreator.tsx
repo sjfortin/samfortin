@@ -54,8 +54,9 @@ export default function PlaylistCreator() {
                 playlistData
               );
 
-              // Navigate to the playlist detail page
+              // Navigate to the playlist detail page and refresh server components
               router.push(`/playlists/${data.playlist.id}`);
+              router.refresh();
             }
           },
         }
