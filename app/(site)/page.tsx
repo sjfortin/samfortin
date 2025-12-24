@@ -8,24 +8,6 @@ export default function Home() {
     <>
       <main>
         <div className="relative isolate">
-          <svg
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 -z-10 h-[32rem] lg:h-[64rem] w-full stroke-gray-100 dark:stroke-gray-900 [mask-image:radial-gradient(80vw_80vw_at_center,white,transparent)]"
-          >
-            <defs>
-              <pattern
-                x="50%"
-                y={-1}
-                id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84"
-                width={50}
-                height={50}
-                patternUnits="userSpaceOnUse"
-              >
-                <path d="M.5 200V.5H200" fill="none" />
-              </pattern>
-            </defs>
-            <rect fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)" width="100%" height="100%" strokeWidth={0} />
-          </svg>
           <div className="overflow-hidden">
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-16">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
