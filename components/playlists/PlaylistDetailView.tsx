@@ -27,7 +27,6 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   const { isSignedIn } = useUser();
   const router = useRouter();
   const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistResponse | null>(null);
-  const [playlistLength, setPlaylistLength] = useState(playlist.playlist_length || '1');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [spotifyUrl, setSpotifyUrl] = useState<string | null>(playlist.spotify_playlist_url);
   const [coverImageUrl, setCoverImageUrl] = useState<string | null>(playlist.cover_image_url);
@@ -129,7 +128,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
 
     // Generate playlist using custom hook
     generatePlaylist(userInput, {
-      playlistLength,
+      playlistLength: playlist.playlist_length || '1',
       currentPlaylist,
     });
     setInput('');
@@ -184,7 +183,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
         <div className="flex gap-4">
           {/* Cover Image */}
           {coverImageUrl && (
-            <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden shadow-lg">
+            <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 overflow-hidden shadow-lg">
               <img
                 src={coverImageUrl}
                 alt={`${playlist.name} cover`}
@@ -210,7 +209,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               href={spotifyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors rounded-md"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
               Open in Spotify
@@ -277,31 +276,38 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                     </div>
                   ) : (
                     <>
-                      {messages.map((message) => (
-                        <ChatMessageComponent
-                          key={message.id}
-                          message={{
-                            id: message.id,
-                            role: message.role as 'user' | 'assistant',
-                            // Get text content from parts
-                            content: message.parts
+                      {messages.map((message) => {
+                        // AI SDK v5 messages can have content as string or parts array
+                        const textContent = typeof (message as any).content === 'string'
+                          ? (message as any).content
+                          : message.parts
                               ?.filter((p: any) => p.type === 'text')
                               .map((p: any) => p.text)
-                              .join('') || '',
-                            timestamp: new Date(),
-                            // Extract playlist from tool result if present
-                            playlist: (message.parts?.find(
-                              (p: any) => p.type?.startsWith('tool-') && p.result
-                            ) as { result: PlaylistResponse } | undefined)?.result,
-                          }}
-                        />
-                      ))}
+                              .join('') || '';
+                        
+                        const playlistData = message.parts?.find(
+                          (p: any) => p.type?.startsWith('tool-') && (p.result || p.output)
+                        ) as { result?: PlaylistResponse; output?: PlaylistResponse } | undefined;
+
+                        return (
+                          <ChatMessageComponent
+                            key={message.id}
+                            message={{
+                              id: message.id,
+                              role: message.role as 'user' | 'assistant',
+                              content: textContent,
+                              timestamp: new Date(),
+                              playlist: playlistData?.result || playlistData?.output,
+                            }}
+                          />
+                        );
+                      })}
                     </>
                   )}
                   {isGenerating && (
                     <div className="flex gap-4 p-4 bg-background">
                       <div className="flex-shrink-0">
-                        <div className="w-8 h-8 rounded-full text-white flex items-center justify-center">
+                        <div className="w-8 h-8 text-white flex items-center justify-center">
                           <Sparkles className="w-5 h-5" />
                         </div>
                       </div>
@@ -320,60 +326,41 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
             </div>
 
             <div className="flex-none border-t border-border p-4 bg-background">
-              <form onSubmit={handleSubmit}>
-                <div className="relative border border-input bg-background shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring rounded-lg">
-                  <textarea
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSubmit(e);
-                      }
-                    }}
-                    placeholder="Ask me to modify the playlist..."
-                    rows={3}
-                    disabled={isGenerating}
-                    className="block w-full border-0 bg-transparent px-4 py-3 text-foreground placeholder:text-muted-foreground focus:ring-0 sm:text-sm resize-none"
-                  />
-
-                  {/* Toolbar */}
-                  <div className="flex items-center justify-between px-2 py-2 border-t border-input bg-muted/30">
-                    <div className="flex items-center gap-2">
-                      <select
-                        value={playlistLength}
-                        onChange={(e) => setPlaylistLength(e.target.value)}
-                        disabled={isGenerating}
-                        className="block border-0 bg-transparent py-1.5 pl-3 pr-8 text-muted-foreground focus:ring-2 focus:ring-ring sm:text-xs cursor-pointer hover:text-foreground transition-colors"
-                      >
-                        <option value="1">1 hour</option>
-                        <option value="2">2 hours</option>
-                        <option value="3">3 hours</option>
-                      </select>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isGenerating || !input.trim()}
-                      className={cn(
-                        'inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all rounded-md',
-                        (isGenerating || !input.trim()) && 'opacity-50 cursor-not-allowed'
-                      )}
-                    >
-                      {isGenerating ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Updating...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="h-4 w-4" />
-                          Send
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <textarea
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
+                  placeholder="Ask me to modify the playlist..."
+                  rows={3}
+                  disabled={isGenerating}
+                  className="block w-full border border-input bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-ring sm:text-sm resize-none"
+                />
+                <button
+                  type="submit"
+                  disabled={isGenerating || !input.trim()}
+                  className={cn(
+                    'w-full inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all',
+                    (isGenerating || !input.trim()) && 'opacity-50 cursor-not-allowed'
+                  )}
+                >
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      Send
+                    </>
+                  )}
+                </button>
               </form>
             </div>
           </div>
@@ -393,7 +380,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
               <div className="p-4 space-y-2">
                 {/* Show info message if Spotify playlist exists and some tracks weren't found */}
                 {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.some(t => t.found_on_spotify === false) && (
-                  <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md text-sm">
+                  <div className="p-3 bg-destructive/10 border border-destructive/20 text-sm">
                     <p className="text-destructive font-medium">Some tracks were not found on Spotify</p>
                     <p className="text-muted-foreground text-xs mt-1">
                       Tracks marked below could not be added to your Spotify playlist.
@@ -410,7 +397,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                       <div
                         key={track.id}
                         className={cn(
-                          "flex gap-3 text-sm p-3 border rounded-md shadow-sm",
+                          "flex gap-3 text-sm p-3 border shadow-sm",
                           track.found_on_spotify === false
                             ? "border-destructive/30 bg-destructive/5"
                             : "border-border bg-card"
@@ -430,7 +417,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                     ))
                 ) : currentPlaylist?.tracks && currentPlaylist.tracks.length > 0 ? (
                   currentPlaylist.tracks.map((track, index) => (
-                    <div key={`${track.name}-${track.artist}-${index}`} className="flex gap-3 text-sm p-3 border border-border bg-card rounded-md shadow-sm">
+                    <div key={`${track.name}-${track.artist}-${index}`} className="flex gap-3 text-sm p-3 border border-border bg-card shadow-sm">
                       <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
                       <div className="flex-1 min-w-0">
                         <div className="font-medium truncate">{track.name}</div>
@@ -445,7 +432,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                       <div
                         key={track.id}
                         className={cn(
-                          "flex gap-3 text-sm p-3 border rounded-md shadow-sm",
+                          "flex gap-3 text-sm p-3 border shadow-sm",
                           track.found_on_spotify === false
                             ? "border-destructive/30 bg-destructive/5"
                             : "border-border bg-card"
@@ -477,7 +464,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
       {/* Delete Confirmation Dialog */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background border border-border max-w-md w-full p-6 space-y-4 rounded-lg shadow-lg">
+          <div className="bg-background border border-border max-w-md w-full p-6 space-y-4 shadow-lg">
             <h3 className="text-lg font-semibold">Delete Playlist?</h3>
             <p className="text-sm text-muted-foreground">
               This will permanently delete this playlist and all its chat history. This action cannot be undone.

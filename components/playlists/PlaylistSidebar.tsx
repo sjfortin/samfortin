@@ -81,7 +81,11 @@ export default async function PlaylistSidebar() {
             </div>
           )}
         </div>
-      ) : null}
+      ) : (
+        <div className="py-4 text-sm text-muted-foreground">
+          Sign in to save and view your playlists.
+        </div>
+      )}
     </div>
   );
 }
