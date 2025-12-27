@@ -12,19 +12,6 @@ export default function Home() {
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-16">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
-                  <AnimatedHomeImage
-                    src="/images/moebius-sam.png"
-                    preload={true}
-                    width={120}
-                    height={120}
-                    className="aspect-[1/1] bg-white dark:bg-black object-cover shadow-lg mb-4 p-1 border border-gray-300"
-                    initialY={0}
-                    animateY={0}
-                    duration={0.6}
-                    grayscaleScroll={true}
-                    grayscaleScrollThreshold={100}
-                    grayscaleScrollThresholdMobile={50}
-                  />
                   <Heading>
                     Sam Fortin
                   </Heading>

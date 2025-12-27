@@ -67,7 +67,7 @@ export default function Header() {
           <ThemeSwitcher />
           <SignedOut>
             <SignInButton>
-              <button className="cursor-pointer text-sm px-2 py-0.5 rounded border border-gray-200 dark:border-gray-800 text-black dark:text-white">
+              <button className="cursor-pointer text-sm px-2 py-0.5 border border-gray-200 dark:border-gray-800 text-black dark:text-white">
                 Sign In
               </button>
             </SignInButton>

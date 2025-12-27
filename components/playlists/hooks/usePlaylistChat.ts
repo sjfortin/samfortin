@@ -15,20 +15,25 @@ export function usePlaylistChat({ playlistId, onPlaylistGenerated }: UsePlaylist
   } = useChat({
     id: playlistId,
     onFinish: async ({ message }) => {
+      console.log('onFinish called, message:', JSON.stringify(message, null, 2));
+      
+      // Try to find tool result with various possible states
       const toolPart = message.parts?.find(
         (part: any) =>
-          part.type === 'tool-generatePlaylist' &&
-          part.state === 'output-available' &&
-          part.output
-      ) as { output: PlaylistResponse } | undefined;
+          part.type?.startsWith('tool-') &&
+          (part.output || part.result)
+      ) as { output?: PlaylistResponse; result?: PlaylistResponse } | undefined;
 
-      if (toolPart?.output) {
-        const playlistData = toolPart.output;
+      console.log('toolPart found:', toolPart);
+
+      const playlistData = toolPart?.output || toolPart?.result;
+      if (playlistData) {
         const textContent = message.parts
-          ?.filter((p: any) => p.type === 'text' && p.state === 'done')
+          ?.filter((p: any) => p.type === 'text')
           .map((p: any) => p.text)
           .join('') || `Generated playlist: ${playlistData.name}`;
 
+        console.log('Calling onPlaylistGenerated with:', playlistData.name);
         await onPlaylistGenerated(playlistData, textContent);
       }
     },
@@ -41,8 +46,6 @@ export function usePlaylistChat({ playlistId, onPlaylistGenerated }: UsePlaylist
     options: {
       playlistLength: string;
       currentPlaylist?: PlaylistResponse | null;
-      genres?: string[];
-      eras?: string[];
     }
   ) => {
     sendMessage(
@@ -51,8 +54,6 @@ export function usePlaylistChat({ playlistId, onPlaylistGenerated }: UsePlaylist
         body: {
           playlistLength: options.playlistLength,
           currentPlaylist: options.currentPlaylist || null,
-          genres: options.genres,
-          eras: options.eras,
         },
       }
     );
