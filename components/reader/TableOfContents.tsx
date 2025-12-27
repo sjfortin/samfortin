@@ -58,7 +58,7 @@ export function TableOfContents({ isOpen, items, onClose, onNavigate }: TableOfC
                     <li key={index}>
                       <button
                         onClick={() => handleItemClick(item.href)}
-                        className="w-full text-left px-3 py-2 rounded-lg text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+                        className="w-full text-left px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
                       >
                         {item.label}
                       </button>

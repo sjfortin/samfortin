@@ -47,7 +47,7 @@ export function ImageModal({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 rounded-2xl shadow-2xl overflow-hidden border border-zinc-700/50"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 shadow-2xl overflow-hidden border border-zinc-700/50"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -71,7 +71,7 @@ export function ImageModal({
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-20 gap-6">
                   <div className="relative">
-                    <div className="w-20 h-20 rounded-full border-4 border-zinc-700 border-t-cyan-400 animate-spin" />
+                    <div className="w-20 h-20 border-4 border-zinc-700 border-t-cyan-400 animate-spin" />
                     <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400 animate-pulse" />
                   </div>
                   <div className="text-center">
@@ -83,7 +83,7 @@ export function ImageModal({
 
               {error && (
                 <div className="flex flex-col items-center justify-center py-16 gap-4">
-                  <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-red-500/20 flex items-center justify-center">
                     <X className="w-8 h-8 text-red-400" />
                   </div>
                   <p className="text-red-400 text-center max-w-md">{error}</p>
@@ -99,7 +99,7 @@ export function ImageModal({
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="relative rounded-xl overflow-hidden shadow-2xl"
+                    className="relative overflow-hidden shadow-2xl"
                   >
                     <img
                       src={imageData}
@@ -114,7 +114,7 @@ export function ImageModal({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="bg-zinc-800/50 rounded-xl p-4 border border-zinc-700/50"
+                    className="bg-zinc-800/50 p-4 border border-zinc-700/50"
                   >
                     <div className="flex items-start gap-3">
                       <Quote className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
