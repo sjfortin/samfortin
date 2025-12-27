@@ -10,7 +10,7 @@ interface NavigationControlsProps {
 
 export function NavigationControls({ onPrev, onNext }: NavigationControlsProps) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-zinc-900/90 backdrop-blur-sm rounded-full px-2 py-1 border border-zinc-800">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-zinc-900/90 backdrop-blur-sm px-2 py-1 border border-zinc-800">
       <Button
         variant="ghost"
         size="icon-sm"
