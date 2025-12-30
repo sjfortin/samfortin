@@ -17,7 +17,7 @@
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",
     "@ai-sdk/react": "^2.0.107",
-    "@clerk/nextjs": "^6.35.1",
+    "@clerk/nextjs": "^6.36.5",
     "@google/genai": "^1.29.0",
     "@heroicons/react": "^2.2.0",
     "@mdx-js/loader": "^3.1.1",
