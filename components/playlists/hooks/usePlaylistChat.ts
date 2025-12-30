@@ -1,4 +1,5 @@
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 import type { PlaylistResponse } from '../types';
 
 interface UsePlaylistChatOptions {
@@ -14,26 +15,25 @@ export function usePlaylistChat({ playlistId, onPlaylistGenerated }: UsePlaylist
     setMessages,
   } = useChat({
     id: playlistId,
+    transport: new DefaultChatTransport({
+      api: '/api/chat',
+    }),
     onFinish: async ({ message }) => {
-      console.log('onFinish called, message:', JSON.stringify(message, null, 2));
-      
-      // Try to find tool result with various possible states
+      // AI SDK v5: tool parts have state property, output is available when state === 'output-available'
       const toolPart = message.parts?.find(
         (part: any) =>
           part.type?.startsWith('tool-') &&
-          (part.output || part.result)
-      ) as { output?: PlaylistResponse; result?: PlaylistResponse } | undefined;
+          part.state === 'output-available' &&
+          part.output
+      ) as { output?: PlaylistResponse; state?: string } | undefined;
 
-      console.log('toolPart found:', toolPart);
-
-      const playlistData = toolPart?.output || toolPart?.result;
+      const playlistData = toolPart?.output;
       if (playlistData) {
         const textContent = message.parts
           ?.filter((p: any) => p.type === 'text')
           .map((p: any) => p.text)
           .join('') || `Generated playlist: ${playlistData.name}`;
 
-        console.log('Calling onPlaylistGenerated with:', playlistData.name);
         await onPlaylistGenerated(playlistData, textContent);
       }
     },

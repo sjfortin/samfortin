@@ -286,8 +286,8 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                               .join('') || '';
                         
                         const playlistData = message.parts?.find(
-                          (p: any) => p.type?.startsWith('tool-') && (p.result || p.output)
-                        ) as { result?: PlaylistResponse; output?: PlaylistResponse } | undefined;
+                          (p: any) => p.type?.startsWith('tool-') && p.state === 'output-available' && p.output
+                        ) as { output?: PlaylistResponse } | undefined;
 
                         return (
                           <ChatMessageComponent
@@ -297,7 +297,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
                               role: message.role as 'user' | 'assistant',
                               content: textContent,
                               timestamp: new Date(),
-                              playlist: playlistData?.result || playlistData?.output,
+                              playlist: playlistData?.output,
                             }}
                           />
                         );
