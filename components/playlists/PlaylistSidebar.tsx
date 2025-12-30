@@ -35,7 +35,7 @@ export default async function PlaylistSidebar() {
   const playlists = userId ? await getPlaylists(userId) : [];
 
   return (
-    <div className="flex flex-col md:h-full md:w-64 md:border-r border-gray-200 p-4">
+    <div className="flex flex-col h-full p-6">
       <div className="flex justify-between gap-2 border-b border-gray-100 dark:border-gray-800 pb-2 mb-2">
         <div className="flex items-center gap-2">
           <Music />
