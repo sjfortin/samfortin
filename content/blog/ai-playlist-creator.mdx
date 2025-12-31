@@ -1,0 +1,215 @@
+---
+title: "Building an AI-Powered Playlist Creator"
+date: "2025-12-27"
+description: "How I built an AI playlist generator that creates personalized Spotify playlists through natural conversation."
+category: "AI"
+author: "Sam Fortin"
+coverImage: "/images/blog/moebius-playlist.png"
+---
+
+I recently built an AI-powered playlist creator that lets users describe a mood, vibe, or theme and generates a curated playlist through natural conversation. Here's how it works under the hood.
+
+## The Tech Stack
+
+The playlist creator is built with:
+
+- **Next.js 16** - App Router with Server Components
+- **Vercel AI SDK** - For streaming AI responses and tool calling
+- **Google Gemini** - The LLM powering playlist generation
+- **Supabase** - PostgreSQL database for storing playlists and chat history
+- **Spotify API** - For creating playlists in users' Spotify accounts
+- **TanStack Query** - Client-side state management and mutations
+
+## Architecture Overview
+
+The system follows a conversational AI pattern where users can iteratively refine their playlists through chat. The flow works like this:
+
+1. User describes what kind of playlist they want
+2. AI generates a playlist using a tool call
+3. User can continue chatting to modify the playlist
+4. Once satisfied, they can save it to Spotify
+
+## The Chat API Route
+
+The heart of the system is the `/api/chat` route that handles AI interactions:
+
+```typescript
+import { streamText, tool } from 'ai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { z } from 'zod';
+
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
+
+const playlistSchema = z.object({
+  name: z.string().describe('A catchy, relevant playlist name'),
+  description: z.string().describe('Brief description of the playlist'),
+  tracks: z.array(
+    z.object({
+      name: z.string().describe('The song title'),
+      artist: z.string().describe('The artist name'),
+    })
+  ),
+});
+
+export async function POST(request: Request) {
+  const { messages, playlistLength, currentPlaylist } = await request.json();
+
+  const systemPrompt = `You are a music expert and playlist curator...
+    Generate tracks for approximately ${playlistLength} hour(s) of music.
+    ${currentPlaylist ? `Current playlist: ${JSON.stringify(currentPlaylist)}` : ''}`;
+
+  const result = streamText({
+    model: google('gemini-2.0-flash-exp'),
+    system: systemPrompt,
+    messages: convertToModelMessages(messages),
+    tools: {
+      generatePlaylist: tool({
+        description: 'Generate or modify a playlist based on user request',
+        inputSchema: playlistSchema,
+        execute: async (params) => params,
+      }),
+    },
+  });
+
+  return result.toUIMessageStreamResponse();
+}
+```
+
+The key insight here is using **tool calling** to get structured playlist data from the AI. Instead of parsing free-form text, the AI returns a well-typed object with playlist name, description, and tracks.
+
+## The useChat Hook
+
+On the client side, I use the Vercel AI SDK's `useChat` hook wrapped in a custom hook for playlist-specific logic:
+
+```typescript
+import { useChat } from '@ai-sdk/react';
+
+export function usePlaylistChat({ playlistId, onPlaylistGenerated }) {
+  const { messages, status, sendMessage, setMessages } = useChat({
+    id: playlistId,
+    onFinish: async ({ message }) => {
+      // Extract playlist data from tool result
+      const toolPart = message.parts?.find(
+        (part) => part.type?.startsWith('tool-') && part.output
+      );
+
+      if (toolPart?.output) {
+        await onPlaylistGenerated(toolPart.output, message.content);
+      }
+    },
+  });
+
+  const generatePlaylist = (userInput, options) => {
+    sendMessage(
+      { text: userInput },
+      {
+        body: {
+          playlistLength: options.playlistLength,
+          currentPlaylist: options.currentPlaylist,
+        },
+      }
+    );
+  };
+
+  return { messages, isGenerating, generatePlaylist, setMessages };
+}
+```
+
+The `onFinish` callback fires when the AI completes its response, allowing us to extract the structured playlist data from the tool call result.
+
+## Streaming UI Updates
+
+One of the best features of the Vercel AI SDK is built-in streaming support. As the AI generates its response, users see it appear in real-time. The `status` property tells us when generation is in progress:
+
+```typescript
+const isGenerating = status === 'submitted' || status === 'streaming';
+```
+
+This enables showing loading states and disabling inputs while the AI is working.
+
+## Database Schema
+
+Playlists and their chat history are stored in Supabase:
+
+```sql
+-- Playlists table
+create table playlists (
+  id uuid primary key default gen_random_uuid(),
+  clerk_user_id text not null,
+  name text not null,
+  description text,
+  prompt text,
+  playlist_length text,
+  spotify_playlist_id text,
+  spotify_playlist_url text,
+  created_at timestamptz default now()
+);
+
+-- Tracks table
+create table playlist_tracks (
+  id uuid primary key default gen_random_uuid(),
+  playlist_id uuid references playlists(id) on delete cascade,
+  name text not null,
+  artist text not null,
+  position integer not null
+);
+
+-- Chat messages table
+create table playlist_messages (
+  id uuid primary key default gen_random_uuid(),
+  playlist_id uuid references playlists(id) on delete cascade,
+  role text not null,
+  content text not null,
+  playlist_snapshot jsonb,
+  created_at timestamptz default now()
+);
+```
+
+The `playlist_snapshot` column stores the state of the playlist at each message, enabling users to see how their playlist evolved through the conversation.
+
+## Spotify Integration
+
+Once users are happy with their playlist, they can create it in Spotify:
+
+```typescript
+async function createSpotifyPlaylist(playlist) {
+  // 1. Create empty playlist
+  const spotifyPlaylist = await fetch(
+    `https://api.spotify.com/v1/users/${userId}/playlists`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({
+        name: playlist.name,
+        description: playlist.description,
+      }),
+    }
+  );
+
+  // 2. Search for each track
+  const trackUris = await Promise.all(
+    playlist.tracks.map(async (track) => {
+      const results = await searchSpotify(`${track.name} ${track.artist}`);
+      return results.tracks.items[0]?.uri;
+    })
+  );
+
+  // 3. Add tracks to playlist
+  await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify({ uris: trackUris.filter(Boolean) }),
+  });
+}
+```
+
+Not all AI-suggested tracks exist on Spotify, so we track which ones were found and display that information to users.
+
+## Unauthenticated Experience
+
+To lower the barrier to entry, unauthenticated users can also generate playlists. Their playlists aren't saved to the database, but they can still experience the AI generation and chat features. A gentle prompt encourages them to sign in to save their creations.
+
+Check out the feature at [/playlists](/playlists).
+
