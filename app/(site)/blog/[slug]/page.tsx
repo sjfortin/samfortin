@@ -103,7 +103,7 @@ export default async function BlogPost({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <div className="min-h-screen">
-        <article className="mx-auto max-w-3xl px-6 py-24 sm:py-32 lg:px-8">
+        <article className="mx-auto max-w-4xl px-6 py-24 sm:py-32 lg:px-8">
           <Link href="/blog" className="flex items-center gap-x-2 mb-8 text-gray-500 dark:text-gray-400 text-xs hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
             <ArrowLeftIcon className="w-4 h-4" />
             Back to blog

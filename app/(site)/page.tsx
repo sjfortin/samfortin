@@ -80,7 +80,7 @@ export default function Home() {
                       grayscaleScrollThreshold={100}
                     />
                     <AnimatedHomeImage
-                      src="/images/home/moebius-home-2.png"
+                      src="/images/blog/moebius-playlist.png"
                       delay={0.5}
                       className="aspect-[2/3] w-full bg-black/5 object-cover shadow-lg border border-gray-300 p-1"
                       grayscaleScroll={true}
