@@ -178,7 +178,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden pt-12 md:pt-0 border">
+    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden pt-12 md:pt-0 border-l">
       <div className="flex-none border-b border-border bg-background p-6 lg:px-8">
         <div className="flex gap-4">
           {/* Cover Image */}

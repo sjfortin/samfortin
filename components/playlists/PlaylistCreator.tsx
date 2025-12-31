@@ -117,7 +117,7 @@ export default function PlaylistCreator() {
         </div>
       )}
 
-      <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden pt-12 md:pt-0">
+      <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden pt-12 md:pt-0 border-l">
         {/* Header with playlist info or welcome message */}
         <div className="flex-none border-b border-border bg-background p-6 lg:px-8">
           <div className="flex-1 min-w-0">
