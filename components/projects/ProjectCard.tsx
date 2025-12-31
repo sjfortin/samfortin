@@ -38,10 +38,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   }
 
   return (
-    <div className="group w-full flex flex-col overflow-clip border border-gray-200 bg-white shadow-sm h-full p-1">
-      <div className="border border-gray-200 h-full">
-        <div className="relative w-full shrink-0 h-40 bg-white flex items-center justify-center overflow-clip p-2 border-b border-gray-200">
-          <svg className="pointer-events-none absolute inset-0 size-full select-none text-gray-600/20">
+    <div className="group w-full flex flex-col overflow-clip border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-sm h-full p-1">
+      <div className="border border-gray-200 dark:border-gray-800 h-full">
+        <div className="relative w-full shrink-0 h-40 bg-white flex items-center justify-center overflow-clip p-2 border-b border-gray-200 dark:border-gray-800">
+          <svg className="pointer-events-none absolute inset-0 size-full select-none text-gray-600/20 dark:text-gray-400/20">
             <defs>
               <pattern
                 id={patternId}
@@ -68,40 +68,40 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 />
               </div>
             ) : (
-              <div className="relative w-full h-full flex items-center justify-center bg-gray-100 text-gray-500 font-semibold text-xl uppercase">
+              <div className="relative w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold text-xl uppercase">
                 {project.name}
               </div>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 p-5 bg-gray-50/50 backdrop-blur-sm flex-1">
+        <div className="flex flex-col gap-4 p-5 backdrop-blur-sm flex-1">
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               {project.name}
             </h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
               {project.description}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech) => (
-              <Badge key={tech} theme="light" className="px-2 py-0.5 text-[10px] font-normal">
+              <Badge key={tech} className="px-2 py-0.5 text-[10px] font-normal">
                 {tech}
               </Badge>
             ))}
           </div>
 
           {project.links.length > 0 && (
-            <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-gray-200/50">
+            <div className="mt-auto flex flex-col gap-2 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
               {project.links.map((link) => (
                 <a
                   key={link.url}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-xs text-gray-500 hover:text-gray-700 transition-colors w-fit"
+                  className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors w-fit"
                 >
                   <span className="font-medium">{link.name}</span>
                   <ExternalLinkIcon className="h-3 w-3" />
