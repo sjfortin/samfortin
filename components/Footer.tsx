@@ -5,7 +5,7 @@ import { LogoMark } from './LogoMark'
 const navigation = {
   main: [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
+    // { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
     { name: 'p5.js experiments', href: 'https://art.samfort.in/', target: '_blank' },

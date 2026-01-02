@@ -12,15 +12,26 @@ export default function Home() {
             <div className="mx-auto max-w-7xl px-6 pb-32 pt-16">
               <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
+                  <AnimatedHomeImage
+                    src="/images/moebius-sam.png"
+                    preload={true}
+                    width={120}
+                    height={120}
+                    className="aspect-[1/1] bg-white dark:bg-black object-cover shadow-lg mb-4 p-1 border border-gray-300"
+                    initialY={0}
+                    animateY={0}
+                    duration={0.6}
+                    grayscaleScroll={false}
+                  />
                   <Heading>
                     Sam Fortin
                   </Heading>
                   <h2 className="text-pretty text-xl font-semibold tracking-tight text-black sm:text-3xl dark:text-white">
                     Software Engineer
                   </h2>
-                  <Subheading>
+                  {/* <Subheading>
                     I've spent the last 8+ years building on the web. JavaScript, TypeScript, React and a healthy obsession with clean code, a11y and performance.
-                  </Subheading>
+                  </Subheading> */}
                   <div className="hidden lg:block mt-4 w-full">
                     {/* <HomeCTA
                       href={`/blog/moebius`}
@@ -36,6 +47,15 @@ export default function Home() {
                       href="/playlists"
                       title="Playlists"
                       description="Turn your mood into a Spotify playlist"
+                      variant="secondary"
+                      eyebrow="Feature"
+                    />
+                  </div>
+                  <div className="hidden lg:block mt-4 w-full">
+                    <HomeCTA
+                      href="/time-capsule"
+                      title="Time Capsule"
+                      description="Weekly avatars inspired by current events"
                       variant="secondary"
                       eyebrow="Feature"
                     />
@@ -96,6 +116,15 @@ export default function Home() {
                         href="/playlists"
                         title="Playlists"
                         description="Turn your mood into a Spotify playlist"
+                        variant="secondary"
+                        eyebrow="Feature"
+                      />
+                    </div>
+                    <div className="w-full lg:hidden">
+                      <HomeCTA
+                        href="/time-capsule"
+                        title="Time Capsule"
+                        description="Weekly avatars inspired by current events"
                         variant="secondary"
                         eyebrow="Feature"
                       />
