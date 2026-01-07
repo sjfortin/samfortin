@@ -18,6 +18,7 @@ import { usePlaylistChat } from './hooks/usePlaylistChat';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { PlaylistCoverModal } from './PlaylistCoverModal';
 import { Button } from '@/components/ui/button';
+import { TracksSection } from './TracksSection';
 
 interface PlaylistDetailViewProps {
   playlist: SavedPlaylist;
@@ -30,8 +31,8 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [spotifyUrl, setSpotifyUrl] = useState<string | null>(playlist.spotify_playlist_url);
   const [coverImageUrl, setCoverImageUrl] = useState<string | null>(playlist.cover_image_url);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const [showCoverModal, setShowCoverModal] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Local input state (AI SDK v5 doesn't provide input/setInput)
@@ -60,14 +61,6 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
       }
     },
   });
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   // Load playlist and chat history on mount
   useEffect(() => {
@@ -178,7 +171,7 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden pt-12 md:pt-0 border-l">
+    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-screen overflow-hidden border-l">
       <div className="flex-none border-b border-border bg-background p-6 lg:px-8">
         <div className="flex gap-4">
           {/* Cover Image */}
@@ -366,99 +359,13 @@ export default function PlaylistDetailView({ playlist }: PlaylistDetailViewProps
           </div>
         ) : null}
 
-        <div className={cn(
-          "flex flex-col bg-muted/10 overflow-hidden",
-          spotifyUrl ? "w-full h-full" : "w-full md:w-[50%] h-1/2 md:h-full"
-        )}>
-          <div className="flex-none p-4 border-b border-border bg-muted/30">
-            <h2 className="font-semibold text-sm">
-              Tracks ({spotifyUrl ? playlist.playlist_tracks?.length ?? 0 : currentPlaylist?.tracks?.length ?? playlist.playlist_tracks?.length ?? 0})
-            </h2>
-          </div>
-          <div className="flex-1 min-h-0">
-            <ScrollArea className="h-full w-full">
-              <div className="p-4 space-y-2">
-                {/* Show info message if Spotify playlist exists and some tracks weren't found */}
-                {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.some(t => t.found_on_spotify === false) && (
-                  <div className="p-3 bg-destructive/10 border border-destructive/20 text-sm">
-                    <p className="text-destructive font-medium">Some tracks were not found on Spotify</p>
-                    <p className="text-muted-foreground text-xs mt-1">
-                      Tracks marked below could not be added to your Spotify playlist.
-                    </p>
-                  </div>
-                )}
-
-                {/* If Spotify playlist exists, always show playlist_tracks with found_on_spotify info */}
-                {/* Otherwise, use currentPlaylist tracks if available (after modifications), or original playlist tracks */}
-                {spotifyUrl && playlist.playlist_tracks && playlist.playlist_tracks.length > 0 ? (
-                  playlist.playlist_tracks
-                    .sort((a, b) => a.position - b.position)
-                    .map((track, index) => (
-                      <div
-                        key={track.id}
-                        className={cn(
-                          "flex gap-3 text-sm p-3 border shadow-sm",
-                          track.found_on_spotify === false
-                            ? "border-destructive/30 bg-destructive/5"
-                            : "border-border bg-card"
-                        )}
-                      >
-                        <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
-                        <div className="flex-1 min-w-0">
-                          <div className={cn("font-medium truncate", track.found_on_spotify === false && "text-muted-foreground")}>
-                            {track.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground truncate">{track.artist}</div>
-                          {track.found_on_spotify === false && (
-                            <div className="text-xs text-destructive mt-1">Not found on Spotify</div>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                ) : currentPlaylist?.tracks && currentPlaylist.tracks.length > 0 ? (
-                  currentPlaylist.tracks.map((track, index) => (
-                    <div key={`${track.name}-${track.artist}-${index}`} className="flex gap-3 text-sm p-3 border border-border bg-card shadow-sm">
-                      <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium truncate">{track.name}</div>
-                        <div className="text-xs text-muted-foreground truncate">{track.artist}</div>
-                      </div>
-                    </div>
-                  ))
-                ) : playlist.playlist_tracks && playlist.playlist_tracks.length > 0 ? (
-                  playlist.playlist_tracks
-                    .sort((a, b) => a.position - b.position)
-                    .map((track, index) => (
-                      <div
-                        key={track.id}
-                        className={cn(
-                          "flex gap-3 text-sm p-3 border shadow-sm",
-                          track.found_on_spotify === false
-                            ? "border-destructive/30 bg-destructive/5"
-                            : "border-border bg-card"
-                        )}
-                      >
-                        <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
-                        <div className="flex-1 min-w-0">
-                          <div className={cn("font-medium truncate", track.found_on_spotify === false && "text-muted-foreground")}>
-                            {track.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground truncate">{track.artist}</div>
-                          {track.found_on_spotify === false && (
-                            <div className="text-xs text-destructive mt-1">Not found on Spotify</div>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                ) : (
-                  <div className="text-center text-muted-foreground py-8 text-sm">
-                    No tracks in this playlist yet.
-                  </div>
-                )}
-              </div>
-            </ScrollArea>
-          </div>
-        </div>
+        <TracksSection 
+            tracks={spotifyUrl && playlist.playlist_tracks ? playlist.playlist_tracks : (currentPlaylist?.tracks || playlist.playlist_tracks || [])} 
+            showSpotifyStatus={!!spotifyUrl}
+            className={cn(
+              spotifyUrl ? "w-full h-full" : "w-full md:w-[50%] h-1/2 md:h-full"
+            )}
+          />
       </div>
 
       {/* Delete Confirmation Dialog */}

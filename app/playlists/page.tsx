@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PlaylistCreator from "@/components/playlists/PlaylistCreator";
+import PlaylistEditor from "@/components/playlists/PlaylistEditor";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sjfortin.com";
 
@@ -41,7 +41,7 @@ export default async function PlaylistsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <PlaylistCreator />
+      <PlaylistEditor isNew={true} />
     </div>
   );
 }

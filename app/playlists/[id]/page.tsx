@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import PlaylistDetailView from '@/components/playlists/PlaylistDetailView';
+import PlaylistEditor from '@/components/playlists/PlaylistEditor';
 import type { SavedPlaylist } from '@/components/playlists/types';
 import { supabaseAdmin } from '@/lib/supabase/server';
 
@@ -57,5 +57,5 @@ export default async function PlaylistPage({
     redirect('/playlists');
   }
 
-  return <PlaylistDetailView playlist={playlist} />;
+  return <PlaylistEditor savedPlaylist={playlist} />;
 }

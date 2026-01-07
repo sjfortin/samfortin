@@ -63,11 +63,16 @@ export default function PlaylistCreator() {
                   playlistData
                 );
 
-                // Navigate to the playlist detail page and refresh server components
-                router.push(`/playlists/${data.playlist.id}`);
-                router.refresh();
+                
+                // Don't redirect immediately - let user see the saved state
+                // User can navigate manually if they want
+                // router.push(`/playlists/${data.playlist.id}`);
+                // router.refresh();
               }
             },
+            onError: (error) => {
+              console.error('Failed to save playlist:', error);
+            }
           }
         );
       }
