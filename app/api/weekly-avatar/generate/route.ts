@@ -4,11 +4,11 @@ import { generateWeeklyAvatar } from '@/lib/weekly-avatar/avatar-service';
 export const maxDuration = 120; // Allow up to 2 minutes for generation
 
 /**
- * POST /api/weekly-avatar/generate
+ * GET /api/weekly-avatar/generate
  * Triggers the weekly avatar generation
  * Called by Vercel Cron or manually for testing
  */
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     // Verify the request is from Vercel Cron or has a valid secret
     const authHeader = request.headers.get('authorization');
@@ -28,7 +28,10 @@ export async function POST(request: NextRequest) {
     const today = new Date();
     const isMonday = today.getDay() === 1;
     
-    if (!isMonday && !force) {
+    // Allow override via environment variable for testing
+    const overrideDayCheck = process.env.OVERRIDE_DAY_CHECK === 'true';
+    
+    if (!isMonday && !force && !overrideDayCheck) {
       return NextResponse.json({
         success: true,
         message: 'Skipped - not Monday. Use ?force=true to override.',
@@ -70,12 +73,10 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET /api/weekly-avatar/generate
- * Health check endpoint
+ * POST /api/weekly-avatar/generate
+ * Legacy endpoint for backward compatibility
+ * Redirects to GET logic
  */
-export async function GET() {
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Weekly avatar generation endpoint is ready',
-  });
+export async function POST(request: NextRequest) {
+  return GET(request);
 }
