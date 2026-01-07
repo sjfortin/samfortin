@@ -1,12 +1,15 @@
 import { Metadata } from 'next';
-import { TimeCapsuleGallery } from '@/components/TimeCapsuleGallery';
+import { getAllAvatars } from '@/lib/weekly-avatar/avatar-service';
+import { TimeCapsuleGalleryServer } from '@/components/TimeCapsuleGalleryServer';
 
 export const metadata: Metadata = {
   title: 'Time Capsule | Sam Fortin',
   description: 'A visual time capsule - weekly AI-generated avatars inspired by current events, rendered in the style of Moebius.',
 };
 
-export default function TimeCapsulePage() {
+export default async function TimeCapsulePage() {
+  const avatars = await getAllAvatars();
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
       <div className="mx-auto lg:mx-0">
@@ -15,7 +18,7 @@ export default function TimeCapsulePage() {
             Time Capsule
           </h1>
         </div>
-        <TimeCapsuleGallery />
+        <TimeCapsuleGalleryServer avatars={avatars} />
       </div>
     </div>
   );
