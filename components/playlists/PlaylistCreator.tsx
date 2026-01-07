@@ -12,6 +12,7 @@ import {
 import { usePlaylistChat } from './hooks/usePlaylistChat';
 import type { PlaylistResponse } from './types';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { TracksSection } from './TracksSection';
 import ChatMessageComponent from './ChatMessage';
 
 export default function PlaylistCreator() {
@@ -101,23 +102,25 @@ export default function PlaylistCreator() {
       {/* Login Reminder Banner for unauthenticated users */}
       {isLoaded && !isSignedIn && (
         <div className="bg-primary/5 border-b border-primary/20 px-4 py-3">
-          <div className="flex flex-col md:flex-row items-center justify-between max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 text-sm">
+          <div className="flex flex-col md:flex-row gap-2 md:gap-0 items-center justify-between max-w-4xl mx-auto">
+            <div className="flex items-center gap-2 text-xs md:text-sm">
               <LogIn className="w-4 h-4 text-primary" />
               <span className="text-foreground">
                 <strong>Sign in</strong> to save your playlists and create them on Spotify
               </span>
             </div>
-            <SignInButton mode="modal">
-              <button className="px-4 py-1.5 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"  >
-                Sign in
-              </button>
-            </SignInButton>
+            <div className='hidden md:block'>
+              <SignInButton mode="modal">
+                <button className="px-4 py-1.5 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"  >
+                  Sign in
+                </button>
+              </SignInButton>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden pt-12 md:pt-0 border-l">
+      <div className="flex flex-col h-[calc(100vh-8rem)] overflow-hidden border-l">
         {/* Header with playlist info or welcome message */}
         <div className="flex-none border-b border-border bg-background p-6 lg:px-8">
           <div className="flex-1 min-w-0">
@@ -137,27 +140,27 @@ export default function PlaylistCreator() {
 
           {/* Action buttons - only show if playlist exists and user is not signed in */}
           {currentPlaylist && isLoaded && !isSignedIn && (
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-col md:flex-row gap-2 mt-4">
               <SignInButton mode="modal">
-                <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors">
+                <button className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors">
                   <LogIn className="w-4 h-4" />
-                  Sign in to Save & Create on Spotify
+                  Sign in to Create on Spotify
                 </button>
               </SignInButton>
-              <button
+              {/* <button
                 onClick={handleNewPlaylist}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-border hover:bg-muted transition-colors"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium border border-border hover:bg-muted transition-colors hidd"
               >
                 <Sparkles className="w-4 h-4" />
                 New Playlist
-              </button>
+              </button> */}
             </div>
           )}
         </div>
 
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* Chat Section */}
-          <div className="flex flex-col w-full md:w-[50%] border-b md:border-b-0 md:border-r border-border h-1/2 md:h-full">
+          <div className="flex flex-col w-full md:w-[50%] border-b md:border-b-0 md:border-r border-border h-2/3 md:h-full">
             <div className="flex-1 min-h-0">
               <ScrollArea className="h-full w-full">
                 <div className="space-y-0 pb-4">
@@ -280,36 +283,7 @@ export default function PlaylistCreator() {
           </div>
 
           {/* Tracks Section */}
-          <div className="flex flex-col w-full md:w-[50%] bg-muted/10 overflow-hidden h-1/2 md:h-full">
-            <div className="flex-none p-4 border-b border-border bg-muted/30">
-              <h2 className="font-semibold text-sm">
-                Tracks ({currentPlaylist?.tracks?.length ?? 0})
-              </h2>
-            </div>
-            <div className="flex-1 min-h-0">
-              <ScrollArea className="h-full w-full">
-                <div className="p-4 space-y-2">
-                  {currentPlaylist?.tracks && currentPlaylist.tracks.length > 0 ? (
-                    currentPlaylist.tracks.map((track, index) => (
-                      <div key={`${track.name}-${track.artist}-${index}`} className="flex gap-3 text-sm p-3 border border-border bg-card shadow-sm">
-                        <div className="text-muted-foreground w-6 flex-shrink-0 font-mono text-xs flex items-center">{index + 1}</div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium truncate">{track.name}</div>
-                          <div className="text-xs text-muted-foreground truncate">{track.artist}</div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center text-muted-foreground py-8 text-sm">
-                      <Music className="w-12 h-12 mx-auto mb-4 opacity-30" />
-                      <p>No tracks yet</p>
-                      <p className="text-xs mt-2">Your playlist will appear here</p>
-                    </div>
-                  )}
-                </div>
-              </ScrollArea>
-            </div>
-          </div>
+          <TracksSection tracks={currentPlaylist?.tracks ?? []} />
         </div>
       </div>
     </>

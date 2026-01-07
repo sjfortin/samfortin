@@ -23,7 +23,7 @@ export default function PlaylistSidebarWrapper({ children }: PlaylistSidebarWrap
   return (
     <>
       {/* Mobile: Top bar with sheet trigger */}
-      <div className="md:hidden absolute top-0 left-0 right-0 z-30">
+      <div className="md:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <button className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors w-full border-b border-border bg-background">

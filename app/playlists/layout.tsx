@@ -11,7 +11,7 @@ export default function PlaylistLayout({
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <main className="flex h-full border-t border-b border-gray-200 dark:border-gray-800 relative">
+      <main className="flex flex-col md:flex-row h-full border-t border-b border-gray-200 dark:border-gray-800 relative">
         <PlaylistSidebarWrapper>
           <PlaylistSidebar />
         </PlaylistSidebarWrapper>
