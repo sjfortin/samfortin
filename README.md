@@ -303,8 +303,26 @@ Required environment variables for deployment:
 - `SPOTIFY_CLIENT_ID` - Spotify API client ID
 - `SPOTIFY_CLIENT_SECRET` - Spotify API client secret
 - `GOOGLE_GENERATIVE_AI_API_KEY` - Google AI API key
+- `CRON_SECRET` - Secret for authenticating cron job requests
 
 See `.env.sample` for a complete list.
+
+## ⏰ Cron Jobs
+
+The weekly avatar generation is managed via external cron service for reliability on Hobby plan.
+
+### Setup (Cron-job.org)
+
+1. **Create Account**: Sign up at https://console.cron-job.org/jobs
+2. **Configure Job**:
+   - **URL**: `/api/weekly-avatar/generate`
+   - **Method**: GET
+   - **Schedule**: `0 10 * * 1` (every Monday at 10:00 AM)
+   - **Headers**: `Authorization: Bearer your-cron-secret-value`
+3. **Environment**: Set `CRON_SECRET` environment variable in Vercel
+4. **Test**: Use `?force=true` parameter for manual testing
+
+The endpoint only generates avatars on Mondays by default (unless forced).
 
 ## 📄 License
 
