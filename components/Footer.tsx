@@ -8,6 +8,7 @@ const navigation = {
     // { name: 'About', href: '/about' },
     { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Time Capsule', href: '/time-capsule' },
     { name: 'p5.js experiments', href: 'https://art.samfort.in/', target: '_blank' },
   ],
   social: [

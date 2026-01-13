@@ -55,7 +55,7 @@ export default function Home() {
                     <HomeCTA
                       href="/time-capsule"
                       title="Time Capsule"
-                      description="Weekly avatars inspired by current events"
+                      description="Weekly images inspired by current events"
                       variant="secondary"
                       eyebrow="Feature"
                     />
@@ -124,7 +124,7 @@ export default function Home() {
                       <HomeCTA
                         href="/time-capsule"
                         title="Time Capsule"
-                        description="Weekly avatars inspired by current events"
+                        description="Weekly images inspired by current events"
                         variant="secondary"
                         eyebrow="Feature"
                       />
